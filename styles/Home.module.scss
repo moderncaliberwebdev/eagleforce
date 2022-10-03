@@ -1,0 +1,218 @@
+@import 'variables';
+@import 'mixins';
+
+main {
+  .hero {
+    margin: 3rem 0;
+    display: flex;
+    flex-direction: row;
+
+    &__left {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      position: relative;
+
+      h2 {
+        font-size: $font-big-head;
+        text-align: right;
+        line-height: 9rem;
+
+        span {
+          display: block;
+          border: 2px solid #000;
+          border-radius: 10px;
+          padding: 0.5rem;
+          margin: 0 0 0 1rem;
+          width: 48rem;
+          float: right;
+        }
+      }
+
+      p {
+        font-size: $font-text;
+        font-weight: 300;
+        text-align: right;
+        margin: 2rem 0;
+      }
+
+      &__inputs {
+        width: 100%;
+        input {
+          width: calc(50% - 0.5rem);
+          margin-right: 0.5rem;
+          padding: 1rem;
+          border-radius: 5px;
+          border: 2px solid #000;
+        }
+        select {
+          margin-left: 0.5rem;
+          width: calc(50% - 0.5rem);
+          padding: 1rem;
+          border-radius: 5px;
+          border: 2px solid #000;
+          appearance: none;
+          background-image: url('/images/layout/arrow.png');
+          background-repeat: no-repeat;
+          background-position: right 0.7rem top 50%;
+          background-size: 2rem auto;
+
+          &:invalid {
+            color: #636c72;
+          }
+        }
+      }
+
+      button {
+        width: 100%;
+        margin: 1rem 0;
+        padding: 1rem;
+        background: #000;
+        color: #fff;
+        font-size: $font-text;
+        font-weight: 300;
+        border-style: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+    }
+
+    &__right {
+      width: 50%;
+      padding-left: 3rem;
+
+      &__top {
+        display: flex;
+        flex-direction: row;
+
+        &__card {
+          background: $red;
+          color: $red-dark;
+          padding: 2rem;
+          width: 50%;
+          max-width: 30rem;
+          border-radius: 10px;
+          border: 2px solid #000;
+          position: relative;
+
+          @include respond(tab-land) {
+            width: 60%;
+          }
+
+          &:after {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: -1.5rem;
+            background-color: #000;
+            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+          }
+
+          h3 {
+            font-size: $font-small-head;
+            font-weight: 400;
+          }
+          p {
+            font-size: $font-text;
+            font-weight: 300;
+            margin: 1.5rem 0 2rem 0;
+          }
+          a {
+            color: $red-dark;
+            font-size: $font-text;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            background: $red-light;
+            padding: 1rem 3rem;
+            width: 100%;
+            border-radius: 10px;
+            font-weight: 700;
+          }
+        }
+
+        &__verse {
+          width: 50%;
+          padding-left: 2.5rem;
+          margin: auto 0;
+          font-size: 1.5rem;
+          font-family: times, 'Times';
+          @include respond(tab-land) {
+            width: 40%;
+          }
+        }
+      }
+
+      &__bottom {
+        display: flex;
+        flex-direction: row;
+        margin-top: 3rem;
+
+        &__card {
+          background: $blue;
+          color: $blue-dark;
+          padding: 2rem;
+          width: 50%;
+          max-width: 30rem;
+          border-radius: 10px;
+          border: 2px solid #000;
+          position: relative;
+
+          @include respond(tab-land) {
+            width: 60%;
+          }
+
+          &:after {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: -1.5rem;
+            background-color: #000;
+            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+          }
+
+          h3 {
+            font-size: $font-small-head;
+            font-weight: 400;
+          }
+          p {
+            font-size: $font-text;
+            font-weight: 300;
+            margin: 1.5rem 0 2rem 0;
+          }
+          a {
+            color: $blue-dark;
+            font-size: $font-text;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            background: $blue-light;
+            padding: 1rem 3rem;
+            width: 100%;
+            border-radius: 10px;
+            font-weight: 700;
+          }
+        }
+
+        &__verse {
+          width: 50%;
+          padding-right: 2.5rem;
+          margin: auto 0;
+          font-size: 1.5rem;
+          font-family: times, 'Times';
+
+          @include respond(tab-land) {
+            width: 40%;
+          }
+        }
+      }
+    }
+  }
+}
