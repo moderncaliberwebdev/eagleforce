@@ -87,6 +87,123 @@ export default function Home() {
               </div>
             </div>
           </section>
+          <section className={styles.subhero}>
+            <p className={styles.subhero__dedicated}>
+              Dedicated service to the plain community for over 30 years
+            </p>
+            <div className={styles.subhero__marquee}>
+              <div
+                className={styles.subhero__marquee__inner}
+                aria-hidden='true'
+              >
+                <span>Crew Driver</span>
+                <span>Construction Worker</span>
+                <span>Carpenter</span>
+                <span>Welder</span>
+                <span>Mechanic</span>
+                <span>Technician</span>
+                <span>Landscape Technician</span>
+                <span>Painter</span>
+                <span>Brick Mason</span>
+                <span>Crew Driver</span>
+                <span>Construction Worker</span>
+                <span>Carpenter</span>
+                <span>Welder</span>
+                <span>Mechanic</span>
+                <span>Technician</span>
+                <span>Landscape Technician</span>
+                <span>Painter</span>
+                <span>Brick Mason</span>
+                <span>Crew Driver</span>
+                <span>Construction Worker</span>
+                <span>Carpenter</span>
+                <span>Welder</span>
+                <span>Mechanic</span>
+                <span>Technician</span>
+                <span>Landscape Technician</span>
+                <span>Painter</span>
+                <span>Brick Mason</span>
+              </div>
+            </div>
+          </section>
+          <section className={styles.bestfit}>
+            <h2>find the best fit for you</h2>
+            <div className={styles.bestfit__workers}>
+              <div className={styles.bestfit__workers__desc}>
+                <h3>
+                  Find qualified workers that meet your standards and exceed
+                  your expectations
+                </h3>
+                <p>
+                  Lancaster is filled with hard workers in the plain community
+                  including plumbers, crew drivers, and construction workers.
+                  Find them all here at Eagle Force Employment Services!
+                </p>
+                <Link href='/workers'>
+                  <a>Employers find a worker</a>
+                </Link>
+              </div>
+              <div className={styles.bestfit__workers__graphic}>
+                <Image
+                  src='/images/home/blue-graphic.png'
+                  width={751}
+                  height={570}
+                  objectFit='cover'
+                />
+              </div>
+            </div>
+            <div className={styles.bestfit__workers}>
+              <div className={styles.bestfit__workers__graphic_red}>
+                <Image
+                  src='/images/home/red-graphic.png'
+                  width={751}
+                  height={597}
+                  objectFit='cover'
+                />
+              </div>
+              <div className={styles.bestfit__workers__desc_red}>
+                <h3>
+                  Find amazing employers who offer fantastic benefits and a
+                  wholesome work environment
+                </h3>
+                <p>
+                  Find the best employers Lancaster County has to offer! Eagle
+                  Force Employment Serviecs has partnered with many local
+                  business to help you find your dream job.
+                </p>
+                <Link href='/employers'>
+                  <a>Workers find an employer</a>
+                </Link>
+                <div className={styles.bestfit__workers__desc_red__logos}>
+                  <Image
+                    src='/images/home/company-logo.png'
+                    width={50}
+                    height={50}
+                  />
+                  <Image
+                    src='/images/home/company-logo.png'
+                    width={50}
+                    height={50}
+                  />
+                  <Image
+                    src='/images/home/company-logo.png'
+                    width={50}
+                    height={50}
+                  />
+                  <Image
+                    src='/images/home/company-logo.png'
+                    width={50}
+                    height={50}
+                  />
+                  <Image
+                    src='/images/home/company-logo.png'
+                    width={50}
+                    height={50}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
         </main>
       </Layout>
     </div>

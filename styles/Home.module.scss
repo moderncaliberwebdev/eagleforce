@@ -217,4 +217,122 @@ main {
       }
     }
   }
+
+  .subhero {
+    &__dedicated {
+      font-weight: 300;
+      font-style: italic;
+      font-size: $font-text;
+      text-align: center;
+    }
+
+    &__marquee {
+      position: relative;
+      width: 100vw;
+      margin: 2rem 0 0 -4rem;
+      height: 4rem;
+      padding: 1rem 0;
+      overflow-x: hidden;
+      background: #000;
+
+      span {
+        font-size: $font-text;
+        margin: 1rem 2rem;
+        color: #fff;
+      }
+
+      &__inner {
+        position: absolute;
+        white-space: nowrap;
+        will-change: transform;
+        animation: marquee 30s linear infinite;
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+    }
+  }
+
+  .bestfit {
+    h2 {
+      font-size: $font-med-head;
+      margin: 3rem auto;
+      width: 32rem;
+      font-weight: 400;
+      text-align: center;
+      display: block;
+    }
+
+    &__workers {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+
+      &__desc {
+        margin: auto 2rem auto 0;
+
+        h3 {
+          font-size: $font-small-head;
+          font-weight: 700;
+        }
+        p {
+          font-size: $font-text;
+          font-weight: 300;
+          margin: 1rem 0 3rem 0;
+        }
+        a {
+          color: #000;
+          font-size: $font-text;
+          font-weight: 300;
+          text-decoration: none;
+          background: $blue;
+          padding: 1.5rem 3rem;
+          border-radius: 10px;
+        }
+      }
+      &__desc_red {
+        margin: auto 0 auto 3rem;
+
+        h3 {
+          font-size: $font-small-head;
+          font-weight: 700;
+        }
+        p {
+          font-size: $font-text;
+          font-weight: 300;
+          margin: 1rem 0 3rem 0;
+        }
+        a {
+          color: #000;
+          font-size: $font-text;
+          font-weight: 300;
+          text-decoration: none;
+          background: $red;
+          padding: 1.5rem 3rem;
+          border-radius: 10px;
+        }
+
+        &__logos {
+          margin-top: 2rem;
+        }
+      }
+      &__graphic {
+        display: block;
+        margin-right: -4rem;
+        width: 150rem;
+      }
+      &__graphic_red {
+        display: block;
+        margin-left: -4rem;
+        width: 150rem;
+      }
+    }
+  }
 }
