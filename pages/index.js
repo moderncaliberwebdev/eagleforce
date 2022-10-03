@@ -310,6 +310,49 @@ export default function Home() {
               </div>
             </div>
           </section>
+          <section className={styles.signup}>
+            <div className={styles.signup__left}>
+              <h2>
+                Employment services for the plain community in Lancaster, PA
+              </h2>
+              <p>
+                Let Eagle Force Employment Services jump start your journey with
+                your employment venture.
+              </p>
+              <Link href='/sign-up'>
+                <a>Sign Up!</a>
+              </Link>
+            </div>
+            <div className={styles.signup__right}>
+              <div className={styles.signup__right__item}>
+                <Image
+                  src='/images/home/Plumbing.png'
+                  width={50}
+                  height={50}
+                  objectFit='contain'
+                />
+                <p>Plumbing Technician Jobs</p>
+              </div>
+              <div className={styles.signup__right__item}>
+                <Image
+                  src='/images/home/Hacksaw.png'
+                  width={50}
+                  height={50}
+                  objectFit='contain'
+                />
+                <p>Residential Jobs in Construction</p>
+              </div>
+              <div className={styles.signup__right__item}>
+                <Image
+                  src='/images/home/Truck.png'
+                  width={50}
+                  height={50}
+                  objectFit='contain'
+                />
+                <p>Crew Drivers</p>
+              </div>
+            </div>
+          </section>
         </main>
       </Layout>
     </div>
