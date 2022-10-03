@@ -262,7 +262,7 @@ main {
   .bestfit {
     h2 {
       font-size: $font-med-head;
-      margin: 3rem auto;
+      margin: 5rem auto;
       width: 32rem;
       font-weight: 400;
       text-align: center;
@@ -331,6 +331,80 @@ main {
       &__graphic_red {
         display: block;
         margin-left: -4rem;
+        width: 150rem;
+      }
+    }
+  }
+
+  .listings {
+    margin-top: 5rem;
+
+    h2 {
+      font-size: $font-med-head;
+      margin: 3rem auto;
+      width: 50rem;
+      font-weight: 400;
+      text-align: center;
+      display: block;
+    }
+
+    .reverse {
+      flex-direction: row-reverse;
+
+      .listings__section__left {
+        padding: 0 0 0 3rem;
+      }
+
+      a {
+        background: $red;
+      }
+    }
+
+    &__section {
+      display: flex;
+      flex-direction: row;
+      width: 90%;
+      margin: 0 auto 8rem auto;
+
+      &__left {
+        padding-right: 3rem;
+        margin: auto 0;
+
+        h3 {
+          font-size: $font-small-head;
+          font-weight: 700;
+        }
+        p {
+          font-size: $font-text;
+          font-weight: 300;
+          margin: 1rem 0;
+        }
+
+        &__listing {
+          display: flex;
+          flex-direction: row;
+
+          &:last-of-type {
+            margin-bottom: 3rem;
+          }
+
+          p {
+            margin-left: 1rem;
+          }
+        }
+
+        a {
+          color: #000;
+          font-size: $font-text;
+          font-weight: 300;
+          text-decoration: none;
+          background: $blue;
+          padding: 1.5rem 3rem;
+          border-radius: 10px;
+        }
+      }
+      &__right {
+        margin: auto 0;
         width: 150rem;
       }
     }

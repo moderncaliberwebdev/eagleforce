@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { StyleRegistry } from 'styled-jsx'
 import Layout from '../Components/Layout'
 import styles from '../styles/Home.module.scss'
 
@@ -201,6 +202,111 @@ export default function Home() {
                     height={50}
                   />
                 </div>
+              </div>
+            </div>
+          </section>
+          <section className={styles.listings}>
+            <h2>post your listing and reach top candidates</h2>
+            <div className={styles.listings__section}>
+              <div className={styles.listings__section__left}>
+                <h3>
+                  Post a listing as job seeker to allow companies to find you
+                </h3>
+                <p>
+                  Posting a listing as a job seeker allows you to stand out and
+                  be seen by more companies. Pick a listing plan, fill out the
+                  form, post it, and you are well on your way to finding an
+                  amazing company to work for!
+                </p>
+                <div className={styles.listings__section__left__listing}>
+                  <Image
+                    src='/images/home/blue-check.png'
+                    width={25}
+                    height={25}
+                    objectFit='contain'
+                  />
+                  <p>Simple listing plans</p>
+                </div>
+                <div className={styles.listings__section__left__listing}>
+                  <Image
+                    src='/images/home/blue-check.png'
+                    width={25}
+                    height={25}
+                    objectFit='contain'
+                  />
+                  <p>Easy to use listing builder</p>
+                </div>
+                <div className={styles.listings__section__left__listing}>
+                  <Image
+                    src='/images/home/blue-check.png'
+                    width={25}
+                    height={25}
+                    objectFit='contain'
+                  />
+                  <p>Viewed by quality companies</p>
+                </div>
+                <Link href='/post/worker'>
+                  <a>Post a Worker Listing</a>
+                </Link>
+              </div>
+              <div className={styles.listings__section__right}>
+                <Image
+                  src='/images/home/blue-listing.png'
+                  width={549}
+                  height={471}
+                  objectFit='cover'
+                />
+              </div>
+            </div>
+            <div className={`${styles.listings__section} ${styles.reverse}`}>
+              <div className={styles.listings__section__left}>
+                <h3>
+                  Post an employer listing to have job seekers reaching out to
+                  you
+                </h3>
+                <p>
+                  Posting a listing as a employer allows job seekers to find
+                  your company. Pick a listing plan, fill out the form, post it,
+                  and you are well on your way to finding amazing new employees!
+                </p>
+                <div className={styles.listings__section__left__listing}>
+                  <Image
+                    src='/images/home/red-check.png'
+                    width={25}
+                    height={25}
+                    objectFit='contain'
+                  />
+                  <p>Simple listing plans</p>
+                </div>
+                <div className={styles.listings__section__left__listing}>
+                  <Image
+                    src='/images/home/red-check.png'
+                    width={25}
+                    height={25}
+                    objectFit='contain'
+                  />
+                  <p>Easy to use listing builder</p>
+                </div>
+                <div className={styles.listings__section__left__listing}>
+                  <Image
+                    src='/images/home/red-check.png'
+                    width={25}
+                    height={25}
+                    objectFit='contain'
+                  />
+                  <p>Viewed by quality job seekers</p>
+                </div>
+                <Link href='/post/employer'>
+                  <a>Post an Employer Listing</a>
+                </Link>
+              </div>
+              <div className={styles.listings__section__right}>
+                <Image
+                  src='/images/home/red-listing.png'
+                  width={549}
+                  height={471}
+                  objectFit='cover'
+                />
               </div>
             </div>
           </section>
