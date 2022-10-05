@@ -1,0 +1,175 @@
+@import 'variables';
+@import 'mixins';
+
+.container {
+  main {
+    .signup {
+      display: flex;
+      flex-direction: row;
+      margin: 3rem 0 10rem 0;
+      justify-content: center;
+
+      &__graphic {
+        width: 40%;
+      }
+      &__form {
+        width: 60%;
+        max-width: 60rem;
+        margin-left: 3rem;
+
+        h1 {
+          font-size: $font-small-head;
+          margin-bottom: 1rem;
+        }
+        p {
+          font-size: $font-text;
+
+          a {
+            margin-left: 0.5rem;
+            color: $red-dark;
+          }
+
+          margin-bottom: 2rem;
+        }
+
+        &__radios {
+          font-size: $font-text;
+
+          h2 {
+            font-weight: 300;
+            color: $red-dark;
+            display: block;
+            font-size: $font-text;
+            margin-bottom: 1rem;
+          }
+
+          &__radios {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+
+            label {
+              padding: 2rem 3rem;
+              border-radius: 10px;
+              border: 2px solid $red-dark;
+              width: 48%;
+              color: $red-dark;
+
+              input {
+                -webkit-appearance: none;
+                appearance: none;
+                margin-right: 1rem;
+                transform: translateY(0.2rem);
+                font: inherit;
+                color: currentColor;
+                width: $font-text;
+                height: $font-text;
+                border: 0.15em solid currentColor;
+                border-radius: 50%;
+
+                display: inline-grid;
+                place-content: center;
+
+                &::before {
+                  content: '';
+                  width: 1.8rem;
+                  height: 1.8rem;
+                  border-radius: 50%;
+                  background-color: $red-dark;
+                  transform: scale(0);
+                  transition: 120ms transform ease-in-out;
+                }
+
+                &:checked::before {
+                  transform: scale(0.5);
+                }
+              }
+            }
+          }
+        }
+        &__input {
+          color: $red-dark;
+          font-size: $font-text;
+          display: flex;
+          flex-direction: column;
+
+          input {
+            height: 4rem;
+            font-size: $font-text;
+            padding: 0 1rem;
+            border: 1px solid $red-dark;
+            border-radius: 5px;
+            margin: 1rem 0 2rem 0;
+          }
+        }
+
+        &__honeypot {
+          display: none;
+        }
+
+        &__check {
+          font-size: $font-text;
+          color: $red-dark;
+
+          input {
+            -webkit-appearance: none;
+            appearance: none;
+            margin-right: 1rem;
+
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 0.15em solid currentColor;
+            border-radius: 0.15em;
+            transform: translateY(-0.075em);
+
+            display: inline-grid;
+            place-content: center;
+
+            &::before {
+              content: '';
+              width: 0.65em;
+              height: 0.65em;
+              transform: scale(0);
+              background-color: $red-dark;
+              transition: 120ms transform ease-in-out;
+              box-shadow: inset 1em 1em var(--form-control-color);
+            }
+
+            &:checked::before {
+              transform: scale(1);
+            }
+          }
+
+          a {
+            margin-left: 0.5rem;
+            color: $red-dark;
+          }
+        }
+
+        button {
+          margin-top: 2rem;
+          color: #fff;
+          font-size: $font-text;
+          padding: 2rem 3rem;
+          border-radius: 10px;
+          background-color: $red-dark;
+          border-style: none;
+          display: block;
+          cursor: pointer;
+        }
+
+        &__error {
+          margin-top: 1rem;
+          color: red;
+        }
+        &__success {
+          margin-top: 1rem;
+          color: $red-dark;
+        }
+      }
+    }
+  }
+}
