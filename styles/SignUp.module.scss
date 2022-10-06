@@ -2,6 +2,15 @@
 @import 'mixins';
 
 .container {
+  .blue_text {
+    color: $blue-dark !important;
+  }
+  .blue_border_thin {
+    border: 1px solid $blue-dark !important;
+  }
+  .blue_background {
+    background-color: $blue-dark !important;
+  }
   main {
     .signup {
       display: flex;
@@ -15,8 +24,7 @@
       &__form {
         width: 60%;
         max-width: 60rem;
-        margin-left: 3rem;
-
+        margin: auto 0 auto 3rem;
         h1 {
           font-size: $font-small-head;
           margin-bottom: 1rem;

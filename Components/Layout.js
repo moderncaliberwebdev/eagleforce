@@ -1,22 +1,46 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/Layout.module.scss'
 
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import app from '../firebase/clientApp'
+
 function Layout({ children }) {
+  const [currentUser, setCurrentUser] = useState()
+
+  useEffect(() => {
+    const auth = getAuth()
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid
+        setCurrentUser(user)
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        setCurrentUser({ user: false })
+      }
+    })
+  }, [])
+
   return (
     <div className={styles.layout}>
       <nav className={styles.layout__nav}>
         <div className={styles.layout__nav__logo}>
           <Link href='/' passHref>
             <a>
-              <Image
-                src='/images/layout/logo.png'
-                alt='Eagle Force Logo'
-                width={50}
-                height={50}
-                layout='fixed'
-              />
+              <div>
+                <Image
+                  src='/images/layout/logo.png'
+                  alt='Eagle Force Logo'
+                  width={80}
+                  height={80}
+                  layout='fixed'
+                />
+              </div>
               <h1>
                 Eagle Force <span>Employment Services℠</span>
               </h1>
@@ -69,11 +93,27 @@ function Layout({ children }) {
           </ul>
         </div>
         <div className={styles.layout__nav__signin}>
-          <Link href='/sign-in'>
-            <figure>
-              <a>Sign In</a>
-            </figure>
-          </Link>
+          {currentUser ? (
+            currentUser.user ? (
+              <Link href='/sign-in'>
+                <figure>
+                  <a>Sign In</a>
+                </figure>
+              </Link>
+            ) : (
+              <Link href='/profile'>
+                <figure>
+                  <a>Profile</a>
+                </figure>
+              </Link>
+            )
+          ) : (
+            <Link href='/'>
+              <figure>
+                <a>Loading...</a>
+              </figure>
+            </Link>
+          )}
         </div>
       </nav>
       {children}

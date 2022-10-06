@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 // import firebase from '../firebase/clientApp'
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from 'firebase/auth'
-import validator from 'validator'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import app from '../firebase/clientApp'
+import validator from 'validator'
 import Head from 'next/head'
 import Layout from '../Components/Layout'
 import Image from 'next/image'
@@ -15,52 +11,37 @@ import Link from 'next/link'
 
 import styles from '../styles/SignUp.module.scss'
 
-function SignUp() {
+function SignIn() {
   // User Authentication
   //   const [user, loading, error] = useAuthState(firebase.auth())
   const auth = getAuth(app)
 
-  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [userType, setUserType] = useState('')
-  const [checked, setChecked] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
 
   const signUp = () => {
     //front end validation
-    const allFilled =
-      name.length > 0 &&
-      email.length > 0 &&
-      password.length > 0 &&
-      userType.length > 0
+    const allFilled = email.length > 0 && password.length > 0
     const isEmail = validator.isEmail(email)
 
     if (!allFilled) {
       setErrorMsg('Please fill in all fields')
     } else if (!isEmail) {
       setErrorMsg('Please provide a valid email')
-    } else if (!checked) {
-      setErrorMsg('Please confirm that you have read the terms and conditions')
     } else if (document.querySelector('#honeypot').value.length == 0) {
       setErrorMsg('')
-      createUserWithEmailAndPassword(auth, email, password)
+      signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user
-          updateProfile(auth.currentUser, {
-            displayName: `${userType} - ${name}`,
-          })
 
-          setSuccessMsg('Successfully created user')
-          setName('')
+          setSuccessMsg('Successfully logged in user')
           setEmail('')
           setPassword('')
-          setUserType('')
-          setChecked(false)
           setErrorMsg('')
-          window.location.href = '/profile'
+          window.location.href = '/'
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -69,22 +50,17 @@ function SignUp() {
     }
   }
 
-  const handleUserType = (e) => {
-    setUserType(e.target.value)
-    console.log(e.target.value)
-  }
-
   return (
     <div className={styles.container}>
       <Head>
-        <title>Sign Up | Eagle Force Employment Services</title>
+        <title>Sign In | Eagle Force Employment Services</title>
         <meta
           name='description'
           content='Start your employment search journey with us.'
         />
         <meta
           property='og:title'
-          content='Sign Up | Eagle Force Employment Services'
+          content='Sign In | Eagle Force Employment Services'
         />
         <meta
           property='og:description'
@@ -92,7 +68,7 @@ function SignUp() {
         />
         <meta
           property='og:url'
-          content='https://www.eagleforceemploymentservices.com/sign-up'
+          content='https://www.eagleforceemploymentservices.com/sign-in'
         />
         <meta property='og:type' content='website' />
         <link rel='icon' href='/images/layout/logo.png' />
@@ -102,89 +78,47 @@ function SignUp() {
           <section className={styles.signup}>
             <div className={styles.signup__graphic}>
               <Image
-                src='/images/signin/signup-graphic.png'
+                src='/images/signin/signin-graphic.png'
                 width={549}
                 height={790}
                 objectFit='cover'
               />
             </div>
             <div className={styles.signup__form}>
-              <h1>Sign Up</h1>
+              <h1>Sign In</h1>
               <p>
-                Already have an account?
-                <Link href='/sign-in' passHref>
-                  <a>Sign In!</a>
+                Don&apos;t have an account yet?
+                <Link href='/sign-up' passHref>
+                  <a className={styles.blue_text}>Sign Up!</a>
                 </Link>
               </p>
-              <div className={styles.signup__form__radios}>
-                <h2>What are you looking for?</h2>
-                <div className={styles.signup__form__radios__radios}>
-                  <label>
-                    <input
-                      type='radio'
-                      name='userType'
-                      value='A Job'
-                      onChange={(e) => handleUserType(e)}
-                      checked={userType == 'A Job'}
-                    />
-                    A Job
-                  </label>
-                  <label>
-                    <input
-                      type='radio'
-                      name='userType'
-                      value='Workers'
-                      onChange={(e) => handleUserType(e)}
-                      checked={userType == 'Workers'}
-                    />
-                    Workers
-                  </label>
-                </div>
-              </div>
+
               <div className={styles.signup__form__input}>
-                <label>
-                  {userType == 'Workers' ? 'Company Name' : 'Full Name'}
-                </label>
-                <input
-                  type='text'
-                  placeholder='John Doe'
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className={styles.signup__form__input}>
-                <label>Email</label>
+                <label className={styles.blue_text}>Email</label>
                 <input
                   type='email'
                   placeholder='johndoe@gmail.com'
                   onChange={(e) => setEmail(e.target.value)}
+                  className={styles.blue_border_thin}
                 />
               </div>
               <div className={styles.signup__form__honeypot}>
                 <input type='text' id='honeypot' />
               </div>
               <div className={styles.signup__form__input}>
-                <label>Password</label>
+                <label className={styles.blue_text}>Password</label>
                 <input
                   type='password'
                   onChange={(e) => setPassword(e.target.value)}
+                  className={styles.blue_border_thin}
                 />
               </div>
-              <label className={styles.signup__form__check}>
-                <input
-                  type='checkbox'
-                  onChange={() => setChecked(!checked)}
-                  checked={checked}
-                />
-                I agree to the
-                <Link href='/terms-and-conditions' passHref>
-                  <a>terms and conditions</a>
-                </Link>
-              </label>
+
               <button
-                className={styles.signup__form__submit}
+                className={`${styles.signup__form__submit} ${styles.blue_background}`}
                 onClick={() => signUp()}
               >
-                Create account
+                Sign In
               </button>
               <p className={styles.signup__form__error}>
                 {errorMsg && errorMsg.length > 0 && errorMsg}
@@ -200,4 +134,4 @@ function SignUp() {
   )
 }
 
-export default SignUp
+export default SignIn

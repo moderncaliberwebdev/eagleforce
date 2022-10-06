@@ -4,7 +4,13 @@ import Link from 'next/link'
 import Layout from '../Components/Layout'
 import styles from '../styles/Home.module.scss'
 
+import { getAuth } from 'firebase/auth'
+import app from '../firebase/clientApp'
+
 export default function Home() {
+  const auth = getAuth(app)
+  const user = auth.currentUser
+
   return (
     <div className={styles.container}>
       <Head>
@@ -147,7 +153,7 @@ export default function Home() {
                 <Image
                   src='/images/home/blue-graphic.png'
                   width={751}
-                  height={570}
+                  height={618}
                   objectFit='cover'
                 />
               </div>
@@ -157,7 +163,7 @@ export default function Home() {
                 <Image
                   src='/images/home/red-graphic.png'
                   width={751}
-                  height={597}
+                  height={523}
                   objectFit='cover'
                 />
               </div>
@@ -209,7 +215,7 @@ export default function Home() {
             <div className={styles.listings__section}>
               <div className={styles.listings__section__left}>
                 <h3>
-                  Post a listing as job seeker to allow companies to find you
+                  Post a listing as a job seeker to allow companies to find you
                 </h3>
                 <p>
                   Posting a listing as a job seeker allows you to stand out and
@@ -260,8 +266,7 @@ export default function Home() {
             <div className={`${styles.listings__section} ${styles.reverse}`}>
               <div className={styles.listings__section__left}>
                 <h3>
-                  Post an employer listing to have job seekers reaching out to
-                  you
+                  Post an employer listing to have job seekers reach out to you
                 </h3>
                 <p>
                   Posting a listing as a employer allows job seekers to find
