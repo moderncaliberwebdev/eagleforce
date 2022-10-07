@@ -1,0 +1,25 @@
+@import 'mixins';
+@import 'variables';
+
+.container {
+  main {
+    h1 {
+      font-size: $font-small-head;
+      text-align: center;
+    }
+    .description {
+      font-size: $font-text;
+      width: 80rem;
+      margin: 0 auto;
+      text-align: center;
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+    .block_container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 5rem;
+    }
+  }
+}

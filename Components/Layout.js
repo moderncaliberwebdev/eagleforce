@@ -125,8 +125,8 @@ function Layout({ children }) {
                 <Image
                   src='/images/layout/logo.png'
                   alt='Eagle Force Logo'
-                  width={50}
-                  height={50}
+                  width={80}
+                  height={80}
                   layout='fixed'
                 />
                 <h2>
