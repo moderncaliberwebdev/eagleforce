@@ -1,10 +1,25 @@
 import Head from 'next/head'
-import React from 'react'
+import Image from 'next/image'
+import React, { useState } from 'react'
 import Layout from '../../../Components/Layout'
+import ListingHighlight from '../../../Components/ListingHighlight'
+import ListingJob from '../../../Components/ListingJob'
+import RichText from '../../../Components/RichText'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
 import styles from '../../../styles/CreateWorkerListing.module.scss'
 
 function CreateListing() {
+  const [jobs, setJobs] = useState(1)
+  const [highlights, setHighlights] = useState(1)
+
+  const addJob = () => {
+    setJobs(jobs + 1)
+  }
+
+  const addHighlight = () => {
+    setHighlights(highlights + 1)
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -114,6 +129,67 @@ function CreateListing() {
                 </label>
                 <input type='text' />
               </div>
+            </div>
+          </div>
+          <div className={styles.create}>
+            <div className={styles.create__desc}>
+              <h2>Personal Summary</h2>
+              <p>Summarize strong character traits, skills, experience, etc.</p>
+            </div>
+            <div className={styles.create__inputs}>
+              <div className={styles.create__inputs__input}>
+                <label>Description</label>
+                <RichText />
+              </div>
+            </div>
+          </div>
+          <div className={styles.create}>
+            <div className={styles.create__desc}>
+              <h2>Qualifications</h2>
+              <p>
+                Highlight your qualifications for the position(s) you&apos;re
+                trying to obtain
+              </p>
+            </div>
+            <div className={styles.create__inputs}>
+              <h3>Work Experience</h3>
+              {[...Array(jobs)].map((e, i) => (
+                <ListingJob key={i} />
+              ))}
+              <button
+                onClick={addJob}
+                className={styles.create__inputs__button}
+              >
+                Add Another Job
+                <div>
+                  <Image
+                    src='/images/post/blue-plus.png'
+                    width={25}
+                    height={25}
+                    objectFit={'fixed'}
+                  />
+                </div>
+              </button>
+              <h3>Highlights (Education, Special Skills, etc.)</h3>
+              {[...Array(highlights)].map((e, i) => (
+                <ListingHighlight key={i} />
+              ))}
+              <button
+                onClick={addHighlight}
+                style={{ marginTop: '4rem' }}
+                className={styles.create__inputs__button}
+              >
+                Add Another Highlight
+                <div>
+                  <Image
+                    src='/images/post/blue-plus.png'
+                    width={25}
+                    height={25}
+                    objectFit={'fixed'}
+                  />
+                </div>
+              </button>
+              <button className={styles.preview}>Preview Listing</button>
             </div>
           </div>
         </main>

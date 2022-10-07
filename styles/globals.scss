@@ -33,3 +33,23 @@ body {
   //   padding: 2rem;
   // }
 }
+
+//rich text editor
+
+.quill {
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #6a6a6a;
+
+  .ql-toolbar {
+    border-radius: 10px 10px 0 0;
+    border-style: none !important;
+    border-bottom: 1px solid #6a6a6a !important;
+  }
+
+  .ql-container {
+    border-radius: 0 0 10px 10px;
+    border-style: none !important;
+    height: 10rem;
+  }
+}
