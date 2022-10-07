@@ -53,12 +53,13 @@
     }
   }
 
-  a {
+  &__choose {
     padding: 1rem 3rem;
     border-style: none;
     border-radius: 10px;
     font-size: $font-text;
     font-weight: 700;
     text-decoration: none;
+    cursor: pointer;
   }
 }
