@@ -191,9 +191,9 @@ function Terms() {
             sites. Children under the age of 18 should always ask their parents
             or guardians for permission before providing any personal
             information to anyone online. We urge parents and guardians to
-            participate in their children's online activities and use parental
-            control or other web filtering technology to supervise children's
-            access to the Internet.
+            participate in their children&apos;s online activities and use
+            parental control or other web filtering technology to supervise
+            children&apos;s access to the Internet.
           </p>
           <p>
             <span>Links to Third-Party Sites - </span>This site may contain
@@ -243,8 +243,8 @@ function Terms() {
             constitute a waiver of such right or provision. If any provision of
             the Terms & Conditions is found by a court of competent jurisdiction
             to be invalid, the parties nevertheless agree that the court should
-            endeavor to give effect to the parties' intentions as reflected in
-            the provision, and the other provisions of the Terms & Conditions
+            endeavor to give effect to the parties&apos; intentions as reflected
+            in the provision, and the other provisions of the Terms & Conditions
             remain in full force and effect. You agree that regardless of any
             statute or law to the contrary, any claim or cause of action arising
             out of or related to use of this site or the Terms & Conditions must
@@ -260,9 +260,9 @@ function Terms() {
           </p>
           <p>
             Your satisfaction is our top priority. We offer only the finest
-            quality services, but if your dissatisfied in any way we'll make
-            sure you're taken care of. Contact us and we'll help you get the
-            situation resolved.
+            quality services, but if your dissatisfied in any way we&apos;ll
+            make sure you&apos;re taken care of. Contact us and we&apos;ll help
+            you get the situation resolved.
           </p>
           <p>
             Please find your specific situation from the list of scenarios below
