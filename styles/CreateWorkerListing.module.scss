@@ -1,0 +1,78 @@
+@import 'mixins';
+@import 'variables';
+
+.container {
+  main {
+    h1 {
+      font-size: $font-small-head;
+      text-align: center;
+    }
+
+    .create {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 90rem;
+      margin: 0 auto;
+
+      &__desc {
+        h2 {
+          font-size: 2.5rem;
+        }
+        p {
+          font-size: $font-text;
+          width: 30rem;
+        }
+      }
+
+      &__inputs {
+        &__input {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 2rem;
+
+          label {
+            font-size: $font-small;
+          }
+          input {
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #6a6a6a;
+          }
+          select {
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #6a6a6a;
+            appearance: none;
+            background-image: url('/images/layout/arrow.png');
+            background-repeat: no-repeat;
+            background-position: right 0.7rem top 50%;
+            background-size: 2rem auto;
+
+            &:invalid {
+              color: #636c72;
+            }
+          }
+
+          &__rate {
+            display: flex;
+            flex-direction: row;
+
+            p {
+              font-size: 2.5rem;
+              line-height: 3.5rem;
+              margin: 0 0.5rem;
+            }
+            &__to {
+              font-size: $font-text !important;
+              margin: 0 1rem;
+            }
+            input {
+              width: 5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

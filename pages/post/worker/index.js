@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import React from 'react'
-import Layout from '../../Components/Layout'
-import PricingBlock from '../../Components/PricingBlock'
-import WorkerBreadcrumbs from '../../Components/WorkerBreadcrumbs'
-import styles from '../../styles/PostWorker.module.scss'
+import Layout from '../../../Components/Layout'
+import PricingBlock from '../../../Components/PricingBlock'
+import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
+import styles from '../../../styles/PostWorker.module.scss'
 
 function PostWorker() {
   return (
@@ -16,7 +16,7 @@ function PostWorker() {
         />
         <meta
           property='og:title'
-          content='Terms and Conditions | Eagle Force Employment Services'
+          content='Create Worker Listing | Eagle Force Employment Services'
         />
         <meta
           property='og:description'

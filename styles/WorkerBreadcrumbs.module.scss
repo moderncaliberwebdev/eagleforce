@@ -3,26 +3,32 @@
 
 .breadcrumbs {
   ul {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    width: 90rem;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     list-style-type: none;
-    justify-content: center;
-    margin: 4rem 0;
+    margin: 4rem auto;
+    border-radius: 10px;
+    background: #fff;
 
-    .li {
-      .first_a {
-        border-radius: 10px 0 0 10px;
-        padding: 1.5rem 1.5rem 1.5rem 4rem;
-      }
-      .last_a {
-        border-radius: 0 10px 10px 0;
-        padding: 1.5rem 4rem 1.5rem 1.5rem;
-      }
-      a {
+    a {
+      text-decoration: none;
+
+      li {
+        padding: 1.5rem;
         color: #000;
         text-decoration: none;
         font-size: $font-text;
-        padding: 1.5rem;
+      }
+      .first_a {
+        border-radius: 10px 0 0 10px;
+        padding-left: 4rem;
+      }
+      .last_a {
+        border-radius: 0 10px 10px 0;
+        padding-right: 4rem;
       }
     }
   }
