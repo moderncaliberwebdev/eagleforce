@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../../Components/Layout'
 import ListingHighlight from '../../../Components/ListingHighlight'
 import ListingJob from '../../../Components/ListingJob'
@@ -11,6 +11,54 @@ import styles from '../../../styles/CreateWorkerListing.module.scss'
 function CreateListing() {
   const [jobs, setJobs] = useState(1)
   const [highlights, setHighlights] = useState(1)
+  const [jobArray, setJobArray] = useState([])
+  const [highlightArray, setHighlightArray] = useState([])
+  const [listingInfo, setListingInfo] = useState([
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    [],
+    [''],
+  ])
+
+  useEffect(() => {
+    console.log(listingInfo)
+  }, [listingInfo])
+
+  useEffect(() => {
+    const newState = listingInfo.map((obj, index) => {
+      // 👇️ if id equals 2, update country property
+      if (index == 10) {
+        return jobArray
+      }
+
+      // 👇️ otherwise return object as is
+      return obj
+    })
+
+    setListingInfo(newState)
+  }, [jobArray])
+
+  useEffect(() => {
+    const newState = listingInfo.map((obj, index) => {
+      // 👇️ if id equals 2, update country property
+      if (index == 11) {
+        return highlightArray
+      }
+
+      // 👇️ otherwise return object as is
+      return obj
+    })
+
+    setListingInfo(newState)
+  }, [highlightArray])
 
   const addJob = () => {
     setJobs(jobs + 1)
@@ -18,6 +66,58 @@ function CreateListing() {
 
   const addHighlight = () => {
     setHighlights(highlights + 1)
+  }
+
+  const sendForm = () => {}
+
+  const updateListingInfo = (element, value, arrayIndex) => {
+    const newState = listingInfo.map((obj, index) => {
+      // 👇️ if id equals 2, update country property
+      if (index == element) {
+        return value
+      }
+
+      // 👇️ otherwise return object as is
+      return obj
+    })
+
+    setListingInfo(newState)
+  }
+
+  const updateJobArray = (newState, index) => {
+    if (index == 0) {
+      setJobArray([newState])
+    } else {
+      if (jobArray.length >= index + 1) {
+        const newJobArray = jobArray.map((obj, i) => {
+          if (i == index) {
+            return newState
+          }
+          return obj
+        })
+        setJobArray(newJobArray)
+      } else {
+        setJobArray([...jobArray, newState])
+      }
+    }
+  }
+
+  const updateHighlightArray = (newState, index) => {
+    if (index == 0) {
+      setHighlightArray([newState])
+    } else {
+      if (highlightArray.length >= index + 1) {
+        const newhighlightArray = highlightArray.map((obj, i) => {
+          if (i == index) {
+            return newState
+          }
+          return obj
+        })
+        setHighlightArray(newhighlightArray)
+      } else {
+        setHighlightArray([...highlightArray, newState])
+      }
+    }
   }
 
   return (
@@ -60,11 +160,15 @@ function CreateListing() {
                 <input
                   type='text'
                   placeholder='Residential Plumber, Plumbing Technician, etc.'
+                  onChange={(e) => updateListingInfo(0, e.target.value)}
                 />
               </div>
               <div className={styles.create__inputs__input}>
                 <label>Skill Level</label>
-                <select required>
+                <select
+                  required
+                  onChange={(e) => updateListingInfo(1, e.target.value)}
+                >
                   <option value='' disabled selected hidden>
                     Pick Skill Type
                   </option>
@@ -77,7 +181,10 @@ function CreateListing() {
               </div>
               <div className={styles.create__inputs__input}>
                 <label>Worker Type</label>
-                <select required>
+                <select
+                  required
+                  onChange={(e) => updateListingInfo(2, e.target.value)}
+                >
                   <option value='' disabled selected hidden>
                     Pick Worker Type
                   </option>
@@ -90,15 +197,26 @@ function CreateListing() {
                 <label>Desired Hourly Rate</label>
                 <div className={styles.create__inputs__input__rate}>
                   <p>$</p>
-                  <input type='text' placeholder='20' />
+                  <input
+                    type='text'
+                    placeholder='20'
+                    onChange={(e) => updateListingInfo(3, e.target.value)}
+                  />
                   <p className={styles.create__inputs__input__rate__to}>to</p>
                   <p>$</p>
-                  <input type='text' placeholder='20' />
+                  <input
+                    type='text'
+                    placeholder='30'
+                    onChange={(e) => updateListingInfo(4, e.target.value)}
+                  />
                 </div>
               </div>
               <div className={styles.create__inputs__input}>
                 <label>Desired Employment Type</label>
-                <select required>
+                <select
+                  required
+                  onChange={(e) => updateListingInfo(5, e.target.value)}
+                >
                   <option value='' disabled selected hidden>
                     Pick Employment Type
                   </option>
@@ -112,11 +230,18 @@ function CreateListing() {
               </div>
               <div className={styles.create__inputs__input}>
                 <label>City</label>
-                <input type='text' placeholder='Lancaster' />
+                <input
+                  type='text'
+                  placeholder='Lancaster'
+                  onChange={(e) => updateListingInfo(6, e.target.value)}
+                />
               </div>
               <div className={styles.create__inputs__input}>
                 <label>State</label>
-                <select required>
+                <select
+                  required
+                  onChange={(e) => updateListingInfo(7, e.target.value)}
+                >
                   <option value='' disabled selected hidden>
                     Pick State
                   </option>
@@ -127,7 +252,10 @@ function CreateListing() {
                 <label>
                   How did you find out about Eagle Force Employment Services?
                 </label>
-                <input type='text' />
+                <input
+                  type='text'
+                  onChange={(e) => updateListingInfo(8, e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -139,7 +267,7 @@ function CreateListing() {
             <div className={styles.create__inputs}>
               <div className={styles.create__inputs__input}>
                 <label>Description</label>
-                <RichText />
+                <RichText updateListingInfo={updateListingInfo} />
               </div>
             </div>
           </div>
@@ -154,7 +282,7 @@ function CreateListing() {
             <div className={styles.create__inputs}>
               <h3>Work Experience</h3>
               {[...Array(jobs)].map((e, i) => (
-                <ListingJob key={i} />
+                <ListingJob key={i} updateJobArray={updateJobArray} index={i} />
               ))}
               <button
                 onClick={addJob}
@@ -172,7 +300,11 @@ function CreateListing() {
               </button>
               <h3>Highlights (Education, Special Skills, etc.)</h3>
               {[...Array(highlights)].map((e, i) => (
-                <ListingHighlight key={i} />
+                <ListingHighlight
+                  key={i}
+                  updateHighlightArray={updateHighlightArray}
+                  index={i}
+                />
               ))}
               <button
                 onClick={addHighlight}
@@ -189,7 +321,9 @@ function CreateListing() {
                   />
                 </div>
               </button>
-              <button className={styles.preview}>Preview Listing</button>
+              <button className={styles.preview} onClick={sendForm}>
+                Preview Listing
+              </button>
             </div>
           </div>
         </main>
