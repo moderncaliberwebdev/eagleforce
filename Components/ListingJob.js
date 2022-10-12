@@ -1,8 +1,9 @@
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/CreateWorkerListing.module.scss'
 import RichText from './RichText'
 
-function ListingJob({ updateJobArray, index, valuesFromState }) {
+function ListingJob({ updateJobArray, index, valuesFromState, removeJob }) {
   const [values, setValues] = useState(['', '', '', ''])
 
   useEffect(() => {
@@ -18,7 +19,7 @@ function ListingJob({ updateJobArray, index, valuesFromState }) {
       }
       return obj
     })
-    console.log('new state in updatejobinfo >>>', newState)
+
     setValues(newState)
     updateJobArray(newState, index)
   }
@@ -26,7 +27,23 @@ function ListingJob({ updateJobArray, index, valuesFromState }) {
   return (
     <div style={{ marginBottom: '4rem' }}>
       <div className={styles.create__inputs__input}>
-        <label>Job Title</label>
+        <label>
+          <p>Job Title</p>
+          {valuesFromState && valuesFromState.length > 1 && (
+            <div
+              className={styles.create__input__inputs__remove}
+              onClick={() => removeJob(values)}
+            >
+              <p>Remove This Job</p>
+              <Image
+                src='/images/post/blue-minus.png'
+                width='20'
+                height='20'
+                objectFit={'fixed'}
+              />
+            </div>
+          )}
+        </label>
         <input
           type='text'
           placeholder='Residential Plumber'

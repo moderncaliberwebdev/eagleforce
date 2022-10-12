@@ -40,11 +40,6 @@ function CreateListing() {
 
         setHighlights(parsedInfo[11].length)
         setHighlightArray(parsedInfo[11])
-
-        console.log(
-          'listing state on load>>>>>',
-          JSON.parse(localStorage.getItem('listingInfo'))
-        )
       }
     }
     functionOnLoad()
@@ -56,11 +51,9 @@ function CreateListing() {
       listingInfo.forEach((item) => (listingInfoLength += item.length))
     listingInfoLength > 0 &&
       localStorage.setItem('listingInfo', JSON.stringify(listingInfo))
-    console.log('full listing after change >>>> ', listingInfo)
   }, [listingInfo])
 
   useEffect(() => {
-    console.log('job array >>>', jobArray)
     const listingInfoFromStorage =
       localStorage.getItem('listingInfo') &&
       JSON.parse(localStorage.getItem('listingInfo'))
@@ -113,11 +106,6 @@ function CreateListing() {
   }
 
   const updateJobArray = (newState, index) => {
-    console.log(
-      'listing state at updateJobArray function >>>>',
-      newState,
-      index
-    )
     if (index == 0) {
       const newJobArray = jobArray.map((obj, i) => {
         if (i == 0) {
@@ -142,11 +130,6 @@ function CreateListing() {
   }
 
   const updateHighlightArray = (newState, index) => {
-    console.log(
-      'listing state updateHighlightArray function >>>',
-      newState,
-      index
-    )
     if (index == 0) {
       setHighlightArray([newState])
     } else {
@@ -162,6 +145,17 @@ function CreateListing() {
         setHighlightArray([...highlightArray, newState])
       }
     }
+  }
+
+  const removeJob = (job) => {
+    setJobArray(jobArray.filter((item) => item != job))
+    console.log()
+    setJobs(jobs - 1)
+  }
+
+  const removeHighlight = (highlight) => {
+    setHighlightArray(highlightArray.filter((item) => item != highlight))
+    setHighlights(highlights - 1)
   }
 
   return (
@@ -343,6 +337,7 @@ function CreateListing() {
                   updateJobArray={updateJobArray}
                   index={i}
                   valuesFromState={listingInfo[10]}
+                  removeJob={removeJob}
                 />
               ))}
               <button
@@ -366,6 +361,7 @@ function CreateListing() {
                   updateHighlightArray={updateHighlightArray}
                   index={i}
                   valuesFromState={listingInfo[11]}
+                  removeHighlight={removeHighlight}
                 />
               ))}
               <button

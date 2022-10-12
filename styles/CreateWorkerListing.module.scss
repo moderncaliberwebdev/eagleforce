@@ -40,6 +40,21 @@
 
           label {
             font-size: $font-small;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            div {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              cursor: pointer;
+
+              p {
+                margin-right: 1rem;
+              }
+            }
           }
           input {
             padding: 1rem;
