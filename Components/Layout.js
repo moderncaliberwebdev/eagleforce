@@ -110,7 +110,7 @@ function Layout({ children }) {
           ) : (
             <Link href='/'>
               <figure>
-                <a>Loading...</a>
+                <a>Sign Up</a>
               </figure>
             </Link>
           )}

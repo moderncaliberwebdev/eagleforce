@@ -25,68 +25,107 @@ function CreateListing() {
     '',
     '',
     [],
-    [''],
+    [],
   ])
 
   useEffect(() => {
-    console.log(listingInfo)
+    const functionOnLoad = () => {
+      if (localStorage.getItem('listingInfo')) {
+        const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
+
+        setListingInfo(parsedInfo)
+
+        setJobs(parsedInfo[10].length)
+        setJobArray(parsedInfo[10])
+
+        setHighlights(parsedInfo[11].length)
+        setHighlightArray(parsedInfo[11])
+
+        console.log(
+          'listing state on load>>>>>',
+          JSON.parse(localStorage.getItem('listingInfo'))
+        )
+      }
+    }
+    functionOnLoad()
+  }, [])
+
+  useEffect(() => {
+    let listingInfoLength = 0
+    listingInfo &&
+      listingInfo.forEach((item) => (listingInfoLength += item.length))
+    listingInfoLength > 0 &&
+      localStorage.setItem('listingInfo', JSON.stringify(listingInfo))
+    console.log('full listing after change >>>> ', listingInfo)
   }, [listingInfo])
 
   useEffect(() => {
-    const newState = listingInfo.map((obj, index) => {
-      // 👇️ if id equals 2, update country property
-      if (index == 10) {
-        return jobArray
-      }
-
-      // 👇️ otherwise return object as is
-      return obj
-    })
-
-    setListingInfo(newState)
+    console.log('job array >>>', jobArray)
+    const listingInfoFromStorage =
+      localStorage.getItem('listingInfo') &&
+      JSON.parse(localStorage.getItem('listingInfo'))
+    const newState =
+      listingInfoFromStorage &&
+      listingInfoFromStorage.map((obj, index) => {
+        if (index == 10 && jobArray.length > 0) {
+          return jobArray
+        }
+        return obj
+      })
+    newState && setListingInfo(newState)
   }, [jobArray])
 
   useEffect(() => {
-    const newState = listingInfo.map((obj, index) => {
-      // 👇️ if id equals 2, update country property
-      if (index == 11) {
-        return highlightArray
-      }
-
-      // 👇️ otherwise return object as is
-      return obj
-    })
-
-    setListingInfo(newState)
+    const listingInfoFromStorage =
+      localStorage.getItem('listingInfo') &&
+      JSON.parse(localStorage.getItem('listingInfo'))
+    const newState =
+      listingInfoFromStorage &&
+      listingInfoFromStorage.map((obj, index) => {
+        if (index == 11 && highlightArray.length > 0) {
+          return highlightArray
+        }
+        return obj
+      })
+    newState && setListingInfo(newState)
   }, [highlightArray])
 
   const addJob = () => {
     setJobs(jobs + 1)
+    setJobArray([...jobArray, ['', '', '', '']])
   }
 
   const addHighlight = () => {
     setHighlights(highlights + 1)
+    setHighlightArray([...highlightArray, ''])
   }
 
   const sendForm = () => {}
 
-  const updateListingInfo = (element, value, arrayIndex) => {
+  const updateListingInfo = (element, value) => {
     const newState = listingInfo.map((obj, index) => {
-      // 👇️ if id equals 2, update country property
       if (index == element) {
         return value
       }
-
-      // 👇️ otherwise return object as is
       return obj
     })
-
     setListingInfo(newState)
   }
 
   const updateJobArray = (newState, index) => {
+    console.log(
+      'listing state at updateJobArray function >>>>',
+      newState,
+      index
+    )
     if (index == 0) {
-      setJobArray([newState])
+      const newJobArray = jobArray.map((obj, i) => {
+        if (i == 0) {
+          return newState
+        }
+        return obj
+      })
+      setJobArray(newJobArray)
     } else {
       if (jobArray.length >= index + 1) {
         const newJobArray = jobArray.map((obj, i) => {
@@ -103,6 +142,11 @@ function CreateListing() {
   }
 
   const updateHighlightArray = (newState, index) => {
+    console.log(
+      'listing state updateHighlightArray function >>>',
+      newState,
+      index
+    )
     if (index == 0) {
       setHighlightArray([newState])
     } else {
@@ -161,6 +205,7 @@ function CreateListing() {
                   type='text'
                   placeholder='Residential Plumber, Plumbing Technician, etc.'
                   onChange={(e) => updateListingInfo(0, e.target.value)}
+                  value={listingInfo ? listingInfo[0] : ''}
                 />
               </div>
               <div className={styles.create__inputs__input}>
@@ -168,6 +213,7 @@ function CreateListing() {
                 <select
                   required
                   onChange={(e) => updateListingInfo(1, e.target.value)}
+                  value={listingInfo ? listingInfo[1] : ''}
                 >
                   <option value='' disabled selected hidden>
                     Pick Skill Type
@@ -184,6 +230,7 @@ function CreateListing() {
                 <select
                   required
                   onChange={(e) => updateListingInfo(2, e.target.value)}
+                  value={listingInfo ? listingInfo[2] : ''}
                 >
                   <option value='' disabled selected hidden>
                     Pick Worker Type
@@ -201,6 +248,7 @@ function CreateListing() {
                     type='text'
                     placeholder='20'
                     onChange={(e) => updateListingInfo(3, e.target.value)}
+                    value={listingInfo ? listingInfo[3] : ''}
                   />
                   <p className={styles.create__inputs__input__rate__to}>to</p>
                   <p>$</p>
@@ -208,6 +256,7 @@ function CreateListing() {
                     type='text'
                     placeholder='30'
                     onChange={(e) => updateListingInfo(4, e.target.value)}
+                    value={listingInfo ? listingInfo[4] : ''}
                   />
                 </div>
               </div>
@@ -216,6 +265,7 @@ function CreateListing() {
                 <select
                   required
                   onChange={(e) => updateListingInfo(5, e.target.value)}
+                  value={listingInfo ? listingInfo[5] : ''}
                 >
                   <option value='' disabled selected hidden>
                     Pick Employment Type
@@ -234,6 +284,7 @@ function CreateListing() {
                   type='text'
                   placeholder='Lancaster'
                   onChange={(e) => updateListingInfo(6, e.target.value)}
+                  value={listingInfo ? listingInfo[6] : ''}
                 />
               </div>
               <div className={styles.create__inputs__input}>
@@ -241,6 +292,7 @@ function CreateListing() {
                 <select
                   required
                   onChange={(e) => updateListingInfo(7, e.target.value)}
+                  value={listingInfo ? listingInfo[7] : ''}
                 >
                   <option value='' disabled selected hidden>
                     Pick State
@@ -255,6 +307,7 @@ function CreateListing() {
                 <input
                   type='text'
                   onChange={(e) => updateListingInfo(8, e.target.value)}
+                  value={listingInfo ? listingInfo[8] : ''}
                 />
               </div>
             </div>
@@ -267,7 +320,10 @@ function CreateListing() {
             <div className={styles.create__inputs}>
               <div className={styles.create__inputs__input}>
                 <label>Description</label>
-                <RichText updateListingInfo={updateListingInfo} />
+                <RichText
+                  updateListingInfo={updateListingInfo}
+                  textHTML={listingInfo ? listingInfo[9] : ''}
+                />
               </div>
             </div>
           </div>
@@ -282,7 +338,12 @@ function CreateListing() {
             <div className={styles.create__inputs}>
               <h3>Work Experience</h3>
               {[...Array(jobs)].map((e, i) => (
-                <ListingJob key={i} updateJobArray={updateJobArray} index={i} />
+                <ListingJob
+                  key={i}
+                  updateJobArray={updateJobArray}
+                  index={i}
+                  valuesFromState={listingInfo[10]}
+                />
               ))}
               <button
                 onClick={addJob}
@@ -304,6 +365,7 @@ function CreateListing() {
                   key={i}
                   updateHighlightArray={updateHighlightArray}
                   index={i}
+                  valuesFromState={listingInfo[11]}
                 />
               ))}
               <button

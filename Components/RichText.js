@@ -6,8 +6,12 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   loading: () => <p>Loading ...</p>,
 })
 
-function RichText({ updateListingInfo, updateJobInfo }) {
+function RichText({ updateListingInfo, updateJobInfo, textHTML }) {
   const [value, setValue] = useState('')
+
+  useEffect(() => {
+    textHTML && setValue(textHTML)
+  }, [textHTML])
 
   if (updateListingInfo) {
     useEffect(() => {
