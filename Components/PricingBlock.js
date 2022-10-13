@@ -10,6 +10,7 @@ function PricingBlock({
   backgroundLight,
   color,
   type,
+  user,
   price,
   occurance,
   features,
@@ -64,6 +65,15 @@ function PricingBlock({
           <a
             className={styles.block__choose}
             style={{ color: color, backgroundColor: backgroundLight }}
+            onClick={() =>
+              localStorage.setItem(
+                'planType',
+                JSON.stringify({
+                  user,
+                  type,
+                })
+              )
+            }
           >
             Choose {type} Plan
           </a>

@@ -52,6 +52,7 @@ function PostWorker() {
               color='#000'
               backgroundLight='#E7EBEC'
               type='Standard'
+              user='Worker'
               price='5'
               occurance='month'
               features={[
@@ -64,6 +65,7 @@ function PostWorker() {
               color='#18181b'
               backgroundLight='#b7c2dd'
               type='Featured'
+              user='Worker'
               price='20'
               occurance='3 months'
               features={[

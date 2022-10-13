@@ -189,6 +189,9 @@ function Layout({ children }) {
         <div className={styles.layout__footer__bottom}>
           <div className={styles.layout__footer__bottom__left}>
             <p>Eagle Force Employment Services℠</p>
+            <p className={styles.layout__footer__bottom__left__host}>
+              Hosted by De Stefano Enterprises, LLC, all rights reserved
+            </p>
           </div>
           <div className={styles.layout__footer__bottom__right}>
             <p>

@@ -176,8 +176,13 @@
       margin-top: 2rem;
       font-size: $font-text;
 
+      &__right {
+        text-align: right;
+      }
+
       p {
         color: #6b6b6b;
+        margin-bottom: 1rem;
 
         a {
           color: #6b6b6b;

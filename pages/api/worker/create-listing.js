@@ -12,14 +12,10 @@ const handler = nc()
     try {
       const client = await clientPromise
       const db = client.db('eagleforce')
+      const workers = db.collection('workers')
 
-      const workers = await db.collection('workers').find({})
-      // .sort({ metacritic: -1 })
-      // .limit(10)
-      // .toArray();
-
-      console.log(workers)
-      res.json(req.body)
+      const newWorker = await workers.insertOne(req.body)
+      res.json(newWorker)
     } catch (e) {
       console.error(e)
     }

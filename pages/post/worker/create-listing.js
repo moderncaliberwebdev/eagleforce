@@ -14,14 +14,6 @@ import clientPromise from '../../../utils/db'
 export async function getServerSideProps(context) {
   try {
     await clientPromise
-    // `await clientPromise` will use the default database passed in the MONGODB_URI
-    // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
-    //
-    // `const client = await clientPromise`
-    // `const db = client.db("myDatabase")`
-    //
-    // Then you can execute queries against your database like so:
-    // db.find({}) or any of the MongoDB Node Driver commands
 
     return {
       props: { isConnected: true },
@@ -57,32 +49,32 @@ function CreateListing({ isConnected }) {
 
   useEffect(() => {
     const functionOnLoad = () => {
-      if (localStorage.getItem('listingInfo')) {
-        const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
+      if (!localStorage.getItem('planType')) {
+        window.location.href = '/post/worker'
+      } else {
+        if (localStorage.getItem('listingInfo')) {
+          const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
 
-        setListingInfo(parsedInfo)
+          setListingInfo(parsedInfo)
 
-        setJobs(
-          parsedInfo[10].length && parsedInfo[10].length > 0
-            ? parsedInfo[10].length
-            : 1
-        )
-        setJobArray(parsedInfo[10])
+          setJobs(
+            parsedInfo[10].length && parsedInfo[10].length > 0
+              ? parsedInfo[10].length
+              : 1
+          )
+          setJobArray(parsedInfo[10])
 
-        setHighlights(
-          parsedInfo[11].length && parsedInfo[11].length > 0
-            ? parsedInfo[11].length
-            : 1
-        )
-        setHighlightArray(parsedInfo[11])
-      } else localStorage.setItem('listingInfo', JSON.stringify(listingInfo))
+          setHighlights(
+            parsedInfo[11].length && parsedInfo[11].length > 0
+              ? parsedInfo[11].length
+              : 1
+          )
+          setHighlightArray(parsedInfo[11])
+        } else localStorage.setItem('listingInfo', JSON.stringify(listingInfo))
+      }
     }
     functionOnLoad()
   }, [])
-
-  useEffect(() => {
-    isConnected && console.log('Connected to MongoDB')
-  }, [isConnected])
 
   useEffect(() => {
     let listingInfoLength = 0
@@ -210,11 +202,13 @@ function CreateListing({ isConnected }) {
     if (!allFilled) {
       setErrorMsg('Please Fill in All Required Fields')
     } else {
-      const data = await axios.post('/api/worker/create-listing', {
-        listingInfo,
-      })
+      // const data = await axios.post('/api/worker/create-listing', {
+      //   listingInfo,
+      // })
 
-      console.log(data)
+      // if (data) {
+      // }
+      window.location.href = '/post/worker/preview-listing'
     }
   }
 
