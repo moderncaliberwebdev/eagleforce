@@ -8,7 +8,7 @@ function ListingHighlight({
   valuesFromState,
   removeHighlight,
 }) {
-  const [values, setValues] = useState(['', '', '', ''])
+  const [values, setValues] = useState('')
 
   useEffect(() => {
     valuesFromState &&

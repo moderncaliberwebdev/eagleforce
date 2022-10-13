@@ -32,15 +32,24 @@ function CreateListing() {
     const functionOnLoad = () => {
       if (localStorage.getItem('listingInfo')) {
         const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
+        console.log('parsedInfo >>', parsedInfo)
 
         setListingInfo(parsedInfo)
 
-        setJobs(parsedInfo[10].length)
+        setJobs(
+          parsedInfo[10].length && parsedInfo[10].length > 0
+            ? parsedInfo[10].length
+            : 1
+        )
         setJobArray(parsedInfo[10])
 
-        setHighlights(parsedInfo[11].length)
+        setHighlights(
+          parsedInfo[11].length && parsedInfo[11].length > 0
+            ? parsedInfo[11].length
+            : 1
+        )
         setHighlightArray(parsedInfo[11])
-      }
+      } else localStorage.setItem('listingInfo', JSON.stringify(listingInfo))
     }
     functionOnLoad()
   }, [])
@@ -107,13 +116,17 @@ function CreateListing() {
 
   const updateJobArray = (newState, index) => {
     if (index == 0) {
-      const newJobArray = jobArray.map((obj, i) => {
-        if (i == 0) {
-          return newState
-        }
-        return obj
-      })
-      setJobArray(newJobArray)
+      if (jobArray.length == 0) {
+        setJobArray([newState])
+      } else {
+        const newJobArray = jobArray.map((obj, i) => {
+          if (i == 0) {
+            return newState
+          }
+          return obj
+        })
+        setJobArray(newJobArray)
+      }
     } else {
       if (jobArray.length >= index + 1) {
         const newJobArray = jobArray.map((obj, i) => {
@@ -149,7 +162,6 @@ function CreateListing() {
 
   const removeJob = (job) => {
     setJobArray(jobArray.filter((item) => item != job))
-    console.log()
     setJobs(jobs - 1)
   }
 

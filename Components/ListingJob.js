@@ -13,13 +13,14 @@ function ListingJob({ updateJobArray, index, valuesFromState, removeJob }) {
   }, [valuesFromState])
 
   const updateJobInfo = (element, value) => {
+    console.log('updatejobinfo from component >>>', value)
     const newState = values.map((obj, i) => {
       if (i == element) {
         return value
       }
       return obj
     })
-
+    console.log('newstate from component >>>', newState, index)
     setValues(newState)
     updateJobArray(newState, index)
   }
