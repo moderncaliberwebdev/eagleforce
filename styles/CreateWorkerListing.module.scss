@@ -122,7 +122,12 @@
           }
         }
 
-        .preview {
+        &__disclaimer {
+          font-size: $font-small;
+          // color: red;
+        }
+
+        &__preview {
           color: #000;
           background-color: $blue;
           padding: 1rem 2rem;
@@ -132,6 +137,12 @@
           font-size: $font-text;
           font-weight: 700;
           cursor: pointer;
+        }
+
+        &__error {
+          margin-top: 1rem;
+          font-size: $font-small;
+          color: red;
         }
       }
     }

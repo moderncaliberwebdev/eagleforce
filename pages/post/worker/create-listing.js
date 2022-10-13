@@ -1,3 +1,4 @@
+import axios from 'axios'
 import Head from 'next/head'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -8,7 +9,33 @@ import RichText from '../../../Components/RichText'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
 import styles from '../../../styles/CreateWorkerListing.module.scss'
 
-function CreateListing() {
+import clientPromise from '../../../utils/db'
+
+export async function getServerSideProps(context) {
+  try {
+    await clientPromise
+    // `await clientPromise` will use the default database passed in the MONGODB_URI
+    // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
+    //
+    // `const client = await clientPromise`
+    // `const db = client.db("myDatabase")`
+    //
+    // Then you can execute queries against your database like so:
+    // db.find({}) or any of the MongoDB Node Driver commands
+
+    return {
+      props: { isConnected: true },
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      props: { isConnected: false },
+    }
+  }
+}
+
+function CreateListing({ isConnected }) {
+  const [errorMsg, setErrorMsg] = useState('')
   const [jobs, setJobs] = useState(1)
   const [highlights, setHighlights] = useState(1)
   const [jobArray, setJobArray] = useState([])
@@ -32,7 +59,6 @@ function CreateListing() {
     const functionOnLoad = () => {
       if (localStorage.getItem('listingInfo')) {
         const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
-        console.log('parsedInfo >>', parsedInfo)
 
         setListingInfo(parsedInfo)
 
@@ -53,6 +79,10 @@ function CreateListing() {
     }
     functionOnLoad()
   }, [])
+
+  useEffect(() => {
+    isConnected && console.log('Connected to MongoDB')
+  }, [isConnected])
 
   useEffect(() => {
     let listingInfoLength = 0
@@ -101,8 +131,6 @@ function CreateListing() {
     setHighlights(highlights + 1)
     setHighlightArray([...highlightArray, ''])
   }
-
-  const sendForm = () => {}
 
   const updateListingInfo = (element, value) => {
     const newState = listingInfo.map((obj, index) => {
@@ -170,6 +198,26 @@ function CreateListing() {
     setHighlights(highlights - 1)
   }
 
+  const sendForm = async () => {
+    let allFilled = true
+
+    for (let i = 0; i < listingInfo.length - 2; i++) {
+      if (listingInfo[i].length == 0) {
+        allFilled = false
+      }
+    }
+
+    if (!allFilled) {
+      setErrorMsg('Please Fill in All Required Fields')
+    } else {
+      const data = await axios.post('/api/worker/create-listing', {
+        listingInfo,
+      })
+
+      console.log(data)
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -206,7 +254,7 @@ function CreateListing() {
             </div>
             <div className={styles.create__inputs}>
               <div className={styles.create__inputs__input}>
-                <label>Desired Position(s)</label>
+                <label>Desired Position(s) **</label>
                 <input
                   type='text'
                   placeholder='Residential Plumber, Plumbing Technician, etc.'
@@ -215,7 +263,7 @@ function CreateListing() {
                 />
               </div>
               <div className={styles.create__inputs__input}>
-                <label>Skill Level</label>
+                <label>Skill Level **</label>
                 <select
                   required
                   onChange={(e) => updateListingInfo(1, e.target.value)}
@@ -232,7 +280,7 @@ function CreateListing() {
                 </select>
               </div>
               <div className={styles.create__inputs__input}>
-                <label>Worker Type</label>
+                <label>Worker Type **</label>
                 <select
                   required
                   onChange={(e) => updateListingInfo(2, e.target.value)}
@@ -247,7 +295,7 @@ function CreateListing() {
                 </select>
               </div>
               <div className={styles.create__inputs__input}>
-                <label>Desired Hourly Rate</label>
+                <label>Desired Hourly Rate **</label>
                 <div className={styles.create__inputs__input__rate}>
                   <p>$</p>
                   <input
@@ -267,7 +315,7 @@ function CreateListing() {
                 </div>
               </div>
               <div className={styles.create__inputs__input}>
-                <label>Desired Employment Type</label>
+                <label>Desired Employment Type **</label>
                 <select
                   required
                   onChange={(e) => updateListingInfo(5, e.target.value)}
@@ -285,7 +333,7 @@ function CreateListing() {
                 </select>
               </div>
               <div className={styles.create__inputs__input}>
-                <label>City</label>
+                <label>City **</label>
                 <input
                   type='text'
                   placeholder='Lancaster'
@@ -294,7 +342,7 @@ function CreateListing() {
                 />
               </div>
               <div className={styles.create__inputs__input}>
-                <label>State</label>
+                <label>State **</label>
                 <select
                   required
                   onChange={(e) => updateListingInfo(7, e.target.value)}
@@ -308,7 +356,7 @@ function CreateListing() {
               </div>
               <div className={styles.create__inputs__input}>
                 <label>
-                  How did you find out about Eagle Force Employment Services?
+                  How did you find out about Eagle Force Employment Services? **
                 </label>
                 <input
                   type='text'
@@ -325,7 +373,7 @@ function CreateListing() {
             </div>
             <div className={styles.create__inputs}>
               <div className={styles.create__inputs__input}>
-                <label>Description</label>
+                <label>Description **</label>
                 <RichText
                   updateListingInfo={updateListingInfo}
                   textHTML={listingInfo ? listingInfo[9] : ''}
@@ -391,9 +439,18 @@ function CreateListing() {
                   />
                 </div>
               </button>
-              <button className={styles.preview} onClick={sendForm}>
+              <p className={styles.create__inputs__disclaimer}>
+                ** - Required Field
+              </p>
+              <button
+                className={styles.create__inputs__preview}
+                onClick={sendForm}
+              >
                 Preview Listing
               </button>
+              <p className={styles.create__inputs__error}>
+                {errorMsg && errorMsg.length > 0 && errorMsg}
+              </p>
             </div>
           </div>
         </main>
