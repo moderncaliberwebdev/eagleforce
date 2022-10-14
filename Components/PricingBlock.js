@@ -5,6 +5,8 @@ import styles from '../styles/PricingBlock.module.scss'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import app from '../firebase/clientApp'
 
+const auth = getAuth()
+
 function PricingBlock({
   background,
   backgroundLight,
@@ -23,7 +25,6 @@ function PricingBlock({
   }
 
   useEffect(() => {
-    const auth = getAuth()
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
@@ -34,10 +35,9 @@ function PricingBlock({
       } else {
         // User is signed out
         // ...
-        setCurrentUser({ user: false })
       }
     })
-  }, [])
+  }, [auth])
 
   return (
     <div

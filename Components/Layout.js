@@ -11,23 +11,27 @@ const auth = getAuth()
 function Layout({ children }) {
   const [currentUser, setCurrentUser] = useState()
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid
-      setCurrentUser(user)
-      // ...
-    } else {
-      // User is signed out
-      // ...
-    }
-  })
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid
+        setCurrentUser(user)
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    })
+  }, [auth])
 
   const firebaseSignOut = () => {
     signOut(auth)
       .then(() => {
         setCurrentUser()
+        localStorage.clear()
+        window.location.href = '/'
       })
       .catch((error) => {
         // An error happened.

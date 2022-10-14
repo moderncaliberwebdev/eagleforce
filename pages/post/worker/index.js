@@ -76,7 +76,7 @@ function PostWorker() {
           </div>
           <p className={styles.error} id='error'>
             To Post a Worker Listing, Sign Up For an Eagle Force Employment
-            Services Account
+            Services Account or Log In to Your Account if You Have One
           </p>
         </main>
       </Layout>
