@@ -9,24 +9,28 @@ import RichText from '../../../Components/RichText'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
 import styles from '../../../styles/CreateWorkerListing.module.scss'
 
-import clientPromise from '../../../utils/db'
+// import clientPromise from '../../../utils/db'
 
-export async function getServerSideProps(context) {
-  try {
-    await clientPromise
+// export async function getServerSideProps(context) {
+//   try {
+//     await clientPromise
 
-    return {
-      props: { isConnected: true },
-    }
-  } catch (e) {
-    console.error(e)
-    return {
-      props: { isConnected: false },
-    }
+//     return {
+//       props: { isConnected: true },
+//     }
+//   } catch (e) {
+//     console.error(e)
+//     return {
+//       props: { isConnected: false },
+//     }
+//   }
+// }
+
+function CreateListing(
+  {
+    //  isConnected
   }
-}
-
-function CreateListing({ isConnected }) {
+) {
   const [errorMsg, setErrorMsg] = useState('')
   const [jobs, setJobs] = useState(1)
   const [highlights, setHighlights] = useState(1)
@@ -190,7 +194,7 @@ function CreateListing({ isConnected }) {
     setHighlights(highlights - 1)
   }
 
-  const sendForm = async () => {
+  const sendForm = () => {
     let allFilled = true
 
     for (let i = 0; i < listingInfo.length - 2; i++) {
