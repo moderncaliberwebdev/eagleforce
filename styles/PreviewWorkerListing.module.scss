@@ -55,5 +55,11 @@
       border-radius: 10px;
       border-left: 10px solid $blue-dark;
     }
+
+    &__listing {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
 }

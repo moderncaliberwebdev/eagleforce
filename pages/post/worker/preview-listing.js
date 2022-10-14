@@ -1,16 +1,20 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../../Components/Layout'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
 import WorkerListingBlock from '../../../Components/WorkerListingBlock'
+import WorkerListingSide from '../../../Components/WorkerListingSide'
 import styles from '../../../styles/PreviewWorkerListing.module.scss'
 
 function PreviewWorkerListing() {
+  const [listingInfo, setListingInfo] = useState()
+
   useEffect(() => {
     const functionOnLoad = () => {
       if (localStorage.getItem('listingInfo')) {
         const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
+        setListingInfo(parsedInfo)
 
         let allFilled = true
 
@@ -71,7 +75,26 @@ function PreviewWorkerListing() {
             Listing if you need to make changes
           </p>
           <div className={styles.preview__listing}>
-            <WorkerListingBlock />
+            <WorkerListingBlock
+              jobs={listingInfo && listingInfo[0]}
+              type={listingInfo && listingInfo[2]}
+              city={listingInfo && listingInfo[6]}
+              employmentType={listingInfo && listingInfo[5]}
+              skill={listingInfo && listingInfo[1]}
+              summary={listingInfo && listingInfo[9]}
+            />
+            <WorkerListingSide
+              jobs={listingInfo && listingInfo[0]}
+              type={listingInfo && listingInfo[2]}
+              city={listingInfo && listingInfo[6]}
+              employmentType={listingInfo && listingInfo[5]}
+              skill={listingInfo && listingInfo[1]}
+              summary={listingInfo && listingInfo[9]}
+              rateStart={listingInfo && listingInfo[3]}
+              rateEnd={listingInfo && listingInfo[4]}
+              experience={listingInfo && listingInfo[10]}
+              highlights={listingInfo && listingInfo[11]}
+            />
           </div>
         </main>
       </Layout>

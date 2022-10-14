@@ -1,9 +1,19 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 
 import styles from '../styles/WorkerListingBlock.module.scss'
 
-function WorkerListingBlock() {
+function WorkerListingBlock({
+  jobs,
+  number,
+  type,
+  city,
+  employmentType,
+  skill,
+  summary,
+}) {
+  // const [rand, setRand] = useState(Math.floor(100000 + Math.random() * 900000))
+
   return (
     <div className={styles.block}>
       <div className={styles.block__top}>
@@ -15,23 +25,20 @@ function WorkerListingBlock() {
             objectFit='fixed'
           />
         </div>
-        <p>Residential Plumber, Plumbing Technician</p>
+        <p>{jobs}</p>
       </div>
-      <p className={styles.block__class}>Worker #10483 - Worker Only</p>
-      <div className={styles.block__highlights}>
-        <p>Lancaster, PA</p>
-        <p>Full Time</p>
-        <p>Expert</p>
-      </div>
-      <p className={styles.block__description}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-        mollitia, molestiae quas vel sint commodi repudiandae consequuntur
-        voluptatum laborum Lorem ipsum dolor sit amet consectetur adipisicing
-        elit. Maxime mollitia, molestiae quas vel voluptatum laborum Lorem ipsum
-        dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae
-        quas vel voluptatum laborum Lorem ipsum dolor sit amet consectetur
-        adipisicing elit. Maxime mollitia, molestiae quas vel
+      <p className={styles.block__class}>
+        Worker #12343 - {type == 'Both' ? 'Worker & Driver' : type}
       </p>
+      <div className={styles.block__highlights}>
+        <p>{city}, PA</p>
+        <p>{skill}</p>
+        <p>{employmentType}</p>
+      </div>
+      <p
+        className={styles.block__description}
+        dangerouslySetInnerHTML={{ __html: summary }}
+      ></p>
     </div>
   )
 }

@@ -1,0 +1,140 @@
+@import 'mixins';
+@import 'variables';
+
+.side {
+  width: 35rem;
+  height: 80rem;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 10px;
+  padding: 4rem 2rem;
+  font-size: $font-text;
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
+
+    &__number {
+      font-size: 2.5rem;
+      font-weight: 500;
+      padding: 1rem 0 0 0;
+    }
+
+    &__type {
+      color: #6a6a6a;
+      font-weight: 400;
+    }
+  }
+
+  &__scroll {
+    overflow: scroll;
+    &__book {
+      padding: 2rem 0;
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #f0f0f0;
+
+      &__left {
+        &__jobs {
+          font-weight: 500;
+        }
+        &__location {
+          font-size: $font-small;
+          color: #6a6a6a;
+        }
+      }
+
+      &__right {
+        margin-left: 1rem;
+        cursor: pointer;
+      }
+    }
+
+    &__details {
+      padding: 2rem 0;
+      border-bottom: 1px solid #f0f0f0;
+
+      &__title {
+        font-weight: 500;
+      }
+      &__detail {
+        font-size: $font-small;
+        margin: 1rem 0;
+        &__title {
+          font-weight: 500;
+        }
+        &__desc {
+          color: #6a6a6a;
+        }
+      }
+    }
+
+    &__desc {
+      padding: 2rem 0 0 0;
+
+      &__title {
+        font-weight: 500;
+      }
+      &__desc {
+        font-size: $font-small;
+        color: #6a6a6a;
+        margin-bottom: 1rem;
+      }
+      &__jobs {
+        font-size: $font-small;
+        color: #6a6a6a;
+
+        &__job {
+          margin-bottom: 2rem;
+        }
+
+        p {
+          span {
+            font-weight: 300;
+
+            ul {
+              // list-style-type: disc;
+              li {
+                list-style-type: disc;
+                margin-left: 2rem;
+              }
+            }
+          }
+        }
+      }
+
+      &__highlights {
+        font-size: $font-small;
+        color: #6a6a6a;
+
+        p {
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      &__overflow {
+        color: $blue;
+        font-size: $font-small;
+        cursor: pointer;
+      }
+    }
+  }
+  &__contact {
+    color: #000;
+    text-align: center;
+    padding: 1rem 2rem;
+    background-color: $blue;
+    font-size: $font-text;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+    border-radius: 10px;
+    border-style: none;
+    width: 20rem;
+    margin-top: 1rem;
+    cursor: pointer;
+  }
+}
