@@ -140,7 +140,7 @@ function WorkerListingSide({
                 </div>
               ))}
           </div>
-          {highlights && highlights[0].length > 0 && (
+          {highlights && highlights[0] && highlights[0].length > 0 && (
             <p className={styles.side__scroll__desc__title}>Highlights</p>
           )}
           <div className={styles.side__scroll__desc__highlights}>
