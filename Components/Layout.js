@@ -3,28 +3,52 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/Layout.module.scss'
 
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import app from '../firebase/clientApp'
+
+const auth = getAuth()
+// onAuthStateChanged(auth, (user) => {
+//   if (user) {
+//     // User is signed in, see docs for a list of available properties
+//     // https://firebase.google.com/docs/reference/js/firebase.User
+//     const uid = user.uid
+//     console.log('user', uid)
+//     // setCurrentUser(user)
+//     // ...
+//   } else {
+//     // User is signed out
+//     // ...
+//     console.log('no user', auth)
+//   }
+// })
 
 function Layout({ children }) {
   const [currentUser, setCurrentUser] = useState()
 
-  useEffect(() => {
-    const auth = getAuth()
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid
-        setCurrentUser(user)
-        // ...
-      } else {
-        // User is signed out
-        // ...
-        setCurrentUser({ user: false })
-      }
-    })
-  }, [])
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid
+      console.log('user', uid)
+      setCurrentUser(user)
+      // ...
+    } else {
+      // User is signed out
+      // ...
+      console.log('no user', auth)
+    }
+  })
+
+  const firebaseSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        setCurrentUser()
+      })
+      .catch((error) => {
+        // An error happened.
+      })
+  }
 
   return (
     <div className={styles.layout}>
@@ -94,23 +118,15 @@ function Layout({ children }) {
         </div>
         <div className={styles.layout__nav__signin}>
           {currentUser ? (
-            currentUser.user ? (
-              <Link href='/sign-in'>
-                <figure>
-                  <a>Sign In</a>
-                </figure>
-              </Link>
-            ) : (
-              <Link href='/profile'>
-                <figure>
-                  <a>Profile</a>
-                </figure>
-              </Link>
-            )
+            // <Link href='/profile'>
+            <figure>
+              <a onClick={firebaseSignOut}>Sign Out</a>
+            </figure>
           ) : (
-            <Link href='/'>
+            // </Link>
+            <Link href='/sign-in'>
               <figure>
-                <a>Sign Up</a>
+                <a>Sign In</a>
               </figure>
             </Link>
           )}
