@@ -7,20 +7,6 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import app from '../firebase/clientApp'
 
 const auth = getAuth()
-// onAuthStateChanged(auth, (user) => {
-//   if (user) {
-//     // User is signed in, see docs for a list of available properties
-//     // https://firebase.google.com/docs/reference/js/firebase.User
-//     const uid = user.uid
-//     console.log('user', uid)
-//     // setCurrentUser(user)
-//     // ...
-//   } else {
-//     // User is signed out
-//     // ...
-//     console.log('no user', auth)
-//   }
-// })
 
 function Layout({ children }) {
   const [currentUser, setCurrentUser] = useState()
@@ -30,13 +16,11 @@ function Layout({ children }) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid
-      console.log('user', uid)
       setCurrentUser(user)
       // ...
     } else {
       // User is signed out
       // ...
-      console.log('no user', auth)
     }
   })
 

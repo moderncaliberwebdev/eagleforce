@@ -27,6 +27,7 @@ function SignUp() {
   const [checked, setChecked] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
+  const [showPass, setShowPass] = useState(false)
 
   const signUp = () => {
     //front end validation
@@ -72,6 +73,17 @@ function SignUp() {
   const handleUserType = (e) => {
     setUserType(e.target.value)
     console.log(e.target.value)
+  }
+
+  const showPassword = () => {
+    const x = document.getElementById('myInput')
+    if (x.type === 'password') {
+      x.type = 'text'
+      setShowPass(true)
+    } else {
+      x.type = 'password'
+      setShowPass(false)
+    }
   }
 
   return (
@@ -166,8 +178,12 @@ function SignUp() {
                 <label>Password</label>
                 <input
                   type='password'
+                  id='myInput'
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <p onClick={showPassword}>
+                  {showPass ? 'Hide Password' : 'Show Password'}
+                </p>
               </div>
               <label className={styles.signup__form__check}>
                 <input
