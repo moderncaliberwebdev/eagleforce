@@ -1,23 +1,67 @@
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
 import Layout from '../../../Components/Layout'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
 import WorkerListingBlock from '../../../Components/WorkerListingBlock'
 import WorkerListingSide from '../../../Components/WorkerListingSide'
 import styles from '../../../styles/PreviewWorkerListing.module.scss'
 
-function PreviewWorkerListing() {
+import clientPromise from '../../../utils/db'
+import axios from 'axios'
+
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import app from '../../../firebase/clientApp'
+
+const auth = getAuth()
+
+export async function getServerSideProps(context) {
+  try {
+    await clientPromise
+
+    return {
+      props: { isConnected: true },
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      props: { isConnected: false },
+    }
+  }
+}
+
+function PreviewWorkerListing({ isConnected }) {
   const [listingInfo, setListingInfo] = useState()
   const [workerNumber, setWorkerNumber] = useState(0)
+  const [currentUser, setCurrentUser] = useState()
+  const [planType, setPlanType] = useState({})
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid
+        setCurrentUser(user)
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    })
+  }, [auth])
 
   useEffect(() => {
     const functionOnLoad = () => {
       if (localStorage.getItem('listingInfo')) {
         const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
-        const number = JSON.parse(localStorage.getItem('workerNumber'))
         setListingInfo(parsedInfo)
+
+        const number = JSON.parse(localStorage.getItem('workerNumber'))
         setWorkerNumber(number)
+
+        const workerPlanType = JSON.parse(localStorage.getItem('planType'))
+        setPlanType(workerPlanType)
 
         let allFilled = true
 
@@ -33,6 +77,22 @@ function PreviewWorkerListing() {
     }
     functionOnLoad()
   }, [])
+
+  const postListing = async () => {
+    const data = await axios.post('/api/worker/create-listing', {
+      listingInfo,
+      verfied: false,
+      user: currentUser.email,
+      listingType: planType.type,
+      userType: planType.user,
+      date: new Date().getTime(),
+      workerNumber,
+    })
+
+    if (data) {
+      console.log(data)
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -70,10 +130,10 @@ function PreviewWorkerListing() {
               <a>Edit Listing</a>
             </Link>
             <Link
-              href='https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-2TJ80196MP706632EMNFM53I'
+              href='https://www.sandbox.paypal.com/webapps/billing/plans/subscribe?plan_id=P-3B724015PB648072WMNG3MZY'
               passHref
             >
-              <a>Continue to PayPal</a>
+              <a onClick={postListing}>Continue to PayPal</a>
             </Link>
           </div>
           <p className={styles.preview__notice}>

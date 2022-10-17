@@ -21,7 +21,6 @@ function WorkerListingSide({
 
   useEffect(() => {
     setDescOverflow(isOverflown(document.getElementById('desc')))
-    console.log(isOverflown(document.getElementById('desc')))
   }, [])
 
   const isOverflown = (el) => {

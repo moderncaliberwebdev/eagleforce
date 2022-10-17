@@ -9,28 +9,7 @@ import RichText from '../../../Components/RichText'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
 import styles from '../../../styles/CreateWorkerListing.module.scss'
 
-// import clientPromise from '../../../utils/db'
-
-// export async function getServerSideProps(context) {
-//   try {
-//     await clientPromise
-
-//     return {
-//       props: { isConnected: true },
-//     }
-//   } catch (e) {
-//     console.error(e)
-//     return {
-//       props: { isConnected: false },
-//     }
-//   }
-// }
-
-function CreateListing(
-  {
-    //  isConnected
-  }
-) {
+function CreateListing({}) {
   const [errorMsg, setErrorMsg] = useState('')
   const [jobs, setJobs] = useState(1)
   const [highlights, setHighlights] = useState(1)
@@ -49,7 +28,6 @@ function CreateListing(
     '',
     [],
     [],
-    // Math.floor(100000 + Math.random() * 900000),
   ])
 
   useEffect(() => {
@@ -207,12 +185,6 @@ function CreateListing(
     if (!allFilled) {
       setErrorMsg('Please Fill in All Required Fields')
     } else {
-      // const data = await axios.post('/api/worker/create-listing', {
-      //   listingInfo,
-      // })
-
-      // if (data) {
-      // }
       localStorage.setItem(
         'workerNumber',
         Math.floor(100000 + Math.random() * 900000)

@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React from 'react'
 
-import styles from '../styles/WorkerListingBlock.module.scss'
+import styles from '../styles/FeaturedWorkerListingBlock.module.scss'
 
-function WorkerListingBlock({
+function FeaturedWorkerListingBlock({
   jobs,
   number,
   type,
@@ -12,14 +12,12 @@ function WorkerListingBlock({
   skill,
   summary,
 }) {
-  // const [rand, setRand] = useState(Math.floor(100000 + Math.random() * 900000))
-
   return (
     <div className={styles.block}>
       <div className={styles.block__top}>
         <div>
           <Image
-            src='/images/post/worker-face.jpg'
+            src='/images/post/blue-worker-face.png'
             width='80'
             height='80'
             objectFit='fixed'
@@ -42,4 +40,4 @@ function WorkerListingBlock({
   )
 }
 
-export default WorkerListingBlock
+export default FeaturedWorkerListingBlock

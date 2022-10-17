@@ -6,11 +6,12 @@
   flex-direction: column;
   width: 35rem;
   height: 30rem;
-  background-color: #fff;
+  background-color: $blue;
   padding: 2rem;
   font-size: $font-text;
   border-radius: 15px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+  color: $blue-dark;
   margin: 1rem;
 
   &__top {
@@ -35,7 +36,7 @@
 
     p {
       margin: 0 1rem 0.5rem 0;
-      background: #e7e7e7;
+      background: $blue-light;
       padding: 0.5rem 1rem;
       border-radius: 10px;
     }
