@@ -151,7 +151,7 @@ export default function Home() {
               </div>
               <div className={styles.bestfit__workers__graphic}>
                 <Image
-                  src='/images/home/blue-graphic.png'
+                  src='/images/home/blue-graphic-2.png'
                   width={751}
                   height={618}
                   objectFit='cover'
@@ -161,7 +161,7 @@ export default function Home() {
             <div className={styles.bestfit__workers}>
               <div className={styles.bestfit__workers__graphic_red}>
                 <Image
-                  src='/images/home/red-graphic.png'
+                  src='/images/home/red-graphic-2.png'
                   width={751}
                   height={523}
                   objectFit='cover'

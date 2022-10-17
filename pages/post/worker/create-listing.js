@@ -49,6 +49,7 @@ function CreateListing(
     '',
     [],
     [],
+    // Math.floor(100000 + Math.random() * 900000),
   ])
 
   useEffect(() => {
@@ -212,6 +213,10 @@ function CreateListing(
 
       // if (data) {
       // }
+      localStorage.setItem(
+        'workerNumber',
+        Math.floor(100000 + Math.random() * 900000)
+      )
       window.location.href = '/post/worker/preview-listing'
     }
   }

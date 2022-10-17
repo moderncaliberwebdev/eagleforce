@@ -9,12 +9,15 @@ import styles from '../../../styles/PreviewWorkerListing.module.scss'
 
 function PreviewWorkerListing() {
   const [listingInfo, setListingInfo] = useState()
+  const [workerNumber, setWorkerNumber] = useState(0)
 
   useEffect(() => {
     const functionOnLoad = () => {
       if (localStorage.getItem('listingInfo')) {
         const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
+        const number = JSON.parse(localStorage.getItem('workerNumber'))
         setListingInfo(parsedInfo)
+        setWorkerNumber(number)
 
         let allFilled = true
 
@@ -66,7 +69,10 @@ function PreviewWorkerListing() {
             <Link href='/post/worker/create-listing' passHref>
               <a>Edit Listing</a>
             </Link>
-            <Link href='https://www.paypal.com' passHref>
+            <Link
+              href='https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-2TJ80196MP706632EMNFM53I'
+              passHref
+            >
               <a>Continue to PayPal</a>
             </Link>
           </div>
@@ -77,6 +83,7 @@ function PreviewWorkerListing() {
           <div className={styles.preview__listing}>
             <WorkerListingBlock
               jobs={listingInfo && listingInfo[0]}
+              number={workerNumber && workerNumber}
               type={listingInfo && listingInfo[2]}
               city={listingInfo && listingInfo[6]}
               employmentType={listingInfo && listingInfo[5]}
@@ -85,6 +92,7 @@ function PreviewWorkerListing() {
             />
             <WorkerListingSide
               jobs={listingInfo && listingInfo[0]}
+              number={workerNumber && workerNumber}
               type={listingInfo && listingInfo[2]}
               city={listingInfo && listingInfo[6]}
               employmentType={listingInfo && listingInfo[5]}

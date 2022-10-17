@@ -1,0 +1,61 @@
+@import 'mixins';
+@import 'variables';
+
+.container {
+  .verify {
+    width: 90rem;
+    margin: 0 auto;
+
+    h1 {
+      font-size: $font-small-head;
+      text-align: center;
+    }
+    p {
+      font-size: $font-text;
+      text-align: center;
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      width: 60rem;
+      margin: 3rem auto 0 auto;
+
+      &__input {
+        display: flex;
+        flex-direction: column;
+        margin: 1rem 0;
+
+        label {
+          font-size: $font-text;
+          color: #393939;
+          font-weight: 300;
+        }
+
+        input {
+          height: 4rem;
+          padding: 0 1rem;
+          border-radius: 5px;
+          border: 2px solid $blue;
+        }
+
+        textarea {
+          height: 15rem;
+          padding: 1rem;
+          border-radius: 5px;
+          border: 2px solid $blue;
+          resize: none;
+          font-family: Arial;
+        }
+      }
+
+      &__submit {
+        padding: 1rem;
+        background: $blue;
+        border-radius: 5px;
+        border-style: none;
+        cursor: pointer;
+      }
+    }
+  }
+}

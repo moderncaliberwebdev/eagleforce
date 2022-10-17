@@ -58,7 +58,7 @@ function WorkerListingSide({
           height='100'
           objectFit='fixed'
         />
-        <p className={styles.side__title__number}>Worker #09128</p>
+        <p className={styles.side__title__number}>Worker #{number}</p>
         <p className={styles.side__title__type}>
           {type == 'Both' ? 'Worker & Driver' : `${type} Only`}
         </p>

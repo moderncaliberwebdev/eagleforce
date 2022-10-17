@@ -28,7 +28,7 @@ function WorkerListingBlock({
         <p>{jobs}</p>
       </div>
       <p className={styles.block__class}>
-        Worker #12343 - {type == 'Both' ? 'Worker & Driver' : type}
+        Worker #{number} - {type == 'Both' ? 'Worker & Driver' : type}
       </p>
       <div className={styles.block__highlights}>
         <p>{city}, PA</p>
