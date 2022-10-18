@@ -13,6 +13,12 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
   color: $blue-dark;
   margin: 1rem;
+  cursor: pointer;
+
+  @include respond(tab-land) {
+    width: 100%;
+    height: auto;
+  }
 
   &__top {
     display: flex;
@@ -20,11 +26,19 @@
     justify-content: space-between;
     align-items: center;
 
+    @include respond(tab-land) {
+      justify-content: flex-start;
+    }
+
     p {
       font-size: $font-text;
       font-weight: 500;
       margin-left: 1rem;
       width: 40rem;
+
+      @include respond(tab-land) {
+        width: auto;
+      }
     }
   }
 

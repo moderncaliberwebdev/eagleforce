@@ -11,18 +11,22 @@ function WorkerListingBlock({
   employmentType,
   skill,
   summary,
+  showFullListing,
 }) {
   // const [rand, setRand] = useState(Math.floor(100000 + Math.random() * 900000))
 
   return (
-    <div className={styles.block}>
+    <div
+      className={styles.block}
+      onClick={() => showFullListing(number, 'standardWorkers')}
+    >
       <div className={styles.block__top}>
         <div>
           <Image
             src='/images/post/worker-face.jpg'
-            width='80'
-            height='80'
-            objectFit='fixed'
+            width='50'
+            height='50'
+            layout='fixed'
           />
         </div>
         <p>{jobs}</p>

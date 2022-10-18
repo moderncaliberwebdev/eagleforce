@@ -11,16 +11,20 @@ function FeaturedWorkerListingBlock({
   employmentType,
   skill,
   summary,
+  showFullListing,
 }) {
   return (
-    <div className={styles.block}>
+    <div
+      className={styles.block}
+      onClick={() => showFullListing(number, 'featuredWorkers')}
+    >
       <div className={styles.block__top}>
         <div>
           <Image
             src='/images/post/blue-worker-face.png'
-            width='80'
-            height='80'
-            objectFit='fixed'
+            width='50'
+            height='50'
+            layout='fixed'
           />
         </div>
         <p>{jobs}</p>

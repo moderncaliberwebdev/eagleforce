@@ -135,11 +135,11 @@ function SignUp() {
                     <input
                       type='radio'
                       name='userType'
-                      value='A Job'
+                      value='Employment'
                       onChange={(e) => handleUserType(e)}
-                      checked={userType == 'A Job'}
+                      checked={userType == 'Employment'}
                     />
-                    A Job
+                    Employment
                   </label>
                   <label>
                     <input

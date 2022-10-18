@@ -22,6 +22,11 @@ export default function Workers({ data, error }) {
     console.log(listings && listings.featuredWorkers)
   }, [listings])
 
+  const showFullListing = (number, type) => {
+    const worker = listings[type].filter((item) => item.workerNumber == number)
+    setSelectedWorker(worker[0])
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -71,6 +76,51 @@ export default function Workers({ data, error }) {
               </select>
               <button>Apply</button>
             </div>
+            <div className={styles.workers__filter__checks}>
+              <h3>Skill Level</h3>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Beginner
+              </label>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Advanced
+              </label>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Expert Foreman Grade
+              </label>
+            </div>
+            <div className={styles.workers__filter__checks}>
+              <h3>Employment Type</h3>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Full Time
+              </label>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Part Time
+              </label>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Contract
+              </label>
+            </div>
+            <div className={styles.workers__filter__checks}>
+              <h3>Worker Type</h3>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Worker
+              </label>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Crew Driver
+              </label>
+              <label className={styles.workers__filter__checks__check}>
+                <input type='checkbox' />
+                Both
+              </label>
+            </div>
           </div>
           <div className={styles.workers__listings}>
             <input
@@ -93,6 +143,7 @@ export default function Workers({ data, error }) {
                     employmentType={worker.listingInfo[5]}
                     skill={worker.listingInfo[1]}
                     summary={worker.listingInfo[9]}
+                    showFullListing={showFullListing}
                   />
                 ))}
               {listings &&
@@ -106,12 +157,69 @@ export default function Workers({ data, error }) {
                     employmentType={worker.listingInfo[5]}
                     skill={worker.listingInfo[1]}
                     summary={worker.listingInfo[9]}
+                    showFullListing={showFullListing}
                   />
                 ))}
             </div>
           </div>
 
-          <WorkerListingSide />
+          <WorkerListingSide
+            jobs={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[0]
+            }
+            number={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.workerNumber
+            }
+            type={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[2]
+            }
+            city={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[6]
+            }
+            employmentType={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[5]
+            }
+            skill={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[1]
+            }
+            summary={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[9]
+            }
+            rateStart={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[3]
+            }
+            rateEnd={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[4]
+            }
+            experience={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[10]
+            }
+            highlights={
+              selectedWorker &&
+              selectedWorker.listingInfo &&
+              selectedWorker.listingInfo[11]
+            }
+          />
         </main>
       </Layout>
     </div>
