@@ -136,6 +136,7 @@ export default function Workers({ data, error }) {
                 listings.featuredWorkers &&
                 listings.featuredWorkers.map((worker) => (
                   <FeaturedWorkerListingBlock
+                    key={worker.listingInfo[0]}
                     jobs={worker.listingInfo[0]}
                     number={worker.workerNumber}
                     type={worker.listingInfo[2]}
@@ -150,6 +151,7 @@ export default function Workers({ data, error }) {
                 listings.standardWorkers &&
                 listings.standardWorkers.map((worker) => (
                   <WorkerListingBlock
+                    key={worker.listingInfo[0]}
                     jobs={worker.listingInfo[0]}
                     number={worker.workerNumber}
                     type={worker.listingInfo[2]}
