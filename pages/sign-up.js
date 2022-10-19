@@ -14,6 +14,7 @@ import Link from 'next/link'
 // import { useAuthState } from 'react-firebase-hooks/auth'
 
 import styles from '../styles/SignUp.module.scss'
+import axios from 'axios'
 
 function SignUp() {
   // User Authentication
@@ -47,11 +48,18 @@ function SignUp() {
     } else if (document.querySelector('#honeypot').value.length == 0) {
       setErrorMsg('')
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
           // Signed in
           const user = userCredential.user
           updateProfile(auth.currentUser, {
             displayName: `${userType} - ${name}`,
+          })
+
+          await axios.post('/api/create-user', {
+            name,
+            email,
+            userType,
+            savedListings: [],
           })
 
           setSuccessMsg('Successfully created user')
