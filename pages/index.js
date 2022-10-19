@@ -7,32 +7,9 @@ import styles from '../styles/Home.module.scss'
 import { getAuth } from 'firebase/auth'
 import app from '../firebase/clientApp'
 
-// import clientPromise from '../utils/db'
-import mongoTest from '../utils/dbTest'
-import { useEffect } from 'react'
-
-export async function getServerSideProps() {
-  try {
-    const mongoTestVar = mongoTest
-
-    return {
-      props: { mongoTestVar: mongoTestVar },
-    }
-  } catch (e) {
-    console.error(e)
-    return {
-      props: { isConnected: false },
-    }
-  }
-}
-
-export default function Home({ mongoTestVar }) {
+export default function Home({}) {
   const auth = getAuth(app)
   const user = auth.currentUser
-
-  useEffect(() => {
-    console.log(mongoTestVar)
-  }, [mongoTestVar])
 
   return (
     <div className={styles.container}>
