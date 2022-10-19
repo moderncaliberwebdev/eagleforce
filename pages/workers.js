@@ -228,7 +228,7 @@ export default function Workers({ data, error }) {
   )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   try {
     const data = await axios.get(
       `${process.env.NEXT_PUBLIC_URL}/api/worker/get-workers`
