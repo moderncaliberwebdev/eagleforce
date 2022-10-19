@@ -10,13 +10,29 @@ import WorkerListingBlock from '../Components/WorkerListingBlock'
 import FeaturedWorkerListingBlock from '../Components/FeaturedWorkerListingBlock'
 import WorkerListingSide from '../Components/WorkerListingSide'
 
-export default function Workers({ data, error }) {
+export default function Workers({}) {
   const [listings, setListings] = useState({})
+  const [error, setError] = useState({})
   const [selectedWorker, setSelectedWorker] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    data && setListings(data)
-  }, [data])
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const data = await axios.get(
+          `${process.env.NEXT_PUBLIC_URL}/api/worker/get-workers`
+        )
+        data && setLoading(false)
+        setListings(JSON.parse(JSON.stringify(data.data)))
+      } catch (e) {
+        console.error(e)
+        setError(JSON.parse(JSON.stringify(e)))
+      }
+    }
+
+    fetchData()
+  }, [])
 
   useEffect(() => {
     console.log(listings && listings.featuredWorkers)
@@ -131,38 +147,44 @@ export default function Workers({ data, error }) {
             <p className={styles.workers__listings__notice}>
               All verified workers have been screened by the site administrator
             </p>
-            <div className={styles.workers__listings__display}>
-              {listings &&
-                listings.featuredWorkers &&
-                listings.featuredWorkers.map((worker) => (
-                  <FeaturedWorkerListingBlock
-                    key={worker.listingInfo[0]}
-                    jobs={worker.listingInfo[0]}
-                    number={worker.workerNumber}
-                    type={worker.listingInfo[2]}
-                    city={worker.listingInfo[6]}
-                    employmentType={worker.listingInfo[5]}
-                    skill={worker.listingInfo[1]}
-                    summary={worker.listingInfo[9]}
-                    showFullListing={showFullListing}
-                  />
-                ))}
-              {listings &&
-                listings.standardWorkers &&
-                listings.standardWorkers.map((worker) => (
-                  <WorkerListingBlock
-                    key={worker.listingInfo[0]}
-                    jobs={worker.listingInfo[0]}
-                    number={worker.workerNumber}
-                    type={worker.listingInfo[2]}
-                    city={worker.listingInfo[6]}
-                    employmentType={worker.listingInfo[5]}
-                    skill={worker.listingInfo[1]}
-                    summary={worker.listingInfo[9]}
-                    showFullListing={showFullListing}
-                  />
-                ))}
-            </div>
+            {loading ? (
+              <p className={styles.workers__listings__loading}>
+                Loading Workers...
+              </p>
+            ) : (
+              <div className={styles.workers__listings__display}>
+                {listings &&
+                  listings.featuredWorkers &&
+                  listings.featuredWorkers.map((worker) => (
+                    <FeaturedWorkerListingBlock
+                      key={worker.listingInfo[0]}
+                      jobs={worker.listingInfo[0]}
+                      number={worker.workerNumber}
+                      type={worker.listingInfo[2]}
+                      city={worker.listingInfo[6]}
+                      employmentType={worker.listingInfo[5]}
+                      skill={worker.listingInfo[1]}
+                      summary={worker.listingInfo[9]}
+                      showFullListing={showFullListing}
+                    />
+                  ))}
+                {listings &&
+                  listings.standardWorkers &&
+                  listings.standardWorkers.map((worker) => (
+                    <WorkerListingBlock
+                      key={worker.listingInfo[0]}
+                      jobs={worker.listingInfo[0]}
+                      number={worker.workerNumber}
+                      type={worker.listingInfo[2]}
+                      city={worker.listingInfo[6]}
+                      employmentType={worker.listingInfo[5]}
+                      skill={worker.listingInfo[1]}
+                      summary={worker.listingInfo[9]}
+                      showFullListing={showFullListing}
+                    />
+                  ))}
+              </div>
+            )}
           </div>
 
           <WorkerListingSide
@@ -226,22 +248,4 @@ export default function Workers({ data, error }) {
       </Layout>
     </div>
   )
-}
-
-export async function getServerSideProps() {
-  try {
-    const data = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/api/worker/get-workers`
-    )
-    console.log(data)
-
-    return {
-      props: { data: JSON.parse(JSON.stringify(data.data)) },
-    }
-  } catch (e) {
-    console.error(e)
-    return {
-      props: { error: JSON.parse(JSON.stringify(e)) },
-    }
-  }
 }

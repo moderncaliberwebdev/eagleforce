@@ -106,12 +106,17 @@ function Layout({ children }) {
         </div>
         <div className={styles.layout__nav__signin}>
           {currentUser ? (
-            // <Link href='/profile'>
-            <figure>
-              <a onClick={firebaseSignOut}>Sign Out</a>
-            </figure>
+            <>
+              <Link href='/profile'>
+                <figure>
+                  <a>Profile</a>
+                </figure>
+              </Link>
+              <p>
+                <a onClick={firebaseSignOut}>Sign Out</a>
+              </p>
+            </>
           ) : (
-            // </Link>
             <Link href='/sign-in'>
               <figure>
                 <a>Sign In</a>

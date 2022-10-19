@@ -149,6 +149,12 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }
 
+    &__loading {
+      color: $blue-dark;
+      font-size: $font-text;
+      text-align: center;
+    }
+
     &__display {
       width: 74rem;
       display: flex;

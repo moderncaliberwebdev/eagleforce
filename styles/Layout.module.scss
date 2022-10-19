@@ -88,6 +88,12 @@
     }
 
     &__signin {
+      &:hover {
+        p {
+          display: block;
+        }
+      }
+
       figure {
         position: relative;
         cursor: pointer;
@@ -113,6 +119,27 @@
             height: 4.5rem;
             z-index: -1;
           }
+        }
+      }
+
+      p {
+        display: none;
+        position: absolute;
+        top: 9rem;
+        background-color: #fff;
+        border-radius: 10px;
+        border: 1px solid #b0b0b0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        z-index: 100;
+        width: 10.5rem;
+
+        a {
+          padding: 0.5rem;
+          line-height: 3rem;
+          display: block;
+          text-align: center;
+          cursor: pointer;
+          font-size: $font-text;
         }
       }
     }
