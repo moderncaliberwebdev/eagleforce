@@ -55,6 +55,7 @@ function Layout({ children }) {
               </div>
               <h1>
                 Eagle Force <span>Employment Services℠</span>
+                <span>"Get Your Career On"</span>
               </h1>
             </a>
           </Link>
@@ -140,6 +141,7 @@ function Layout({ children }) {
                 />
                 <h2>
                   Eagle Force <span>Employment Services℠</span>
+                  <span>"Get Your Career On"</span>
                 </h2>
               </a>
             </Link>

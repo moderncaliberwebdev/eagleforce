@@ -22,10 +22,15 @@
           span {
             display: block;
             font-size: $font-small;
+
+            &:last-of-type {
+              font-weight: 300;
+              text-transform: none;
+            }
           }
         }
         div {
-          transform: translateY(-1rem);
+          transform: translateY(-0.5rem);
         }
       }
     }
@@ -171,6 +176,11 @@
           span {
             display: block;
             font-size: $font-small;
+
+            &:last-of-type {
+              font-weight: 300;
+              text-transform: none;
+            }
           }
         }
       }
