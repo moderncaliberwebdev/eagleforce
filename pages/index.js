@@ -16,7 +16,7 @@ export async function getServerSideProps() {
     const mongoTestVar = mongoTest
 
     return {
-      props: { isConnected: mongoTestVar },
+      props: { mongoTestVar: mongoTestVar },
     }
   } catch (e) {
     console.error(e)
@@ -26,13 +26,13 @@ export async function getServerSideProps() {
   }
 }
 
-export default function Home({ isConnected }) {
+export default function Home({ mongoTestVar }) {
   const auth = getAuth(app)
   const user = auth.currentUser
 
   useEffect(() => {
-    console.log(isConnected)
-  }, [isConnected])
+    console.log(mongoTestVar)
+  }, [mongoTestVar])
 
   return (
     <div className={styles.container}>

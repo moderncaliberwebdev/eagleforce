@@ -1,3 +1,3 @@
-const mongoTest = process.env.MONGODB_URI
+const mongoTest = process.env.NODE_ENV
 
 export default mongoTest
