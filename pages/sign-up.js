@@ -72,7 +72,7 @@ function SignUp() {
           window.location.href = '/profile'
         })
         .catch((error) => {
-          const errorMessage = error.message
+          const errorMessage = error.message.replace('Firebase: ', '')
           setErrorMsg(errorMessage)
         })
     }

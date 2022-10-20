@@ -10,6 +10,7 @@ import {
   updateEmail,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  sendPasswordResetEmail,
 } from 'firebase/auth'
 import app from '../../firebase/clientApp'
 import axios from 'axios'
@@ -23,6 +24,8 @@ function Profile() {
   const [fullName, setFullName] = useState('')
   const [password, setPassword] = useState('')
   const [requirePassword, setRequirePassword] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+  const [passwordResetClicked, setPasswordResetClicked] = useState(false)
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -86,7 +89,19 @@ function Profile() {
       })
       .catch((error) => {
         setRequirePassword(true)
-        console.error(error)
+      })
+  }
+
+  const passwordReset = () => {
+    sendPasswordResetEmail(auth, currentUser.email)
+      .then(() => {
+        setPasswordResetClicked(true)
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        const errorMessage = error.message
+        console.log(errorCode, errorMessage)
+        // ..
       })
   }
 
@@ -100,7 +115,8 @@ function Profile() {
             updateDBEmail()
           })
           .catch((error) => {
-            console.error(error)
+            const errorMessage = error.message.replace('Firebase: ', '')
+            setErrorMsg(errorMessage)
           })
       })
       .catch((error) => {
@@ -172,9 +188,13 @@ function Profile() {
                 </button>
               </div>
             )}
+            {errorMsg && <p className={styles.settings__error}>{errorMsg}</p>}
             <div className={styles.settings__password}>
               <label>You will be sent an email with instructions</label>
-              <button>Reset Password</button>
+              <button onClick={passwordReset}>Reset Password</button>
+              {passwordResetClicked && (
+                <p>Email has been sent. Make sure to check your spam folder</p>
+              )}
             </div>
           </div>
         </main>

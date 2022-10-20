@@ -59,6 +59,17 @@
           cursor: pointer;
           font-size: $font-text;
         }
+
+        p {
+          font-size: $font-small;
+          margin-top: 0.5rem;
+        }
+      }
+
+      &__error {
+        font-size: $font-small;
+        color: red;
+        margin-top: 1rem;
       }
     }
   }
