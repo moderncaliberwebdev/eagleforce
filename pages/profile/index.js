@@ -85,9 +85,9 @@ function Profile() {
         updateDBEmail()
       })
       .catch((error) => {
+        setRequirePassword(true)
         console.error(error)
       })
-    setRequirePassword(true)
   }
 
   const updateEmailWithCredentials = () => {
