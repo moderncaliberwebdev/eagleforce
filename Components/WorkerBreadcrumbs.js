@@ -13,7 +13,7 @@ function WorkerBreadcrumbs() {
           path='/post/worker'
           currentPath={router.pathname}
           text='Pick Listing Plan'
-          position={0}
+          borderClass={'first'}
         />
         <BlueBreadcrumb
           path='/post/worker/create-listing'
@@ -34,7 +34,7 @@ function WorkerBreadcrumbs() {
           path='/post/worker/verify-listing'
           currentPath={router.pathname}
           text='Verify Listing'
-          position={4}
+          borderClass={'last'}
         />
       </ul>
     </div>

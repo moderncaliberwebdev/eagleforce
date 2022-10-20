@@ -3,15 +3,15 @@ import React from 'react'
 
 import styles from '../styles/WorkerBreadcrumbs.module.scss'
 
-function BlueBreadcrumb({ path, currentPath, text, position }) {
+function BlueBreadcrumb({ path, currentPath, text, position, borderClass }) {
   return (
     // <Link href={path} passHref>
     //   <a>
     <li
       className={
-        position == 0
+        borderClass == 'first'
           ? styles.first_a
-          : position == 4
+          : borderClass == 'last'
           ? styles.last_a
           : styles.list_a
       }

@@ -1,6 +1,12 @@
 @import 'mixins';
 @import 'variables';
 
+.profile_breadcrumbs {
+  ul {
+    width: 50rem !important;
+  }
+}
+
 .breadcrumbs {
   ul {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);

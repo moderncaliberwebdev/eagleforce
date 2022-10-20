@@ -1,0 +1,65 @@
+@import 'mixins';
+@import 'variables';
+
+.container {
+  main {
+    h1 {
+      font-size: $font-small-head;
+      text-align: center;
+    }
+    .settings {
+      width: 60rem;
+      margin: 0 auto;
+
+      label {
+        display: block;
+        font-size: $font-small;
+        color: #393939;
+      }
+
+      &__input {
+        margin-top: 2rem;
+
+        input {
+          height: 4rem;
+          width: 40rem;
+          border-radius: 5px;
+          border: 2px solid $blue;
+          padding-left: 1rem;
+        }
+        button {
+          width: 18rem;
+          margin-left: 2rem;
+          height: 4rem;
+          background-color: $blue;
+          font-size: $font-text;
+          color: #000;
+          border-radius: 10px;
+          border-style: none;
+          cursor: pointer;
+
+          &[disabled] {
+            background-color: #b0b0b0;
+            cursor: default;
+          }
+        }
+      }
+
+      &__password {
+        margin-top: 2rem;
+
+        button {
+          color: #000;
+          background-color: $blue;
+          width: 40rem;
+          border-radius: 10px;
+          border-style: none;
+          padding: 1rem;
+          margin-top: 1rem;
+          cursor: pointer;
+          font-size: $font-text;
+        }
+      }
+    }
+  }
+}
