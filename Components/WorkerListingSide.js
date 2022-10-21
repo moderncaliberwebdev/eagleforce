@@ -1,7 +1,13 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import app from '../firebase/clientApp'
+
 import styles from '../styles/WorkerListingSide.module.scss'
+import axios from 'axios'
+
+const auth = getAuth()
 
 function WorkerListingSide({
   jobs,
@@ -16,6 +22,86 @@ function WorkerListingSide({
   experience,
   highlights,
 }) {
+  const [currentUser, setCurrentUser] = useState()
+  const [bookmarked, setBookmarked] = useState(false)
+  const [bookmarks, setBookmarks] = useState([])
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUser(user)
+        const config = {
+          headers: { Authorization: `Bearer ${user.accessToken}` },
+        }
+        const data = await axios.get(
+          `/api/user/bookmark?email=${user.email}`,
+          config
+        )
+        setBookmarks(data.data)
+      }
+    })
+  }, [auth])
+
+  useEffect(() => {
+    setError('')
+    setBookmarked(false)
+
+    if (bookmarks && bookmarks.length > 0) {
+      bookmarks.forEach((bm) => {
+        if (bm.split(' ')[0] == 'Worker' && bm.split('#')[1] == number) {
+          setBookmarked(true)
+        }
+      })
+    }
+  }, [jobs])
+
+  useEffect(() => {
+    console.log('bookmarks >>>> ', bookmarks)
+  }, [bookmarks])
+
+  const bookmarkListing = async () => {
+    if (currentUser) {
+      if (bookmarked) {
+        setBookmarked(false)
+
+        const filteredBookmarks = bookmarks.filter(
+          (bm) => bm.split(' ')[0] == 'Worker' && bm.split('#')[1] != number
+        )
+        setBookmarks(filteredBookmarks)
+
+        const config = {
+          headers: { Authorization: `Bearer ${auth.currentUser.accessToken}` },
+        }
+        const data = await axios.put(
+          `/api/user/removebookmark`,
+          {
+            email: currentUser.email,
+            number: `Worker #${number}`,
+          },
+          config
+        )
+      } else {
+        setBookmarked(true)
+        console.log(...bookmarks, `Worker #${number}`)
+        setBookmarks([...bookmarks, `Worker #${number}`])
+        const config = {
+          headers: { Authorization: `Bearer ${auth.currentUser.accessToken}` },
+        }
+        const data = await axios.put(
+          `/api/user/bookmark`,
+          {
+            email: currentUser.email,
+            number: `Worker #${number}`,
+          },
+          config
+        )
+      }
+    } else {
+      setError('Must be signed in to bookmark listings')
+    }
+  }
+
   return (
     <div className={styles.side}>
       <div className={styles.side__title}>
@@ -46,14 +132,29 @@ function WorkerListingSide({
                   {city}, PA
                 </p>
               </div>
-              <div className={styles.side__scroll__book__right}>
-                <Image
-                  src='/images/post/book-grey.png'
-                  width='30'
-                  height='60'
-                  layout='fixed'
-                />
+              <div
+                className={styles.side__scroll__book__right}
+                onClick={bookmarkListing}
+              >
+                {bookmarked ? (
+                  <Image
+                    src='/images/post/book-blue.png'
+                    width='30'
+                    height='60'
+                    layout='fixed'
+                  />
+                ) : (
+                  <Image
+                    src='/images/post/book-grey.png'
+                    width='30'
+                    height='60'
+                    layout='fixed'
+                  />
+                )}
               </div>
+              {error && error.length > 0 && (
+                <p className={styles.side__scroll__book__error}>{error}</p>
+              )}
             </div>
             <div className={styles.side__scroll__details}>
               <p className={styles.side__scroll__details__title}>Details</p>

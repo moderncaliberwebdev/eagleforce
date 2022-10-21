@@ -36,11 +36,11 @@
   &__scroll {
     overflow: scroll;
     &__book {
-      padding: 2rem 0;
+      padding: 2rem 0 4rem 0;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-
+      position: relative;
       border-bottom: 1px solid #f0f0f0;
 
       &__left {
@@ -59,6 +59,12 @@
         margin-left: 1rem;
         width: 3rem;
         cursor: pointer;
+      }
+      &__error {
+        position: absolute;
+        bottom: 0.5rem;
+        font-size: $font-small;
+        color: red;
       }
     }
 

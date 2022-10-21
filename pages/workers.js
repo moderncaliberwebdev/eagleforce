@@ -34,10 +34,6 @@ export default function Workers({}) {
     fetchData()
   }, [])
 
-  useEffect(() => {
-    console.log(listings && listings.featuredWorkers)
-  }, [listings])
-
   const showFullListing = (number, type) => {
     const worker = listings[type].filter((item) => item.workerNumber == number)
     setSelectedWorker(worker[0])

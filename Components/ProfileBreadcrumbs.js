@@ -11,17 +11,20 @@ function ProfileBreadcrumbs() {
       <ul>
         <BlueBreadcrumb
           path='/profile'
+          ahref='/profile'
           currentPath={router.pathname}
           text='Settings'
           borderClass={'first'}
         />
         <BlueBreadcrumb
           path='/profile/saved'
+          ahref='/profile/saved'
           currentPath={router.pathname}
           text='Saved Listings'
         />
         <BlueBreadcrumb
           path='/profile/listings'
+          ahref='/profile/listings'
           currentPath={router.pathname}
           text='Your Listings'
           borderClass={'last'}

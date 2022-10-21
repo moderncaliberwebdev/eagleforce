@@ -135,7 +135,7 @@ function Profile() {
 
         <meta
           property='og:url'
-          content='https://www.eagleforceemploymentservices.com/post/worker'
+          content='https://www.eagleforceemploymentservices.com/profile'
         />
         <meta property='og:type' content='website' />
         <link rel='icon' href='/images/layout/logo.png' />

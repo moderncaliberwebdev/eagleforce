@@ -44,7 +44,7 @@ function SignIn() {
           window.location.href = '/'
         })
         .catch((error) => {
-          const errorMessage = error.message
+          const errorMessage = error.message.replace('Firebase: ', '')
           setErrorMsg(errorMessage)
         })
     }
