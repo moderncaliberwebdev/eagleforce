@@ -56,9 +56,7 @@ function WorkerListingSide({
     }
   }, [jobs])
 
-  useEffect(() => {
-    console.log('bookmarks >>>> ', bookmarks)
-  }, [bookmarks])
+  useEffect(() => {}, [bookmarks])
 
   const bookmarkListing = async () => {
     if (currentUser) {
@@ -83,7 +81,6 @@ function WorkerListingSide({
         )
       } else {
         setBookmarked(true)
-        console.log(...bookmarks, `Worker #${number}`)
         setBookmarks([...bookmarks, `Worker #${number}`])
         const config = {
           headers: { Authorization: `Bearer ${auth.currentUser.accessToken}` },

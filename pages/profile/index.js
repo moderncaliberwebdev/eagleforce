@@ -35,7 +35,6 @@ function Profile() {
         }
         const data = await axios.get(`/api/user?email=${user.email}`, config)
         setCurrentUser(data.data.user)
-        console.log(user.email)
       } else {
         window.location.href = '/'
       }
@@ -100,7 +99,6 @@ function Profile() {
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
-        console.log(errorCode, errorMessage)
         // ..
       })
   }

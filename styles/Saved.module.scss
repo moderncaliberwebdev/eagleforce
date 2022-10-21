@@ -1,0 +1,24 @@
+@import 'mixins';
+@import 'variables';
+
+.container {
+  main {
+    h1 {
+      font-size: $font-small-head;
+      text-align: center;
+    }
+
+    .saved {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      &__listings {
+        &__error {
+          font-size: $font-text;
+          margin-bottom: 25vh;
+        }
+      }
+    }
+  }
+}

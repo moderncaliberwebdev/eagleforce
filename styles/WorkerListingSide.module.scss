@@ -3,7 +3,6 @@
 
 .side {
   width: 25rem;
-  height: 80rem;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -34,7 +33,6 @@
   }
 
   &__scroll {
-    overflow: scroll;
     &__book {
       padding: 2rem 0 4rem 0;
       display: flex;
