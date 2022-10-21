@@ -21,6 +21,7 @@ function WorkerListingSide({
   rateEnd,
   experience,
   highlights,
+  unBookmark,
 }) {
   const [currentUser, setCurrentUser] = useState()
   const [bookmarked, setBookmarked] = useState(false)
@@ -61,6 +62,8 @@ function WorkerListingSide({
   const bookmarkListing = async () => {
     if (currentUser) {
       if (bookmarked) {
+        unBookmark && unBookmark(number)
+
         setBookmarked(false)
 
         const filteredBookmarks = bookmarks.filter(

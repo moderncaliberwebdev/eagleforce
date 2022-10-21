@@ -16,7 +16,7 @@ const auth = getAuth()
 
 function SavedListings() {
   const [currentUser, setCurrentUser] = useState()
-  const [listings, setListings] = useState({})
+  const [listings, setListings] = useState()
   const [error, setError] = useState({})
   const [selectedWorker, setSelectedWorker] = useState([])
   const [loading, setLoading] = useState(false)
@@ -28,11 +28,12 @@ function SavedListings() {
         const config = {
           headers: { Authorization: `Bearer ${user.accessToken}` },
         }
-        const data = await axios.get(`/api/user/?email=${user.email}`, config)
+        const data = await axios.get(
+          `/api/user/saved?email=${user.email}`,
+          config
+        )
         data && setLoading(false)
-        setCurrentUser(data.data.user)
-        console.log(`Bearer ${user.accessToken}`)
-        setListings(data.data.user.savedListings)
+        setListings(JSON.parse(JSON.stringify(data.data)))
       } else {
         window.location.href = '/'
       }
@@ -42,6 +43,10 @@ function SavedListings() {
   const showFullListing = (number, type) => {
     const worker = listings[type].filter((item) => item.workerNumber == number)
     setSelectedWorker(worker[0])
+  }
+
+  const unBookmark = (number) => {
+    window.location.reload()
   }
 
   return (
@@ -65,16 +70,112 @@ function SavedListings() {
           <h1>Saved Listings</h1>
           <ProfileBreadcrumbs />
           <div className={styles.saved}>
-            {currentUser && currentUser.savedListings.length > 0 ? (
+            {loading ? (
+              <p className={styles.saved__loading}>Loading Listings...</p>
+            ) : listings &&
+              ((listings.featuredWorkers &&
+                listings.featuredWorkers.length > 0) ||
+                (listings.standardWorkers &&
+                  listings.standardWorkers.length > 0)) ? (
               <>
-                <div className={styles.saved__listings}></div>
+                <div className={styles.saved__listings}>
+                  {listings.featuredWorkers &&
+                    listings.featuredWorkers.map((worker) => (
+                      <FeaturedWorkerListingBlock
+                        key={worker.listingInfo[0]}
+                        jobs={worker.listingInfo[0]}
+                        number={worker.workerNumber}
+                        type={worker.listingInfo[2]}
+                        city={worker.listingInfo[6]}
+                        employmentType={worker.listingInfo[5]}
+                        skill={worker.listingInfo[1]}
+                        summary={worker.listingInfo[9]}
+                        showFullListing={showFullListing}
+                        saved={true}
+                      />
+                    ))}
+                  {listings.standardWorkers &&
+                    listings.standardWorkers.map((worker) => (
+                      <WorkerListingBlock
+                        key={worker.listingInfo[0]}
+                        jobs={worker.listingInfo[0]}
+                        number={worker.workerNumber}
+                        type={worker.listingInfo[2]}
+                        city={worker.listingInfo[6]}
+                        employmentType={worker.listingInfo[5]}
+                        skill={worker.listingInfo[1]}
+                        summary={worker.listingInfo[9]}
+                        showFullListing={showFullListing}
+                        saved={true}
+                      />
+                    ))}
+                </div>
 
-                <WorkerListingSide />
+                <WorkerListingSide
+                  jobs={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[0]
+                  }
+                  number={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.workerNumber
+                  }
+                  type={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[2]
+                  }
+                  city={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[6]
+                  }
+                  employmentType={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[5]
+                  }
+                  skill={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[1]
+                  }
+                  summary={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[9]
+                  }
+                  rateStart={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[3]
+                  }
+                  rateEnd={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[4]
+                  }
+                  experience={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[10]
+                  }
+                  highlights={
+                    selectedWorker &&
+                    selectedWorker.listingInfo &&
+                    selectedWorker.listingInfo[11]
+                  }
+                  unBookmark={unBookmark}
+                />
               </>
             ) : (
-              <p className={styles.saved__listings__error}>
-                You have not bookmarked any listings yet
-              </p>
+              auth.currentUser && (
+                <p className={styles.saved__listings__error}>
+                  You have not bookmarked any listings yet
+                </p>
+              )
             )}
           </div>
         </main>

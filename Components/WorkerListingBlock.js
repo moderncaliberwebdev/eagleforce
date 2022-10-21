@@ -12,12 +12,13 @@ function WorkerListingBlock({
   skill,
   summary,
   showFullListing,
+  saved,
 }) {
   // const [rand, setRand] = useState(Math.floor(100000 + Math.random() * 900000))
 
   return (
     <div
-      className={styles.block}
+      className={`${styles.block} ${saved && styles.saved__block}`}
       onClick={() => showFullListing(number, 'standardWorkers')}
     >
       <div className={styles.block__top}>

@@ -12,10 +12,11 @@ function FeaturedWorkerListingBlock({
   skill,
   summary,
   showFullListing,
+  saved,
 }) {
   return (
     <div
-      className={styles.block}
+      className={`${styles.block} ${saved && styles.saved__block}`}
       onClick={() => showFullListing(number, 'featuredWorkers')}
     >
       <div className={styles.block__top}>

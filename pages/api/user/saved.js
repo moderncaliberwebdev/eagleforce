@@ -14,16 +14,27 @@ const handler = nc()
       const client = await clientPromise
       const db = client.db('eagleforce')
       const users = db.collection('users')
+      const workers = db.collection('workers')
 
       const user = await users.findOne({ email: req.query.email })
 
-      const listings = user.savedListings
-      const workers = db.collection('workers')
-      const userListings = workers.find({
-        workerNumber: { $in: [...listings] },
+      const listings = []
+
+      user.savedListings.forEach((listing) => {
+        listings.push(Number(listing.split('#')[1]))
       })
 
-      res.json({ userListings })
+      await workers
+        .find({ workerNumber: { $in: listings } })
+        .toArray(function (err, docs) {
+          const featuredWorkers = docs
+            .filter((item) => item.listingType == 'Featured')
+            .sort((a, b) => b.date - a.date)
+          const standardWorkers = docs
+            .filter((item) => item.listingType == 'Standard')
+            .sort((a, b) => b.date - a.date)
+          res.json({ featuredWorkers, standardWorkers })
+        })
     } catch (e) {
       console.error(e)
     }

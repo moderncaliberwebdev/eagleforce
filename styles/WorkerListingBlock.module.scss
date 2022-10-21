@@ -1,6 +1,10 @@
 @import 'mixins';
 @import 'variables';
 
+.saved__block {
+  width: 35rem !important;
+}
+
 .block {
   display: flex;
   flex-direction: column;
