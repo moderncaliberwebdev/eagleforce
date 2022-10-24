@@ -34,6 +34,7 @@ function YourListing({ listing, currentUser }) {
 
   useEffect(() => {
     setListingInfo(listing.listingInfo)
+    console.log('log listing object>>> ', listing)
     setJobs(
       listing.listingInfo[10].length && listing.listingInfo[10].length > 0
         ? listing.listingInfo[10].length
