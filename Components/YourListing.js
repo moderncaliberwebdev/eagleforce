@@ -60,6 +60,7 @@ function YourListing({ listing, currentUser }) {
         return obj
       })
     newState && setListingInfo(newState)
+    console.log('job array state >>>', listingInfo, newState)
   }, [jobArray])
 
   useEffect(() => {
@@ -72,7 +73,7 @@ function YourListing({ listing, currentUser }) {
         return obj
       })
     newState && setListingInfo(newState)
-    console.log(listingInfo, newState)
+    console.log('highlight array state >>>', listingInfo, newState)
   }, [highlightArray])
 
   const updateListingInfo = (element, value) => {
@@ -83,6 +84,7 @@ function YourListing({ listing, currentUser }) {
       return obj
     })
     setListingInfo(newState)
+    console.log('update listing info state >>>', listingInfo, newState)
   }
 
   const updateJobArray = (newState, index) => {
