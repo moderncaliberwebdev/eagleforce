@@ -71,6 +71,7 @@ function YourListing({ listing, currentUser }) {
         return obj
       })
     newState && setListingInfo(newState)
+    console.log(listingInfo, newState)
   }, [highlightArray])
 
   const updateListingInfo = (element, value) => {
