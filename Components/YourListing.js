@@ -1,20 +1,19 @@
-import axios from 'axios'
-import Head from 'next/head'
-import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
-import Layout from '../../../Components/Layout'
-import ListingHighlight from '../../../Components/ListingHighlight'
-import ListingJob from '../../../Components/ListingJob'
-import RichText from '../../../Components/RichText'
-import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
-import styles from '../../../styles/CreateWorkerListing.module.scss'
+import React, { useState, useEffect } from 'react'
+import styles from '../styles/YourListings.module.scss'
 
-function CreateListing({}) {
-  const [errorMsg, setErrorMsg] = useState('')
+import RichText from '../Components/RichText'
+import Image from 'next/image'
+import ListingJob from './ListingJob'
+import ListingHighlight from './ListingHighlight'
+import axios from 'axios'
+
+function YourListing({ listing, currentUser }) {
+  const [open, setOpen] = useState(false)
   const [jobs, setJobs] = useState(1)
   const [jobArray, setJobArray] = useState([])
   const [highlights, setHighlights] = useState(1)
   const [highlightArray, setHighlightArray] = useState([])
+  const [errorMsg, setErrorMsg] = useState('')
   const [listingInfo, setListingInfo] = useState([
     '',
     '',
@@ -31,49 +30,26 @@ function CreateListing({}) {
   ])
 
   useEffect(() => {
-    const functionOnLoad = () => {
-      if (!localStorage.getItem('planType')) {
-        window.location.href = '/post/worker'
-      } else {
-        if (localStorage.getItem('listingInfo')) {
-          const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
+    setListingInfo(listing.listingInfo)
+    setJobs(
+      listing.listingInfo[10].length && listing.listingInfo[10].length > 0
+        ? listing.listingInfo[10].length
+        : 1
+    )
+    setJobArray(listing.listingInfo[10])
 
-          setListingInfo(parsedInfo)
-
-          setJobs(
-            parsedInfo[10].length && parsedInfo[10].length > 0
-              ? parsedInfo[10].length
-              : 1
-          )
-          setJobArray(parsedInfo[10])
-
-          setHighlights(
-            parsedInfo[11].length && parsedInfo[11].length > 0
-              ? parsedInfo[11].length
-              : 1
-          )
-          setHighlightArray(parsedInfo[11])
-        } else localStorage.setItem('listingInfo', JSON.stringify(listingInfo))
-      }
-    }
-    functionOnLoad()
-  }, [])
+    setHighlights(
+      listing.listingInfo[11].length && listing.listingInfo[11].length > 0
+        ? listing.listingInfo[11].length
+        : 1
+    )
+    setHighlightArray(listing.listingInfo[11])
+  }, [listing])
 
   useEffect(() => {
-    let listingInfoLength = 0
-    listingInfo &&
-      listingInfo.forEach((item) => (listingInfoLength += item.length))
-    listingInfoLength > 0 &&
-      localStorage.setItem('listingInfo', JSON.stringify(listingInfo))
-  }, [listingInfo])
-
-  useEffect(() => {
-    const listingInfoFromStorage =
-      localStorage.getItem('listingInfo') &&
-      JSON.parse(localStorage.getItem('listingInfo'))
     const newState =
-      listingInfoFromStorage &&
-      listingInfoFromStorage.map((obj, index) => {
+      listingInfo &&
+      listingInfo.map((obj, index) => {
         if (index == 10 && jobArray.length > 0) {
           return jobArray
         }
@@ -83,12 +59,9 @@ function CreateListing({}) {
   }, [jobArray])
 
   useEffect(() => {
-    const listingInfoFromStorage =
-      localStorage.getItem('listingInfo') &&
-      JSON.parse(localStorage.getItem('listingInfo'))
     const newState =
-      listingInfoFromStorage &&
-      listingInfoFromStorage.map((obj, index) => {
+      listingInfo &&
+      listingInfo.map((obj, index) => {
         if (index == 11 && highlightArray.length > 0) {
           return highlightArray
         }
@@ -96,16 +69,6 @@ function CreateListing({}) {
       })
     newState && setListingInfo(newState)
   }, [highlightArray])
-
-  const addJob = () => {
-    setJobs(jobs + 1)
-    setJobArray([...jobArray, ['', '', '', '']])
-  }
-
-  const addHighlight = () => {
-    setHighlights(highlights + 1)
-    setHighlightArray([...highlightArray, ''])
-  }
 
   const updateListingInfo = (element, value) => {
     const newState = listingInfo.map((obj, index) => {
@@ -144,6 +107,15 @@ function CreateListing({}) {
       }
     }
   }
+  const addJob = () => {
+    setJobs(jobs + 1)
+    setJobArray([...jobArray, ['', '', '', '']])
+  }
+
+  const removeJob = (job) => {
+    setJobArray(jobArray.filter((item) => item != job))
+    setJobs(jobs - 1)
+  }
 
   const updateHighlightArray = (newState, index) => {
     if (index == 0) {
@@ -163,9 +135,9 @@ function CreateListing({}) {
     }
   }
 
-  const removeJob = (job) => {
-    setJobArray(jobArray.filter((item) => item != job))
-    setJobs(jobs - 1)
+  const addHighlight = () => {
+    setHighlights(highlights + 1)
+    setHighlightArray([...highlightArray, ''])
   }
 
   const removeHighlight = (highlight) => {
@@ -173,7 +145,7 @@ function CreateListing({}) {
     setHighlights(highlights - 1)
   }
 
-  const sendForm = () => {
+  const sendForm = async () => {
     let allFilled = true
 
     for (let i = 0; i < listingInfo.length - 2; i++) {
@@ -185,41 +157,40 @@ function CreateListing({}) {
     if (!allFilled) {
       setErrorMsg('Please Fill in All Required Fields')
     } else {
-      localStorage.setItem(
-        'workerNumber',
-        Math.floor(100000 + Math.random() * 900000)
+      setErrorMsg('')
+      const config = {
+        headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+      }
+      const data = await axios.put(
+        '/api/worker/update-listing',
+        {
+          email: currentUser.email,
+          listingInfo,
+          number: listing.workerNumber,
+        },
+        config
       )
-      window.location.href = '/post/worker/preview-listing'
+
+      data && window.location.reload()
     }
   }
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Worker Listing | Eagle Force Employment Services</title>
-        <meta
-          name='description'
-          content='Fill in all the information regarding your desired position(s)'
+    <div className={styles.blocks__block} key={listing._id}>
+      <div className={styles.blocks__block__info}>
+        <h2>
+          Worker #{listing.workerNumber} - {listing.listingInfo[0]}
+        </h2>
+        {!listing.verified && <button>Verify Listing</button>}
+        <button>Close Listing</button>
+        <img
+          src='/images/layout/arrow.png'
+          alt='Dropdown Arrow'
+          onClick={() => setOpen(!open)}
         />
-        <meta
-          property='og:title'
-          content='Create Worker Listing | Eagle Force Employment Services'
-        />
-        <meta
-          property='og:description'
-          content='Fill in all the information regarding your desired position(s)'
-        />
-        <meta
-          property='og:url'
-          content='https://www.eagleforceemploymentservices.com/post/worker/create-listing'
-        />
-        <meta property='og:type' content='website' />
-        <link rel='icon' href='/images/layout/logo.png' />
-      </Head>
-      <Layout>
-        <main>
-          <h1>Create Worker Listing</h1>
-          <WorkerBreadcrumbs />
+      </div>
+      {open && (
+        <div className={styles.blocks__block__create}>
           <div className={styles.create}>
             <div className={styles.create__desc}>
               <h2>Position Details</h2>
@@ -421,17 +392,17 @@ function CreateListing({}) {
                 className={styles.create__inputs__preview}
                 onClick={sendForm}
               >
-                Preview Listing
+                Update Listing
               </button>
               <p className={styles.create__inputs__error}>
                 {errorMsg && errorMsg.length > 0 && errorMsg}
               </p>
             </div>
           </div>
-        </main>
-      </Layout>
+        </div>
+      )}
     </div>
   )
 }
 
-export default CreateListing
+export default YourListing

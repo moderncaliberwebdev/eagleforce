@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import styles from '../styles/CreateWorkerListing.module.scss'
+import styles from '../styles/ListingJob.module.scss'
 
 function ListingHighlight({
   updateHighlightArray,
