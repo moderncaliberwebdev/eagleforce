@@ -1,0 +1,118 @@
+@import 'mixins';
+@import 'variables';
+
+.blocks {
+  display: flex;
+  flex-direction: column;
+  width: 90rem;
+  margin: 0 auto;
+
+  &__loading {
+    margin: 2rem auto;
+    font-size: $font-text;
+  }
+
+  &__block {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+
+    &__info {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        font-size: $font-text;
+        width: 40rem;
+      }
+      button {
+        padding: 1rem 2rem;
+        background-color: $blue;
+        border-radius: 10px;
+        border-style: none;
+        font-size: $font-text;
+        cursor: pointer;
+      }
+      a {
+        padding: 1rem 2rem;
+        background-color: $blue;
+        border-radius: 10px;
+        border-style: none;
+        font-size: $font-text;
+        cursor: pointer;
+        color: #000;
+        text-decoration: none;
+      }
+      img {
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+    }
+
+    &__desc {
+      margin-top: 1rem;
+      font-size: $font-small;
+
+      &__top {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #f0f0f0;
+
+        p {
+          color: #6a6a6a;
+        }
+      }
+
+      &__details {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #f0f0f0;
+
+        h2 {
+          font-size: $font-text;
+          font-weight: 500;
+        }
+        &__item {
+          margin: 1rem 0;
+
+          h3 {
+            font-weight: 500;
+            font-size: $font-small;
+          }
+          p {
+            color: #6a6a6a;
+          }
+        }
+      }
+
+      &__desc {
+        h2 {
+          font-size: $font-text;
+          font-weight: 500;
+          margin-top: 1rem;
+        }
+        p {
+          color: #6a6a6a;
+          margin: 0.5rem 0;
+
+          span {
+            font-weight: 300;
+          }
+        }
+
+        &__jobs {
+          &__job {
+            margin-bottom: 2rem;
+          }
+        }
+      }
+    }
+  }
+}

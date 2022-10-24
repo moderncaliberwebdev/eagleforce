@@ -60,6 +60,7 @@ function SignUp() {
             email,
             userType,
             savedListings: [],
+            previousListings: [],
           })
 
           setSuccessMsg('Successfully created user')

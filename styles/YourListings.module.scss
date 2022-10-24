@@ -60,10 +60,21 @@
             font-size: $font-text;
             cursor: pointer;
           }
+          a {
+            padding: 1rem 2rem;
+            background-color: $blue;
+            border-radius: 10px;
+            border-style: none;
+            font-size: $font-text;
+            cursor: pointer;
+            color: #000;
+            text-decoration: none;
+          }
           img {
             width: 3rem;
             height: 3rem;
             cursor: pointer;
+            transition: all 0.3s;
           }
         }
 

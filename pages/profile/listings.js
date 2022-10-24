@@ -8,19 +8,21 @@ import app from '../../firebase/clientApp'
 import axios from 'axios'
 import ProfileBreadcrumbs from '../../Components/ProfileBreadcrumbs'
 import YourListing from '../../Components/YourListing'
+import PreviousListing from '../../Components/PreviousListing'
 
 const auth = getAuth()
 
 function Listings() {
   const [currentUser, setCurrentUser] = useState()
   const [listings, setListings] = useState()
-  const [loading, setLoading] = useState(false)
+  const [previousListings, setPreviousListings] = useState()
+  const [listingType, setListingType] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         setCurrentUser(user)
-        setLoading(true)
         const config = {
           headers: { Authorization: `Bearer ${user.accessToken}` },
         }
@@ -29,6 +31,9 @@ function Listings() {
           config
         )
         data && setLoading(false)
+        setPreviousListings(
+          JSON.parse(JSON.stringify(data.data.previousListings))
+        )
         setListings(JSON.parse(JSON.stringify(data.data.docs)))
       } else {
         window.location.href = '/'
@@ -57,16 +62,36 @@ function Listings() {
           <h1>Your Listings</h1>
           <ProfileBreadcrumbs />
           <div className={styles.nav}>
-            <p> Current Listings ({listings && listings.length})</p>
-            <p> Previous Listings (0)</p>
+            <p
+              style={{ textDecoration: listingType == true && 'underline' }}
+              onClick={() => setListingType(true)}
+            >
+              Current Listings ({listings && listings.length})
+            </p>
+            <p
+              style={{ textDecoration: listingType == false && 'underline' }}
+              onClick={() => setListingType(false)}
+            >
+              Previous Listings ({previousListings && previousListings.length})
+            </p>
           </div>
           <div className={styles.blocks}>
             {loading && (
               <p className={styles.blocks__loading}>Loading Listings...</p>
             )}
             {listings &&
+              listingType &&
               listings.map((listing) => (
                 <YourListing
+                  listing={listing}
+                  key={listing._id}
+                  currentUser={currentUser}
+                />
+              ))}
+            {previousListings &&
+              !listingType &&
+              previousListings.map((listing) => (
+                <PreviousListing
                   listing={listing}
                   key={listing._id}
                   currentUser={currentUser}

@@ -6,9 +6,12 @@ import Image from 'next/image'
 import ListingJob from './ListingJob'
 import ListingHighlight from './ListingHighlight'
 import axios from 'axios'
+import Link from 'next/link'
+import Popup from './Popup'
 
 function YourListing({ listing, currentUser }) {
   const [open, setOpen] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false)
   const [jobs, setJobs] = useState(1)
   const [jobArray, setJobArray] = useState([])
   const [highlights, setHighlights] = useState(1)
@@ -175,18 +178,52 @@ function YourListing({ listing, currentUser }) {
     }
   }
 
+  const cancelDelete = () => {
+    setOpenPopup(false)
+  }
+
+  const closeListing = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+    }
+    const data = await axios.put(
+      '/api/user/close-listing',
+      {
+        email: currentUser.email,
+        number: listing.workerNumber,
+      },
+      config
+    )
+
+    data && console.log(data)
+  }
+
   return (
     <div className={styles.blocks__block} key={listing._id}>
+      <Popup
+        question='Are you sure you want to close your listing?'
+        desc='Your subscription will be cancelled. This action can be undone by going to the Previous Listings tab in the Listings section of your profile.'
+        answer='Continue'
+        no='Cancel'
+        cancel={cancelDelete}
+        next={closeListing}
+        openPopup={openPopup}
+      />
       <div className={styles.blocks__block__info}>
         <h2>
           Worker #{listing.workerNumber} - {listing.listingInfo[0]}
         </h2>
-        {!listing.verified && <button>Verify Listing</button>}
-        <button>Close Listing</button>
+        {!listing.verified && (
+          <Link href='/post/worker/verify-listing' passHref>
+            <a>Verify Listing</a>
+          </Link>
+        )}
+        <button onClick={() => setOpenPopup(true)}>Close Listing</button>
         <img
           src='/images/layout/arrow.png'
           alt='Dropdown Arrow'
           onClick={() => setOpen(!open)}
+          style={{ transform: open && 'rotate(180deg)' }}
         />
       </div>
       {open && (
