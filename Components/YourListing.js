@@ -34,7 +34,6 @@ function YourListing({ listing, currentUser }) {
 
   useEffect(() => {
     setListingInfo(listing.listingInfo)
-    console.log('log listing object>>> ', listing)
     setJobs(
       listing.listingInfo[10].length && listing.listingInfo[10].length > 0
         ? listing.listingInfo[10].length
@@ -53,6 +52,7 @@ function YourListing({ listing, currentUser }) {
   useEffect(() => {
     const newState =
       listingInfo &&
+      listingInfo[0].length > 0 &&
       listingInfo.map((obj, index) => {
         if (index == 10 && jobArray.length > 0) {
           return jobArray
@@ -60,12 +60,12 @@ function YourListing({ listing, currentUser }) {
         return obj
       })
     newState && setListingInfo(newState)
-    console.log('job array state >>>', listingInfo, newState)
   }, [jobArray])
 
   useEffect(() => {
     const newState =
       listingInfo &&
+      listingInfo[0].length > 0 &&
       listingInfo.map((obj, index) => {
         if (index == 11 && highlightArray.length > 0) {
           return highlightArray
@@ -73,7 +73,6 @@ function YourListing({ listing, currentUser }) {
         return obj
       })
     newState && setListingInfo(newState)
-    console.log('highlight array state >>>', listingInfo, newState)
   }, [highlightArray])
 
   const updateListingInfo = (element, value) => {
@@ -84,7 +83,6 @@ function YourListing({ listing, currentUser }) {
       return obj
     })
     setListingInfo(newState)
-    console.log('update listing info state >>>', listingInfo, newState)
   }
 
   const updateJobArray = (newState, index) => {
