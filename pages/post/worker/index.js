@@ -44,7 +44,7 @@ function PostWorker() {
             as well.
           </p>
           <p className={styles.description}>
-            Choose a plan tailored to your needs
+            <span>Choose a plan tailored to your needs</span>
           </p>
           <div className={styles.block_container}>
             <PricingBlock

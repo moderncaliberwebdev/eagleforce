@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../Components/Layout'
 import styles from '../../styles/YourListings.module.scss'
 
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import app from '../../firebase/clientApp'
-import axios from 'axios'
 import ProfileBreadcrumbs from '../../Components/ProfileBreadcrumbs'
 import YourListing from '../../Components/YourListing'
 import PreviousListing from '../../Components/PreviousListing'
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import app from '../../firebase/clientApp'
+import axios from 'axios'
 
 const auth = getAuth()
 

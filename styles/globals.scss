@@ -53,3 +53,9 @@ body {
     height: 10rem;
   }
 }
+
+.paypal-buttons {
+  &:last-of-type {
+    display: none !important;
+  }
+}

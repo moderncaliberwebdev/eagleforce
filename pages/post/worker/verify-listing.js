@@ -1,11 +1,71 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Layout from '../../../Components/Layout'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
 import styles from '../../../styles/VerifyWorkerListing.module.scss'
 
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import app from '../../../firebase/clientApp'
+import axios from 'axios'
+
+const auth = getAuth()
+
 function VerifyWorkerListing() {
+  const [currentUser, setCurrentUser] = useState()
+  const [listings, setListings] = useState()
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUser(user)
+        const config = {
+          headers: { Authorization: `Bearer ${user.accessToken}` },
+        }
+        const data = await axios.get(
+          `/api/user/listings?email=${user.email}`,
+          config
+        )
+        setListings(JSON.parse(JSON.stringify(data.data.docs)))
+      } else {
+        window.location.href = '/'
+      }
+    })
+  }, [auth])
+
+  const verify = async () => {
+    let isVerified = false
+    if (listings.length > 0) {
+      listings.forEach((listing) => {
+        if (listing.verified) isVerified = true
+      })
+    } else setError('You do not have any listings')
+
+    if (isVerified) {
+      setError('Your listing(s) is already verified')
+    } else {
+      const data = await axios.post('/api/worker/verify-listing', {
+        fullName,
+        email,
+        message,
+      })
+      data.data.formResponse && setError(data.data.formResponse)
+      if (data.data.email) {
+        setFullName('')
+        setEmail('')
+        setMessage('')
+        setError('')
+        setSuccess(
+          'Message Sent. We will work on getting your listing verified as soon as possible'
+        )
+      }
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -41,19 +101,34 @@ function VerifyWorkerListing() {
           <div className={styles.verify__form}>
             <div className={styles.verify__form__input}>
               <label>Full Name</label>
-              <input type='text' placeholder='John Doe' />
+              <input
+                type='text'
+                placeholder='John Doe'
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
             </div>
             <div className={styles.verify__form__input}>
               <label>Email</label>
-              <input type='text' placeholder='johndoe@gmail.com' />
+              <input
+                type='text'
+                placeholder='johndoe@gmail.com'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className={styles.verify__form__input}>
               <label>Message</label>
-              <textarea></textarea>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              ></textarea>
             </div>
-            <button className={styles.verify__form__submit}>
+            <button className={styles.verify__form__submit} onClick={verify}>
               Send Verification Message
             </button>
+            <p className={styles.verify__form__error}>{error && error}</p>
+            <p className={styles.verify__form__success}>{success && success}</p>
           </div>
         </main>
       </Layout>

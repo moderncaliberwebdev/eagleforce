@@ -17,7 +17,9 @@ function FeaturedWorkerListingBlock({
   return (
     <div
       className={`${styles.block} ${saved && styles.saved__block}`}
-      onClick={() => showFullListing(number, 'featuredWorkers')}
+      onClick={() =>
+        showFullListing && showFullListing(number, 'featuredWorkers')
+      }
     >
       <div className={styles.block__top}>
         <div>

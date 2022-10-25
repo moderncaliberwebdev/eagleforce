@@ -40,54 +40,54 @@ function PricingBlock({
   }, [auth])
 
   return (
-    <div
-      className={styles.block}
-      style={{ color: color, backgroundColor: background }}
-    >
-      <h2>{type} Listing</h2>
-      <h3>
-        ${price} / {occurance}
-      </h3>
-      <div className={styles.block__features}>
-        {features &&
-          features.map((feature) => (
-            <div className={styles.block__features__item} key={feature}>
-              <div
-                className={styles.block__features__item__check}
-                style={{ borderColor: color }}
-              ></div>
-              <p>{feature}</p>
-            </div>
-          ))}
-      </div>
-      {currentUser ? (
-        <Link href='/post/worker/create-listing' passHref>
-          <a
+    <Link href='/post/worker/create-listing' passHref>
+      <a
+        className={styles.block}
+        style={{ color: color, backgroundColor: background }}
+        onClick={() =>
+          localStorage.setItem(
+            'planType',
+            JSON.stringify({
+              user,
+              type,
+            })
+          )
+        }
+      >
+        <h2>{type} Listing</h2>
+        <h3>
+          ${price} / {occurance}
+        </h3>
+        <div className={styles.block__features}>
+          {features &&
+            features.map((feature) => (
+              <div className={styles.block__features__item} key={feature}>
+                <div
+                  className={styles.block__features__item__check}
+                  style={{ borderColor: color }}
+                ></div>
+                <p>{feature}</p>
+              </div>
+            ))}
+        </div>
+        {currentUser ? (
+          <button
             className={styles.block__choose}
             style={{ color: color, backgroundColor: backgroundLight }}
-            onClick={() =>
-              localStorage.setItem(
-                'planType',
-                JSON.stringify({
-                  user,
-                  type,
-                })
-              )
-            }
           >
             Choose {type} Plan
-          </a>
-        </Link>
-      ) : (
-        <a
-          className={styles.block__choose}
-          style={{ color: color, backgroundColor: backgroundLight }}
-          onClick={showError}
-        >
-          Choose {type} Plan
-        </a>
-      )}
-    </div>
+          </button>
+        ) : (
+          <button
+            className={styles.block__choose}
+            style={{ color: color, backgroundColor: backgroundLight }}
+            onClick={showError}
+          >
+            Choose {type} Plan
+          </button>
+        )}
+      </a>
+    </Link>
   )
 }
 

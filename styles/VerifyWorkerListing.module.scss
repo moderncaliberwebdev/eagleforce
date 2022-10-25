@@ -49,6 +49,16 @@
         }
       }
 
+      &__success {
+        color: $blue-dark;
+        margin-top: 1rem;
+      }
+
+      &__error {
+        color: red;
+        margin-top: 1rem;
+      }
+
       &__submit {
         padding: 1rem;
         background: $blue;

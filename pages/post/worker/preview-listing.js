@@ -4,11 +4,13 @@ import Link from 'next/link'
 import Layout from '../../../Components/Layout'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
 import WorkerListingBlock from '../../../Components/WorkerListingBlock'
+import FeaturedWorkerListingBlock from '../../../Components/FeaturedWorkerListingBlock'
 import WorkerListingSide from '../../../Components/WorkerListingSide'
 import styles from '../../../styles/PreviewWorkerListing.module.scss'
 
 import clientPromise from '../../../utils/db'
 import axios from 'axios'
+import { PayPalButton } from 'react-paypal-button-v2'
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import app from '../../../firebase/clientApp'
@@ -77,23 +79,6 @@ function PreviewWorkerListing({ isConnected }) {
     }
     functionOnLoad()
   }, [])
-
-  const postListing = async () => {
-    const data = await axios.post('/api/worker/create-listing', {
-      listingInfo,
-      verfied: false,
-      user: currentUser.email,
-      listingType: planType.type,
-      userType: planType.user,
-      date: new Date().getTime(),
-      workerNumber,
-    })
-
-    if (data) {
-      console.log(data)
-    }
-  }
-
   return (
     <div className={styles.container}>
       <Head>
@@ -126,43 +111,162 @@ function PreviewWorkerListing({ isConnected }) {
             account to use this service
           </p>
           <div className={styles.preview__buttons}>
-            <Link href='/post/worker/create-listing' passHref>
-              <a>Edit Listing</a>
-            </Link>
-            <Link
-              href='https://www.sandbox.paypal.com/webapps/billing/plans/subscribe?plan_id=P-3B724015PB648072WMNG3MZY'
-              passHref
-            >
-              <a onClick={postListing}>Continue to PayPal</a>
-            </Link>
+            <div>
+              <Link href='/post/worker/create-listing' passHref>
+                <a>Edit Listing</a>
+              </Link>
+            </div>
+            {planType && planType.type == 'Featured' ? (
+              <PayPalButton
+                options={{
+                  vault: true,
+                  'client-id':
+                    'Aa0y7UQRO1_M92AM5jsJuHdHonnn9o_xGpQsxNH1FfDAlyhr7nJhgbWrArEr67utB3ZUxis2CJZb41mO',
+                }}
+                createSubscription={(data, actions) => {
+                  return actions.subscription.create({
+                    plan_id: 'P-3B724015PB648072WMNG3MZY',
+                  })
+                }}
+                style={{
+                  layout: 'horizontal',
+                  color: 'blue',
+                  label: 'pay',
+                }}
+                onApprove={(data, actions) => {
+                  // Capture the funds from the transaction
+                  return actions.subscription
+                    .get()
+                    .then(async function (details) {
+                      const config = {
+                        headers: {
+                          Authorization: `Bearer ${auth.currentUser.accessToken}`,
+                        },
+                      }
+                      // OPTIONAL: Call your server to save the subscription
+                      const post = await axios.post(
+                        '/api/worker/create-listing',
+                        {
+                          listingInfo,
+                          verified: false,
+                          user: auth.currentUser.email,
+                          listingType: planType.type,
+                          userType: planType.user,
+                          date: new Date().getTime(),
+                          workerNumber,
+                          orderID: data.orderID,
+                          orderDetails: details,
+                        },
+                        config
+                      )
+
+                      if (post) {
+                        window.location.href = '/post/worker/verify-listing'
+                        localStorage.clear()
+                      }
+                    })
+                }}
+              />
+            ) : (
+              planType.type == 'Standard' && (
+                <PayPalButton
+                  options={{
+                    vault: true,
+                    'client-id':
+                      'Aa0y7UQRO1_M92AM5jsJuHdHonnn9o_xGpQsxNH1FfDAlyhr7nJhgbWrArEr67utB3ZUxis2CJZb41mO',
+                  }}
+                  createSubscription={(data, actions) => {
+                    return actions.subscription.create({
+                      plan_id: 'P-3H207100FH963184YMNMCCBA',
+                    })
+                  }}
+                  style={{
+                    layout: 'horizontal',
+                    color: 'blue',
+                    label: 'pay',
+                  }}
+                  onApprove={(data, actions) => {
+                    // Capture the funds from the transaction
+                    return actions.subscription
+                      .get()
+                      .then(async function (details) {
+                        const config = {
+                          headers: {
+                            Authorization: `Bearer ${auth.currentUser.accessToken}`,
+                          },
+                        }
+                        // OPTIONAL: Call your server to save the subscription
+                        const post = await axios.post(
+                          '/api/worker/create-listing',
+                          {
+                            listingInfo,
+                            verified: false,
+                            user: auth.currentUser.email,
+                            listingType: planType.type,
+                            userType: planType.user,
+                            date: new Date().getTime(),
+                            workerNumber,
+                            orderID: data.orderID,
+                            orderDetails: details,
+                          },
+                          config
+                        )
+
+                        if (post) {
+                          window.location.href = '/post/worker/verify-listing'
+                          localStorage.clear()
+                        }
+                      })
+                  }}
+                />
+              )
+            )}
           </div>
           <p className={styles.preview__notice}>
             This is a preview of your worker listing. Switch back to Edit
             Listing if you need to make changes
           </p>
           <div className={styles.preview__listing}>
-            <WorkerListingBlock
-              jobs={listingInfo && listingInfo[0]}
-              number={workerNumber && workerNumber}
-              type={listingInfo && listingInfo[2]}
-              city={listingInfo && listingInfo[6]}
-              employmentType={listingInfo && listingInfo[5]}
-              skill={listingInfo && listingInfo[1]}
-              summary={listingInfo && listingInfo[9]}
-            />
-            <WorkerListingSide
-              jobs={listingInfo && listingInfo[0]}
-              number={workerNumber && workerNumber}
-              type={listingInfo && listingInfo[2]}
-              city={listingInfo && listingInfo[6]}
-              employmentType={listingInfo && listingInfo[5]}
-              skill={listingInfo && listingInfo[1]}
-              summary={listingInfo && listingInfo[9]}
-              rateStart={listingInfo && listingInfo[3]}
-              rateEnd={listingInfo && listingInfo[4]}
-              experience={listingInfo && listingInfo[10]}
-              highlights={listingInfo && listingInfo[11]}
-            />
+            <div>
+              {planType.type == 'Standard' ? (
+                <WorkerListingBlock
+                  jobs={listingInfo && listingInfo[0]}
+                  number={workerNumber && workerNumber}
+                  type={listingInfo && listingInfo[2]}
+                  city={listingInfo && listingInfo[6]}
+                  employmentType={listingInfo && listingInfo[5]}
+                  skill={listingInfo && listingInfo[1]}
+                  summary={listingInfo && listingInfo[9]}
+                />
+              ) : (
+                planType.type == 'Featured' && (
+                  <FeaturedWorkerListingBlock
+                    jobs={listingInfo && listingInfo[0]}
+                    number={workerNumber && workerNumber}
+                    type={listingInfo && listingInfo[2]}
+                    city={listingInfo && listingInfo[6]}
+                    employmentType={listingInfo && listingInfo[5]}
+                    skill={listingInfo && listingInfo[1]}
+                    summary={listingInfo && listingInfo[9]}
+                  />
+                )
+              )}
+            </div>
+            <div>
+              <WorkerListingSide
+                jobs={listingInfo && listingInfo[0]}
+                number={workerNumber && workerNumber}
+                type={listingInfo && listingInfo[2]}
+                city={listingInfo && listingInfo[6]}
+                employmentType={listingInfo && listingInfo[5]}
+                skill={listingInfo && listingInfo[1]}
+                summary={listingInfo && listingInfo[9]}
+                rateStart={listingInfo && listingInfo[3]}
+                rateEnd={listingInfo && listingInfo[4]}
+                experience={listingInfo && listingInfo[10]}
+                highlights={listingInfo && listingInfo[11]}
+              />
+            </div>
           </div>
         </main>
       </Layout>
