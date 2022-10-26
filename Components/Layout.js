@@ -25,7 +25,6 @@ function Layout({ children }) {
       }
     })
   }, [auth])
-
   const firebaseSignOut = () => {
     signOut(auth)
       .then(() => {

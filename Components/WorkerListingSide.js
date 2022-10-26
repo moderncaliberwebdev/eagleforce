@@ -189,13 +189,14 @@ function WorkerListingSide({
                 className={styles.side__scroll__desc__desc}
                 dangerouslySetInnerHTML={{ __html: summary }}
               ></p>
-              {experience && experience[0][0].length > 0 && (
+              {experience && experience[0] && experience[0][0].length > 0 && (
                 <p className={styles.side__scroll__desc__title}>
                   Work Experience
                 </p>
               )}
               <div className={styles.side__scroll__desc__jobs}>
                 {experience &&
+                  experience[0] &&
                   experience[0][0].length > 0 &&
                   experience.map((job) => (
                     <div
@@ -231,7 +232,9 @@ function WorkerListingSide({
               </div>
             </div>
           </div>
-          <button className={styles.side__contact}>Contact Worker</button>
+          <div className={styles.side__contact}>
+            <button>Contact Worker</button>
+          </div>
         </>
       )}
     </div>
