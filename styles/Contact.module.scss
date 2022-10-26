@@ -1,0 +1,180 @@
+@import 'variables';
+@import 'mixins';
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.orange_button {
+  background-color: $blue-dark;
+  color: #fff;
+  font-size: $font-text;
+  font-weight: 400;
+  padding: 1.5rem 4rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+
+  // @include respond(phone) {
+  //   margin-left: 0;
+  // }
+
+  &:hover {
+    box-shadow: inset 10px 10px 10px rgba(0, 0, 0, 0.05),
+      0 4px 4px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+  }
+}
+
+.contact {
+  &__h1 {
+    font-size: $font-small-head;
+    text-align: center;
+  }
+
+  &__p {
+    font-size: $font-text;
+    font-weight: 300;
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 2rem 10rem;
+
+    // @include respond(tab-port) {
+    //   margin: 5rem 0;
+    // }
+    // @include respond(phone) {
+    //   flex-direction: column;
+    // }
+
+    &__input_short {
+      width: 48%;
+      margin-bottom: 5rem;
+
+      // @include respond(phone) {
+      //   width: 100%;
+      // }
+
+      &:focus-within {
+        p {
+          color: $blue;
+        }
+        input {
+          border-bottom: 2px solid $blue;
+        }
+      }
+
+      &:hover {
+        p {
+          color: $blue;
+        }
+        input {
+          border-bottom: 2px solid $blue;
+        }
+      }
+
+      p {
+        font-size: $font-text;
+        font-weight: 300;
+        color: $blue-dark;
+        margin-bottom: 1rem;
+      }
+
+      input {
+        width: 100%;
+        border-style: none;
+        border-bottom: 2px solid $blue-dark;
+        font-size: $font-text;
+        background-color: transparent;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    &__input_long {
+      // padding-left: 2rem;
+      width: 100%;
+
+      input {
+        background-color: transparent;
+        border-bottom: 2px solid $blue-dark;
+      }
+
+      &:focus-within {
+        p {
+          color: $blue;
+        }
+        input {
+          border-bottom: 2px solid $blue;
+        }
+      }
+
+      &:hover {
+        p {
+          color: $blue;
+        }
+        input {
+          border-bottom: 2px solid $blue;
+        }
+      }
+
+      p {
+        font-size: $font-text;
+        font-weight: 300;
+        color: $blue-dark;
+      }
+
+      input {
+        width: 100%;
+        border-style: none;
+        border-bottom: 2px solid $blue-dark;
+        font-size: $font-text;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    &__response {
+      text-align: center;
+      font-size: $font-text;
+      font-weight: 300;
+      color: red;
+      width: 100%;
+      margin-top: 2rem;
+    }
+
+    &__success {
+      text-align: center;
+      font-size: $font-text;
+      font-weight: 300;
+      color: $blue;
+      width: 100%;
+      margin-top: 2rem;
+    }
+  }
+  &__buttons {
+    margin: 0 10rem 10rem 10rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    // @include respond(phone) {
+    //   flex-direction: column;
+    //   margin: 0 0 10rem 0;
+    // }
+  }
+}
