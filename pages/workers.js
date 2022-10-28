@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Layout from '../Components/Layout'
 import styles from '../styles/Workers.module.scss'
 import axios from 'axios'
@@ -10,19 +9,45 @@ import { useEffect, useState } from 'react'
 import WorkerListingBlock from '../Components/WorkerListingBlock'
 import FeaturedWorkerListingBlock from '../Components/FeaturedWorkerListingBlock'
 import WorkerListingSide from '../Components/WorkerListingSide'
-import e from 'cors'
 
 export default function Workers({}) {
+  const { query } = useRouter()
+  const router = useRouter()
+
   const [listings, setListings] = useState({})
   const [error, setError] = useState({})
   const [selectedWorker, setSelectedWorker] = useState([])
   const [loading, setLoading] = useState(false)
-  const [fuzzyStandard, setFuzzyStandard] = useState([])
-  const [fuzzyFeatured, setFuzzyFeatured] = useState([])
-  const [isFuzzy, setIsFuzzy] = useState(false)
 
-  const [filterFeatured, setFilterFeatured] = useState([])
-  const [filterStandard, setFilterStandard] = useState([])
+  const [searchInput, setSearchInput] = useState('')
+
+  const [displayListings, setDisplayListings] = useState({
+    featuredWorkers: [],
+    standardWorkers: [],
+  })
+  const [fuzzyListings, setFuzzyListings] = useState({
+    featuredWorkers: [],
+    standardWorkers: [],
+  })
+  const [isFuzzy, setIsFuzzy] = useState(false)
+  const [proximityListings, setProximityListings] = useState({
+    featuredWorkers: [],
+    standardWorkers: [],
+  })
+  const [skillListings, setSkillListings] = useState({
+    featuredWorkers: [],
+    standardWorkers: [],
+  })
+  const [employmentListings, setEmploymentListings] = useState({
+    featuredWorkers: [],
+    standardWorkers: [],
+  })
+  const [typeListings, setTypeListings] = useState({
+    featuredWorkers: [],
+    standardWorkers: [],
+  })
+
+  const [skillLevels, setSkillLevels] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +58,6 @@ export default function Workers({}) {
         )
         data && setLoading(false)
         setListings(JSON.parse(JSON.stringify(data.data)))
-        console.log(JSON.parse(JSON.stringify(data.data.featuredWorkers)))
       } catch (e) {
         console.error(e)
         setError(JSON.parse(JSON.stringify(e)))
@@ -43,13 +67,12 @@ export default function Workers({}) {
     fetchData()
   }, [])
 
-  const showFullListing = (number, type) => {
-    const worker = listings[type].filter((item) => item.workerNumber == number)
-    setSelectedWorker(worker[0])
-  }
+  useEffect(() => {
+    let editedListings = listings
 
-  const handleSearch = (input) => {
-    if (input.length > 0) {
+    if (query.search && query.search != '') {
+      setSearchInput(query.search)
+
       const options = {
         keys: [
           ['listingInfo', 0],
@@ -60,26 +83,83 @@ export default function Workers({}) {
         ignoreLocation: true,
         threshold: 0.3,
       }
-
       const fuseFeatured = new Fuse(listings.featuredWorkers, options)
       const fuseStandard = new Fuse(listings.standardWorkers, options)
-
       // Change the pattern
-      const pattern = input
-
+      const pattern = query.search
       const featuredSearch = fuseFeatured.search(pattern)
       const standardSearch = fuseStandard.search(pattern)
-      console.log(featuredSearch, standardSearch)
-
-      setIsFuzzy(true)
-      setFuzzyFeatured(featuredSearch)
-      setFuzzyStandard(standardSearch)
-    } else {
-      setIsFuzzy(false)
-      setFuzzyFeatured([])
-      setFuzzyStandard([])
+      // setIsFiltered(true)
+      const itemizedFeaturedSearch = []
+      const itemizedStandardSearch = []
+      featuredSearch.forEach((item) => itemizedFeaturedSearch.push(item.item))
+      standardSearch.forEach((item) => itemizedStandardSearch.push(item.item))
+      // setIsFuzzy(true)
+      editedListings = {
+        featuredWorkers: itemizedFeaturedSearch,
+        standardWorkers: itemizedStandardSearch,
+      }
     }
+    if (query.skillLevel) {
+      const splitQuerySkills = query.skillLevel.split('-')
+      setSkillLevels(splitQuerySkills)
+      const listingsForFunction = [
+        editedListings.featuredWorkers,
+        editedListings.standardWorkers,
+      ]
+
+      const newListings = [[], []]
+      listingsForFunction.forEach((list, index) => {
+        list.forEach((listing) => {
+          splitQuerySkills.forEach((skill) => {
+            if (listing.listingInfo[1] == skill) {
+              if (!newListings[index].includes(listing)) {
+                newListings[index].push(listing)
+              }
+            }
+          })
+        })
+      })
+      editedListings = {
+        featuredWorkers: newListings[0],
+        standardWorkers: newListings[1],
+      }
+    }
+
+    router.isReady && setDisplayListings(editedListings)
+  }, [query, listings])
+
+  const showFullListing = (number, type) => {
+    const worker = listings[type].filter((item) => item.workerNumber == number)
+    setSelectedWorker(worker[0])
   }
+
+  const setFilters = (level) => {
+    //Skill Filter
+    let updatedSkillLevels = []
+    if (skillLevels.includes(level)) {
+      setSkillLevels(skillLevels.filter((skill) => skill != level))
+      updatedSkillLevels = skillLevels.filter((skill) => skill != level)
+    } else {
+      setSkillLevels([...skillLevels, level])
+      updatedSkillLevels = [...skillLevels, level]
+    }
+
+    const mySkillQueryString = updatedSkillLevels
+      .map((el) => {
+        return el
+      })
+      .join('-')
+
+    //sendind to url with query
+    window.location.href = `/workers?search=${searchInput}&skillLevel=${mySkillQueryString}`
+  }
+
+  // const setProximity = async () => {
+  //   const distance = await axios.get(
+  //     `https://api.mapbox.com/directions-matrix/v1/mapbox/driving/{coordinates}?access_token=${MAPBOX_TOKEN}`
+  //   )
+  // }
 
   return (
     <div className={styles.container}>
@@ -129,26 +209,49 @@ export default function Workers({}) {
                   <option value='250 Miles'>250 Miles</option>
                   <option value='500 Miles'>500 Miles</option>
                 </select>
-                <button>Apply</button>
+                <button
+                // onClick={setProximity}
+                >
+                  Apply
+                </button>
               </div>
               <div className={styles.workers__filter__scroll__checks}>
                 <h3>Skill Level</h3>
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      skillLevels.length > 0 && skillLevels.includes('Beginner')
+                    }
+                    onClick={() => setFilters('Beginner')}
+                  />
                   Beginner
                 </label>
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      skillLevels.length > 0 && skillLevels.includes('Advanced')
+                    }
+                    onClick={() => setFilters('Advanced')}
+                  />
                   Advanced
                 </label>
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      skillLevels.length > 0 &&
+                      skillLevels.includes('Expert Foreman Grade')
+                    }
+                    onClick={() => setFilters('Expert Foreman Grade')}
+                  />
                   Expert Foreman Grade
                 </label>
               </div>
@@ -201,9 +304,9 @@ export default function Workers({}) {
               type='text'
               className={styles.workers__listings__search}
               placeholder='Search by job title or trade'
-              onKeyPress={(e) =>
-                e.key === 'Enter' && handleSearch(e.target.value)
-              }
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && setFilters('')}
             />
             <p className={styles.workers__listings__notice}>
               All verified workers have been screened by the site administrator
@@ -214,68 +317,36 @@ export default function Workers({}) {
               </p>
             ) : (
               <div className={styles.workers__listings__display}>
-                {fuzzyFeatured && fuzzyFeatured.length > 0
-                  ? fuzzyFeatured.map((worker) => (
-                      <FeaturedWorkerListingBlock
-                        key={worker.item.listingInfo[0]}
-                        jobs={worker.item.listingInfo[0]}
-                        number={worker.item.workerNumber}
-                        type={worker.item.listingInfo[2]}
-                        city={worker.item.listingInfo[6]}
-                        employmentType={worker.item.listingInfo[5]}
-                        skill={worker.item.listingInfo[1]}
-                        summary={worker.item.listingInfo[9]}
-                        showFullListing={showFullListing}
-                      />
-                    ))
-                  : isFuzzy
-                  ? ''
-                  : listings &&
-                    listings.featuredWorkers &&
-                    listings.featuredWorkers.map((worker) => (
-                      <FeaturedWorkerListingBlock
-                        key={worker.listingInfo[0]}
-                        jobs={worker.listingInfo[0]}
-                        number={worker.workerNumber}
-                        type={worker.listingInfo[2]}
-                        city={worker.listingInfo[6]}
-                        employmentType={worker.listingInfo[5]}
-                        skill={worker.listingInfo[1]}
-                        summary={worker.listingInfo[9]}
-                        showFullListing={showFullListing}
-                      />
-                    ))}
-                {fuzzyStandard && fuzzyStandard.length > 0
-                  ? fuzzyStandard.map((worker) => (
-                      <WorkerListingBlock
-                        key={worker.item.listingInfo[0]}
-                        jobs={worker.item.listingInfo[0]}
-                        number={worker.item.workerNumber}
-                        type={worker.item.listingInfo[2]}
-                        city={worker.item.listingInfo[6]}
-                        employmentType={worker.item.listingInfo[5]}
-                        skill={worker.item.listingInfo[1]}
-                        summary={worker.item.listingInfo[9]}
-                        showFullListing={showFullListing}
-                      />
-                    ))
-                  : isFuzzy
-                  ? ''
-                  : listings &&
-                    listings.standardWorkers &&
-                    listings.standardWorkers.map((worker) => (
-                      <WorkerListingBlock
-                        key={worker.listingInfo[0]}
-                        jobs={worker.listingInfo[0]}
-                        number={worker.workerNumber}
-                        type={worker.listingInfo[2]}
-                        city={worker.listingInfo[6]}
-                        employmentType={worker.listingInfo[5]}
-                        skill={worker.listingInfo[1]}
-                        summary={worker.listingInfo[9]}
-                        showFullListing={showFullListing}
-                      />
-                    ))}
+                {displayListings &&
+                  displayListings.featuredWorkers &&
+                  displayListings.featuredWorkers.map((worker) => (
+                    <FeaturedWorkerListingBlock
+                      key={worker.listingInfo[0]}
+                      jobs={worker.listingInfo[0]}
+                      number={worker.workerNumber}
+                      type={worker.listingInfo[2]}
+                      city={worker.listingInfo[6]}
+                      employmentType={worker.listingInfo[5]}
+                      skill={worker.listingInfo[1]}
+                      summary={worker.listingInfo[9]}
+                      showFullListing={showFullListing}
+                    />
+                  ))}
+                {displayListings &&
+                  displayListings.standardWorkers &&
+                  displayListings.standardWorkers.map((worker) => (
+                    <WorkerListingBlock
+                      key={worker.listingInfo[0]}
+                      jobs={worker.listingInfo[0]}
+                      number={worker.workerNumber}
+                      type={worker.listingInfo[2]}
+                      city={worker.listingInfo[6]}
+                      employmentType={worker.listingInfo[5]}
+                      skill={worker.listingInfo[1]}
+                      summary={worker.listingInfo[9]}
+                      showFullListing={showFullListing}
+                    />
+                  ))}
               </div>
             )}
           </div>
