@@ -28,29 +28,10 @@ export default function Workers({}) {
     featuredWorkers: [],
     standardWorkers: [],
   })
-  const [fuzzyListings, setFuzzyListings] = useState({
-    featuredWorkers: [],
-    standardWorkers: [],
-  })
-  const [isFuzzy, setIsFuzzy] = useState(false)
-  const [proximityListings, setProximityListings] = useState({
-    featuredWorkers: [],
-    standardWorkers: [],
-  })
-  const [skillListings, setSkillListings] = useState({
-    featuredWorkers: [],
-    standardWorkers: [],
-  })
-  const [employmentListings, setEmploymentListings] = useState({
-    featuredWorkers: [],
-    standardWorkers: [],
-  })
-  const [typeListings, setTypeListings] = useState({
-    featuredWorkers: [],
-    standardWorkers: [],
-  })
 
   const [skillLevels, setSkillLevels] = useState([])
+  const [employmentTypes, setEmploymentTypes] = useState([])
+  const [workerTypes, setWorkerTypes] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -128,6 +109,59 @@ export default function Workers({}) {
         standardWorkers: newListings[1],
       }
     }
+    if (query.employmentType) {
+      const splitQueryEmployment = query.employmentType.split('-')
+      setEmploymentTypes(splitQueryEmployment)
+
+      const listingsForFunction = [
+        editedListings.featuredWorkers,
+        editedListings.standardWorkers,
+      ]
+
+      const newListings = [[], []]
+      listingsForFunction.forEach((list, index) => {
+        list.forEach((listing) => {
+          splitQueryEmployment.forEach((type) => {
+            console.log(type)
+            if (listing.listingInfo[5] == type) {
+              if (!newListings[index].includes(listing)) {
+                newListings[index].push(listing)
+              }
+            }
+          })
+        })
+      })
+      editedListings = {
+        featuredWorkers: newListings[0],
+        standardWorkers: newListings[1],
+      }
+    }
+    if (query.workerType) {
+      const splitQueryWorker = query.workerType.split('-')
+      setWorkerTypes(splitQueryWorker)
+
+      const listingsForFunction = [
+        editedListings.featuredWorkers,
+        editedListings.standardWorkers,
+      ]
+
+      const newListings = [[], []]
+      listingsForFunction.forEach((list, index) => {
+        list.forEach((listing) => {
+          splitQueryWorker.forEach((type) => {
+            if (listing.listingInfo[2] == type) {
+              if (!newListings[index].includes(listing)) {
+                newListings[index].push(listing)
+              }
+            }
+          })
+        })
+      })
+      editedListings = {
+        featuredWorkers: newListings[0],
+        standardWorkers: newListings[1],
+      }
+    }
 
     router.isReady && setDisplayListings(editedListings)
   }, [query, listings])
@@ -137,7 +171,11 @@ export default function Workers({}) {
     setSelectedWorker(worker[0])
   }
 
-  const setFilters = (level) => {
+  const resetFilters = () => {
+    window.location.href = `/workers?search=${searchInput}&skillLevel=&employmentType=&workerType=`
+  }
+
+  const setFilters = (level, employment, worker) => {
     //Skill Filter
     let updatedSkillLevels = []
     if (skillLevels.includes(level)) {
@@ -154,8 +192,42 @@ export default function Workers({}) {
       })
       .join('-')
 
-    //sendind to url with query
-    window.location.href = `/workers?search=${searchInput}&skillLevel=${mySkillQueryString}`
+    //Employment Type Filter
+    let updatedEmploymentTypes = []
+    if (employmentTypes.includes(employment)) {
+      setEmploymentTypes(employmentTypes.filter((type) => type != employment))
+      updatedEmploymentTypes = employmentTypes.filter(
+        (type) => type != employment
+      )
+    } else {
+      setEmploymentTypes([...employmentTypes, employment])
+      updatedEmploymentTypes = [...employmentTypes, employment]
+    }
+
+    const myEmploymentQueryString = updatedEmploymentTypes
+      .map((el) => {
+        return el
+      })
+      .join('-')
+
+    //Worker Type Filter
+    let updatedWorkerTypes = []
+    if (workerTypes.includes(worker)) {
+      setWorkerTypes(workerTypes.filter((type) => type != worker))
+      updatedWorkerTypes = workerTypes.filter((type) => type != worker)
+    } else {
+      setWorkerTypes([...workerTypes, worker])
+      updatedWorkerTypes = [...workerTypes, worker]
+    }
+
+    const myWorkerQueryString = updatedWorkerTypes
+      .map((el) => {
+        return el
+      })
+      .join('-')
+
+    //sending to url with query
+    window.location.href = `/workers?search=${searchInput}&skillLevel=${mySkillQueryString}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}`
   }
 
   // const setProximity = async () => {
@@ -192,7 +264,7 @@ export default function Workers({}) {
           <div className={styles.workers__filter}>
             <div className={styles.workers__filter__top}>
               <h2>Filter Search</h2>
-              <p>Reset</p>
+              <p onClick={resetFilters}>Reset</p>
             </div>
             <div className={styles.workers__filter__scroll}>
               <div className={styles.workers__filter__scroll__location}>
@@ -228,7 +300,7 @@ export default function Workers({}) {
                     defaultChecked={
                       skillLevels.length > 0 && skillLevels.includes('Beginner')
                     }
-                    onClick={() => setFilters('Beginner')}
+                    onClick={() => setFilters('Beginner', '', '')}
                   />
                   Beginner
                 </label>
@@ -240,7 +312,7 @@ export default function Workers({}) {
                     defaultChecked={
                       skillLevels.length > 0 && skillLevels.includes('Advanced')
                     }
-                    onClick={() => setFilters('Advanced')}
+                    onClick={() => setFilters('Advanced', '', '')}
                   />
                   Advanced
                 </label>
@@ -253,7 +325,7 @@ export default function Workers({}) {
                       skillLevels.length > 0 &&
                       skillLevels.includes('Expert Foreman Grade')
                     }
-                    onClick={() => setFilters('Expert Foreman Grade')}
+                    onClick={() => setFilters('Expert Foreman Grade', '', '')}
                   />
                   Expert Foreman Grade
                 </label>
@@ -263,19 +335,40 @@ export default function Workers({}) {
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      employmentTypes.length > 0 &&
+                      employmentTypes.includes('Full Time')
+                    }
+                    onClick={() => setFilters('', 'Full Time', '')}
+                  />
                   Full Time
                 </label>
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      employmentTypes.length > 0 &&
+                      employmentTypes.includes('Part Time')
+                    }
+                    onClick={() => setFilters('', 'Part Time', '')}
+                  />
                   Part Time
                 </label>
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      employmentTypes.length > 0 &&
+                      employmentTypes.includes('Contract')
+                    }
+                    onClick={() => setFilters('', 'Contract', '')}
+                  />
                   Contract
                 </label>
               </div>
@@ -284,19 +377,38 @@ export default function Workers({}) {
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      workerTypes.length > 0 && workerTypes.includes('Worker')
+                    }
+                    onClick={() => setFilters('', '', 'Worker')}
+                  />
                   Worker
                 </label>
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      workerTypes.length > 0 &&
+                      workerTypes.includes('Crew Driver')
+                    }
+                    onClick={() => setFilters('', '', 'Crew Driver')}
+                  />
                   Crew Driver
                 </label>
                 <label
                   className={styles.workers__filter__scroll__checks__check}
                 >
-                  <input type='checkbox' />
+                  <input
+                    type='checkbox'
+                    defaultChecked={
+                      workerTypes.length > 0 && workerTypes.includes('Both')
+                    }
+                    onClick={() => setFilters('', '', 'Both')}
+                  />
                   Both
                 </label>
               </div>
@@ -309,7 +421,7 @@ export default function Workers({}) {
               placeholder='Search by job title or trade'
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && setFilters('')}
+              onKeyPress={(e) => e.key === 'Enter' && setFilters('', '', '')}
             />
             <p className={styles.workers__listings__notice}>
               All verified workers have been screened by the site administrator
@@ -318,6 +430,12 @@ export default function Workers({}) {
               <p className={styles.workers__listings__loading}>
                 Loading Workers...
               </p>
+            ) : displayListings &&
+              displayListings.featuredWorkers &&
+              displayListings.featuredWorkers.length == 0 &&
+              displayListings.standardWorkers &&
+              displayListings.standardWorkers.length == 0 ? (
+              <p className={styles.workers__listings__loading}>No Results</p>
             ) : (
               <div className={styles.workers__listings__display}>
                 {displayListings &&
