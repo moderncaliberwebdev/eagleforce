@@ -14,13 +14,16 @@ export default function Workers({}) {
   const { query } = useRouter()
   const router = useRouter()
 
-  const [listings, setListings] = useState({})
   const [error, setError] = useState({})
   const [selectedWorker, setSelectedWorker] = useState([])
   const [loading, setLoading] = useState(false)
 
   const [searchInput, setSearchInput] = useState('')
 
+  const [listings, setListings] = useState({
+    featuredWorkers: [],
+    standardWorkers: [],
+  })
   const [displayListings, setDisplayListings] = useState({
     featuredWorkers: [],
     standardWorkers: [],
@@ -70,7 +73,7 @@ export default function Workers({}) {
   useEffect(() => {
     let editedListings = listings
 
-    if (query && query.search && query.search != '') {
+    if (query && query.search && query.search != '' && editedListings) {
       setSearchInput(query.search)
 
       const options = {
