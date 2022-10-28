@@ -70,7 +70,7 @@ export default function Workers({}) {
   useEffect(() => {
     let editedListings = listings
 
-    if (query.search && query.search != '') {
+    if (query && query.search && query.search != '') {
       setSearchInput(query.search)
 
       const options = {
@@ -86,7 +86,7 @@ export default function Workers({}) {
       const fuseFeatured = new Fuse(listings.featuredWorkers, options)
       const fuseStandard = new Fuse(listings.standardWorkers, options)
       // Change the pattern
-      const pattern = query.search
+      const pattern = query.search || ''
       const featuredSearch = fuseFeatured.search(pattern)
       const standardSearch = fuseStandard.search(pattern)
       // setIsFiltered(true)
