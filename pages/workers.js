@@ -270,7 +270,8 @@ export default function Workers({}) {
       })
       .join('-')
 
-    const isProximityUsed = proximityInput.length > 0 && proximityDistance > 0
+    const isProximityUsed =
+      proximityInput.length > 0 && proximityDistance.length > 0
 
     //sending to url with query
     window.location.href = `/workers?search=${searchInput}&skillLevel=${mySkillQueryString}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
