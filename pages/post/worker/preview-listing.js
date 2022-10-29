@@ -54,7 +54,7 @@ function PreviewWorkerListing({ isConnected }) {
   }, [auth])
 
   useEffect(() => {
-    const functionOnLoad = () => {
+    const functionOnLoad = async () => {
       if (localStorage.getItem('listingInfo')) {
         const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
         setListingInfo(parsedInfo)
@@ -79,6 +79,15 @@ function PreviewWorkerListing({ isConnected }) {
     }
     functionOnLoad()
   }, [])
+
+  const getCoords = async () => {
+    const data = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${listingInfo[6]},${listingInfo[7]}&key=${process.env.NEXT_PUBLIC_GEOCODE_API_KEY}`
+    )
+
+    return data.data.results[0].geometry.location
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -121,11 +130,12 @@ function PreviewWorkerListing({ isConnected }) {
                 options={{
                   vault: true,
                   'client-id':
-                    'Aa0y7UQRO1_M92AM5jsJuHdHonnn9o_xGpQsxNH1FfDAlyhr7nJhgbWrArEr67utB3ZUxis2CJZb41mO',
+                    'Aa06y8vEfenUBq-4JR9WCd9tVUr18KdkE4VDXrj1VfhJISrPyz38zGiCUG8pdroDcNgKDjZuxUlZsN9g',
+                  intent: 'subscription',
                 }}
                 createSubscription={(data, actions) => {
                   return actions.subscription.create({
-                    plan_id: 'P-3B724015PB648072WMNG3MZY',
+                    plan_id: 'P-2TJ80196MP706632EMNFM53I',
                   })
                 }}
                 style={{
@@ -138,6 +148,8 @@ function PreviewWorkerListing({ isConnected }) {
                   return actions.subscription
                     .get()
                     .then(async function (details) {
+                      const getGeocode = await getCoords()
+
                       const config = {
                         headers: {
                           Authorization: `Bearer ${auth.currentUser.accessToken}`,
@@ -156,6 +168,7 @@ function PreviewWorkerListing({ isConnected }) {
                           workerNumber,
                           orderID: data.orderID,
                           orderDetails: details,
+                          geocode: getGeocode,
                         },
                         config
                       )
@@ -169,15 +182,23 @@ function PreviewWorkerListing({ isConnected }) {
               />
             ) : (
               planType.type == 'Standard' && (
+                //Production Client ID: Aa06y8vEfenUBq-4JR9WCd9tVUr18KdkE4VDXrj1VfhJISrPyz38zGiCUG8pdroDcNgKDjZuxUlZsN9g
+                //Production Plan: P-1S184688RH238182AMMUJUUY
+                //Production 1 Cent Plan: P-2TJ80196MP706632EMNFM53I
+
+                //Sandbox Client ID: Aa0y7UQRO1_M92AM5jsJuHdHonnn9o_xGpQsxNH1FfDAlyhr7nJhgbWrArEr67utB3ZUxis2CJZb41mO
+                //Sandbox Plan: P-3H207100FH963184YMNMCCBA
+
                 <PayPalButton
                   options={{
                     vault: true,
                     'client-id':
-                      'Aa0y7UQRO1_M92AM5jsJuHdHonnn9o_xGpQsxNH1FfDAlyhr7nJhgbWrArEr67utB3ZUxis2CJZb41mO',
+                      'Aa06y8vEfenUBq-4JR9WCd9tVUr18KdkE4VDXrj1VfhJISrPyz38zGiCUG8pdroDcNgKDjZuxUlZsN9g',
+                    intent: 'subscription',
                   }}
                   createSubscription={(data, actions) => {
                     return actions.subscription.create({
-                      plan_id: 'P-3H207100FH963184YMNMCCBA',
+                      plan_id: 'P-2TJ80196MP706632EMNFM53I',
                     })
                   }}
                   style={{
@@ -190,6 +211,8 @@ function PreviewWorkerListing({ isConnected }) {
                     return actions.subscription
                       .get()
                       .then(async function (details) {
+                        const getGeocode = await getCoords()
+
                         const config = {
                           headers: {
                             Authorization: `Bearer ${auth.currentUser.accessToken}`,
@@ -208,6 +231,7 @@ function PreviewWorkerListing({ isConnected }) {
                             workerNumber,
                             orderID: data.orderID,
                             orderDetails: details,
+                            geocode: getGeocode,
                           },
                           config
                         )

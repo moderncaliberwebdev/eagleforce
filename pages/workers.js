@@ -4,6 +4,7 @@ import Layout from '../Components/Layout'
 import styles from '../styles/Workers.module.scss'
 import axios from 'axios'
 import Fuse from 'fuse.js'
+import haversine from 'haversine-distance'
 
 import { useEffect, useState } from 'react'
 import WorkerListingBlock from '../Components/WorkerListingBlock'
@@ -32,6 +33,8 @@ export default function Workers({}) {
   const [skillLevels, setSkillLevels] = useState([])
   const [employmentTypes, setEmploymentTypes] = useState([])
   const [workerTypes, setWorkerTypes] = useState([])
+  const [proximityInput, setProximityInput] = useState('')
+  const [proximityDistance, setProximityDistance] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +47,6 @@ export default function Workers({}) {
         setListings(JSON.parse(JSON.stringify(data.data)))
       } catch (e) {
         console.error(e)
-        setError(JSON.parse(JSON.stringify(e)))
       }
     }
 
@@ -52,118 +54,160 @@ export default function Workers({}) {
   }, [])
 
   useEffect(() => {
-    let editedListings = listings
+    const getQueries = async () => {
+      let editedListings = listings
 
-    if (query && query.search && query.search != '' && editedListings) {
-      setSearchInput(query.search)
+      if (query && query.search && query.search != '' && editedListings) {
+        setSearchInput(query.search)
 
-      const options = {
-        keys: [
-          ['listingInfo', 0],
-          ['listingInfo', 10, 0, 0],
-          ['listingInfo', 11],
-        ],
-        includeScore: true,
-        ignoreLocation: true,
-        threshold: 0.3,
+        const options = {
+          keys: [
+            ['listingInfo', 0],
+            ['listingInfo', 10, 0, 0],
+            ['listingInfo', 11],
+          ],
+          includeScore: true,
+          ignoreLocation: true,
+          threshold: 0.3,
+        }
+        const fuseFeatured = new Fuse(listings.featuredWorkers, options)
+        const fuseStandard = new Fuse(listings.standardWorkers, options)
+        // Change the pattern
+        const pattern = query.search || ''
+        const featuredSearch = fuseFeatured.search(pattern)
+        const standardSearch = fuseStandard.search(pattern)
+        // setIsFiltered(true)
+        const itemizedFeaturedSearch = []
+        const itemizedStandardSearch = []
+        featuredSearch.forEach((item) => itemizedFeaturedSearch.push(item.item))
+        standardSearch.forEach((item) => itemizedStandardSearch.push(item.item))
+        // setIsFuzzy(true)
+        editedListings = {
+          featuredWorkers: itemizedFeaturedSearch,
+          standardWorkers: itemizedStandardSearch,
+        }
       }
-      const fuseFeatured = new Fuse(listings.featuredWorkers, options)
-      const fuseStandard = new Fuse(listings.standardWorkers, options)
-      // Change the pattern
-      const pattern = query.search || ''
-      const featuredSearch = fuseFeatured.search(pattern)
-      const standardSearch = fuseStandard.search(pattern)
-      // setIsFiltered(true)
-      const itemizedFeaturedSearch = []
-      const itemizedStandardSearch = []
-      featuredSearch.forEach((item) => itemizedFeaturedSearch.push(item.item))
-      standardSearch.forEach((item) => itemizedStandardSearch.push(item.item))
-      // setIsFuzzy(true)
-      editedListings = {
-        featuredWorkers: itemizedFeaturedSearch,
-        standardWorkers: itemizedStandardSearch,
-      }
-    }
-    if (query.skillLevel) {
-      const splitQuerySkills = query.skillLevel.split('-')
-      setSkillLevels(splitQuerySkills)
-      const listingsForFunction = [
-        editedListings.featuredWorkers,
-        editedListings.standardWorkers,
-      ]
+      if (query.skillLevel) {
+        const splitQuerySkills = query.skillLevel.split('-')
+        setSkillLevels(splitQuerySkills)
+        const listingsForFunction = [
+          editedListings.featuredWorkers,
+          editedListings.standardWorkers,
+        ]
 
-      const newListings = [[], []]
-      listingsForFunction.forEach((list, index) => {
-        list.forEach((listing) => {
-          splitQuerySkills.forEach((skill) => {
-            if (listing.listingInfo[1] == skill) {
-              if (!newListings[index].includes(listing)) {
-                newListings[index].push(listing)
+        const newListings = [[], []]
+        listingsForFunction.forEach((list, index) => {
+          list.forEach((listing) => {
+            splitQuerySkills.forEach((skill) => {
+              if (listing.listingInfo[1] == skill) {
+                if (!newListings[index].includes(listing)) {
+                  newListings[index].push(listing)
+                }
               }
+            })
+          })
+        })
+        editedListings = {
+          featuredWorkers: newListings[0],
+          standardWorkers: newListings[1],
+        }
+      }
+      if (query.employmentType) {
+        const splitQueryEmployment = query.employmentType.split('-')
+        setEmploymentTypes(splitQueryEmployment)
+
+        const listingsForFunction = [
+          editedListings.featuredWorkers,
+          editedListings.standardWorkers,
+        ]
+
+        const newListings = [[], []]
+        listingsForFunction.forEach((list, index) => {
+          list.forEach((listing) => {
+            splitQueryEmployment.forEach((type) => {
+              console.log(type)
+              if (listing.listingInfo[5] == type) {
+                if (!newListings[index].includes(listing)) {
+                  newListings[index].push(listing)
+                }
+              }
+            })
+          })
+        })
+        editedListings = {
+          featuredWorkers: newListings[0],
+          standardWorkers: newListings[1],
+        }
+      }
+      if (query.workerType) {
+        const splitQueryWorker = query.workerType.split('-')
+        setWorkerTypes(splitQueryWorker)
+
+        const listingsForFunction = [
+          editedListings.featuredWorkers,
+          editedListings.standardWorkers,
+        ]
+
+        const newListings = [[], []]
+        listingsForFunction.forEach((list, index) => {
+          list.forEach((listing) => {
+            splitQueryWorker.forEach((type) => {
+              if (listing.listingInfo[2] == type) {
+                if (!newListings[index].includes(listing)) {
+                  newListings[index].push(listing)
+                }
+              }
+            })
+          })
+        })
+        editedListings = {
+          featuredWorkers: newListings[0],
+          standardWorkers: newListings[1],
+        }
+      }
+      if (query.location) {
+        setProximityInput(query.location)
+        setProximityDistance(query.prox)
+
+        const data = await axios.get(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${query.location}&key=${process.env.NEXT_PUBLIC_GEOCODE_API_KEY}`
+        )
+
+        const userLocation = data.data.results[0].geometry.location
+
+        const listingsForFunction = [
+          editedListings.featuredWorkers,
+          editedListings.standardWorkers,
+        ]
+
+        const listingsLocationArr = [[], []]
+
+        listingsForFunction.forEach((list, index) => {
+          list.forEach((listing) => {
+            console.log(
+              `${haversine(userLocation, listing.geocode) / 1609.34} < ${
+                query.prox.split(' ')[0]
+              }`
+            )
+            if (
+              haversine(userLocation, listing.geocode) / 1609.34 <
+              query.prox.split(' ')[0]
+            ) {
+              listingsLocationArr[index].push(listing)
             }
           })
         })
-      })
-      editedListings = {
-        featuredWorkers: newListings[0],
-        standardWorkers: newListings[1],
+
+        editedListings = {
+          featuredWorkers: listingsLocationArr[0],
+          standardWorkers: listingsLocationArr[1],
+        }
       }
-    }
-    if (query.employmentType) {
-      const splitQueryEmployment = query.employmentType.split('-')
-      setEmploymentTypes(splitQueryEmployment)
 
-      const listingsForFunction = [
-        editedListings.featuredWorkers,
-        editedListings.standardWorkers,
-      ]
-
-      const newListings = [[], []]
-      listingsForFunction.forEach((list, index) => {
-        list.forEach((listing) => {
-          splitQueryEmployment.forEach((type) => {
-            console.log(type)
-            if (listing.listingInfo[5] == type) {
-              if (!newListings[index].includes(listing)) {
-                newListings[index].push(listing)
-              }
-            }
-          })
-        })
-      })
-      editedListings = {
-        featuredWorkers: newListings[0],
-        standardWorkers: newListings[1],
-      }
-    }
-    if (query.workerType) {
-      const splitQueryWorker = query.workerType.split('-')
-      setWorkerTypes(splitQueryWorker)
-
-      const listingsForFunction = [
-        editedListings.featuredWorkers,
-        editedListings.standardWorkers,
-      ]
-
-      const newListings = [[], []]
-      listingsForFunction.forEach((list, index) => {
-        list.forEach((listing) => {
-          splitQueryWorker.forEach((type) => {
-            if (listing.listingInfo[2] == type) {
-              if (!newListings[index].includes(listing)) {
-                newListings[index].push(listing)
-              }
-            }
-          })
-        })
-      })
-      editedListings = {
-        featuredWorkers: newListings[0],
-        standardWorkers: newListings[1],
-      }
+      router.isReady && setDisplayListings(editedListings)
     }
 
-    router.isReady && setDisplayListings(editedListings)
+    getQueries()
   }, [query, listings])
 
   const showFullListing = (number, type) => {
@@ -172,10 +216,10 @@ export default function Workers({}) {
   }
 
   const resetFilters = () => {
-    window.location.href = `/workers?search=${searchInput}&skillLevel=&employmentType=&workerType=`
+    window.location.href = `/workers?search=${searchInput}&skillLevel=&employmentType=&workerType=&location=&prox=`
   }
 
-  const setFilters = (level, employment, worker) => {
+  const setFilters = (level, employment, worker, location, proximity) => {
     //Skill Filter
     let updatedSkillLevels = []
     if (skillLevels.includes(level)) {
@@ -226,15 +270,13 @@ export default function Workers({}) {
       })
       .join('-')
 
-    //sending to url with query
-    window.location.href = `/workers?search=${searchInput}&skillLevel=${mySkillQueryString}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}`
-  }
+    const isProximityUsed = proximityInput.length > 0 && proximityDistance > 0
 
-  // const setProximity = async () => {
-  //   const distance = await axios.get(
-  //     `https://api.mapbox.com/directions-matrix/v1/mapbox/driving/{coordinates}?access_token=${MAPBOX_TOKEN}`
-  //   )
-  // }
+    //sending to url with query
+    window.location.href = `/workers?search=${searchInput}&skillLevel=${mySkillQueryString}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
+      isProximityUsed ? proximityInput : ''
+    }&prox=${isProximityUsed ? proximityDistance : ''}`
+  }
 
   return (
     <div className={styles.container}>
@@ -269,8 +311,17 @@ export default function Workers({}) {
             <div className={styles.workers__filter__scroll}>
               <div className={styles.workers__filter__scroll__location}>
                 <h3>Location</h3>
-                <input type='text' placeholder='Lancaster, PA' />
-                <select required>
+                <input
+                  type='text'
+                  placeholder='Lancaster, PA'
+                  value={proximityInput}
+                  onChange={(e) => setProximityInput(e.target.value)}
+                />
+                <select
+                  required
+                  value={proximityDistance.length > 0 ? proximityDistance : ''}
+                  onChange={(e) => setProximityDistance(e.target.value)}
+                >
                   <option value='' disabled selected hidden>
                     Proximity
                   </option>
@@ -285,7 +336,17 @@ export default function Workers({}) {
                   <option value='500 Miles'>500 Miles</option>
                 </select>
                 <button
-                // onClick={setProximity}
+                  onClick={() => {
+                    if (
+                      proximityInput.length > 0 &&
+                      proximityDistance.length > 0
+                    ) {
+                      setFilters('', '', '', proximityInput, proximityDistance)
+                    } else
+                      setError(
+                        'Fill in a location and a proximity before clicking Apply'
+                      )
+                  }}
                 >
                   Apply
                 </button>
@@ -300,7 +361,7 @@ export default function Workers({}) {
                     defaultChecked={
                       skillLevels.length > 0 && skillLevels.includes('Beginner')
                     }
-                    onClick={() => setFilters('Beginner', '', '')}
+                    onClick={() => setFilters('Beginner', '', '', '', '')}
                   />
                   Beginner
                 </label>
@@ -312,7 +373,7 @@ export default function Workers({}) {
                     defaultChecked={
                       skillLevels.length > 0 && skillLevels.includes('Advanced')
                     }
-                    onClick={() => setFilters('Advanced', '', '')}
+                    onClick={() => setFilters('Advanced', '', '', '', '')}
                   />
                   Advanced
                 </label>
@@ -325,7 +386,9 @@ export default function Workers({}) {
                       skillLevels.length > 0 &&
                       skillLevels.includes('Expert Foreman Grade')
                     }
-                    onClick={() => setFilters('Expert Foreman Grade', '', '')}
+                    onClick={() =>
+                      setFilters('Expert Foreman Grade', '', '', '', '')
+                    }
                   />
                   Expert Foreman Grade
                 </label>
@@ -341,7 +404,7 @@ export default function Workers({}) {
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Full Time')
                     }
-                    onClick={() => setFilters('', 'Full Time', '')}
+                    onClick={() => setFilters('', 'Full Time', '', '', '')}
                   />
                   Full Time
                 </label>
@@ -354,7 +417,7 @@ export default function Workers({}) {
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Part Time')
                     }
-                    onClick={() => setFilters('', 'Part Time', '')}
+                    onClick={() => setFilters('', 'Part Time', '', '', '')}
                   />
                   Part Time
                 </label>
@@ -367,7 +430,7 @@ export default function Workers({}) {
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Contract')
                     }
-                    onClick={() => setFilters('', 'Contract', '')}
+                    onClick={() => setFilters('', 'Contract', '', '', '')}
                   />
                   Contract
                 </label>
@@ -382,7 +445,7 @@ export default function Workers({}) {
                     defaultChecked={
                       workerTypes.length > 0 && workerTypes.includes('Worker')
                     }
-                    onClick={() => setFilters('', '', 'Worker')}
+                    onClick={() => setFilters('', '', 'Worker', '', '')}
                   />
                   Worker
                 </label>
@@ -395,7 +458,7 @@ export default function Workers({}) {
                       workerTypes.length > 0 &&
                       workerTypes.includes('Crew Driver')
                     }
-                    onClick={() => setFilters('', '', 'Crew Driver')}
+                    onClick={() => setFilters('', '', 'Crew Driver', '', '')}
                   />
                   Crew Driver
                 </label>
@@ -407,7 +470,7 @@ export default function Workers({}) {
                     defaultChecked={
                       workerTypes.length > 0 && workerTypes.includes('Both')
                     }
-                    onClick={() => setFilters('', '', 'Both')}
+                    onClick={() => setFilters('', '', 'Both', '', '')}
                   />
                   Both
                 </label>
@@ -421,7 +484,9 @@ export default function Workers({}) {
               placeholder='Search by job title or trade'
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && setFilters('', '', '')}
+              onKeyPress={(e) =>
+                e.key === 'Enter' && setFilters('', '', '', '', '')
+              }
             />
             <p className={styles.workers__listings__notice}>
               All verified workers have been screened by the site administrator
