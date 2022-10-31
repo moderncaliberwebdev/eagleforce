@@ -129,13 +129,12 @@ function PreviewWorkerListing({ isConnected }) {
               <PayPalButton
                 options={{
                   vault: true,
-                  'client-id':
-                    'Aa06y8vEfenUBq-4JR9WCd9tVUr18KdkE4VDXrj1VfhJISrPyz38zGiCUG8pdroDcNgKDjZuxUlZsN9g',
+                  'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
                   intent: 'subscription',
                 }}
                 createSubscription={(data, actions) => {
                   return actions.subscription.create({
-                    plan_id: 'P-2TJ80196MP706632EMNFM53I',
+                    plan_id: process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN,
                   })
                 }}
                 style={{
@@ -192,13 +191,12 @@ function PreviewWorkerListing({ isConnected }) {
                 <PayPalButton
                   options={{
                     vault: true,
-                    'client-id':
-                      'Aa06y8vEfenUBq-4JR9WCd9tVUr18KdkE4VDXrj1VfhJISrPyz38zGiCUG8pdroDcNgKDjZuxUlZsN9g',
+                    'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
                     intent: 'subscription',
                   }}
                   createSubscription={(data, actions) => {
                     return actions.subscription.create({
-                      plan_id: 'P-2TJ80196MP706632EMNFM53I',
+                      plan_id: process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN,
                     })
                   }}
                   style={{

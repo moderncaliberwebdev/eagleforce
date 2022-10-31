@@ -39,8 +39,19 @@ function PricingBlock({
     })
   }, [auth])
 
+  useEffect(() => {
+    console.log(currentUser)
+  }, [currentUser])
+
   return (
-    <Link href='/post/worker/create-listing' passHref>
+    <Link
+      href={
+        currentUser
+          ? '/post/worker/create-listing'
+          : '/sign-in?error=post-no-user'
+      }
+      passHref
+    >
       <a
         className={styles.block}
         style={{ color: color, backgroundColor: background }}
@@ -70,14 +81,14 @@ function PricingBlock({
               </div>
             ))}
         </div>
-        {currentUser ? (
-          <button
-            className={styles.block__choose}
-            style={{ color: color, backgroundColor: backgroundLight }}
-          >
-            Choose {type} Plan
-          </button>
-        ) : (
+        {/* {currentUser ? ( */}
+        <button
+          className={styles.block__choose}
+          style={{ color: color, backgroundColor: backgroundLight }}
+        >
+          Choose {type} Plan
+        </button>
+        {/* ) : (
           <button
             className={styles.block__choose}
             style={{ color: color, backgroundColor: backgroundLight }}
@@ -85,7 +96,7 @@ function PricingBlock({
           >
             Choose {type} Plan
           </button>
-        )}
+        )} */}
       </a>
     </Link>
   )

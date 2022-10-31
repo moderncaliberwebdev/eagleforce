@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../styles/Popup.module.scss'
 
-function Popup({ question, desc, answer, no, cancel, next, openPopup }) {
+function Popup({ question, desc, answer, no, cancel, next, openPopup, renew }) {
   return (
     <div
       className={styles.popup}
@@ -10,9 +10,21 @@ function Popup({ question, desc, answer, no, cancel, next, openPopup }) {
       <div className={styles.popup__message}>
         <h2>{question}</h2>
         <p>{desc}</p>
-        <div className={styles.popup__message__buttons}>
-          <button onClick={cancel}>{no}</button>
-          <button onClick={next}>{answer}</button>
+        <div
+          className={styles.popup__message__buttons}
+          style={{ flexDirection: renew ? 'row-reverse' : 'row' }}
+        >
+          {renew ? (
+            <>
+              <button onClick={next}>{answer}</button>
+              <button onClick={cancel}>{no}</button>
+            </>
+          ) : (
+            <>
+              <button onClick={cancel}>{no}</button>
+              <button onClick={next}>{answer}</button>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import ListingJob from './ListingJob'
 import ListingHighlight from './ListingHighlight'
 import axios from 'axios'
+import qs from 'qs'
 import Link from 'next/link'
 import Popup from './Popup'
 
@@ -185,6 +186,26 @@ function YourListing({ listing, currentUser }) {
   }
 
   const closeListing = async () => {
+    //get paypal token
+    const basicAuth = `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT}:${process.env.NEXT_PUBLIC_PAYPAL_SECRET}`
+    const qsData = qs.stringify({
+      grant_type: 'client_credentials',
+    })
+
+    const tokenConfig = {
+      headers: {
+        'Content-Type': 'x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(basicAuth).toString('base64')}`,
+      },
+    }
+
+    const paypalToken = await axios.post(
+      'https://api-m.paypal.com/v1/oauth2/token',
+      qsData,
+      tokenConfig
+    )
+
+    //delete listing from database
     const config = {
       headers: { Authorization: `Bearer ${currentUser.accessToken}` },
     }
@@ -197,7 +218,21 @@ function YourListing({ listing, currentUser }) {
       config
     )
 
-    data && console.log(data)
+    //pause listing on paypal
+    if (data.data.worker) {
+      const suspendConfig = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${paypalToken.data.access_token}`,
+        },
+      }
+      const suspendData = await axios.post(
+        `https://api-m.paypal.com/v1/billing/subscriptions/${data.data.worker.value.orderDetails.id}/suspend`,
+        {},
+        suspendConfig
+      )
+      suspendData && window.location.reload()
+    }
   }
 
   return (

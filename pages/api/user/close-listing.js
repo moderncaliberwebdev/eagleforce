@@ -26,7 +26,7 @@ const handler = nc()
         { $addToSet: { previousListings: worker.value } }
       )
 
-      res.json(previousListing)
+      res.json({ previousListing, worker })
     } catch (e) {
       console.error(e)
     }

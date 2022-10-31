@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../styles/PreviousListing.module.scss'
 
-import RichText from '../Components/RichText'
-import Image from 'next/image'
-import ListingJob from './ListingJob'
-import ListingHighlight from './ListingHighlight'
 import axios from 'axios'
-import Link from 'next/link'
+import qs from 'qs'
 import Popup from './Popup'
 
 function PreviousListing({ listing, currentUser }) {
@@ -182,32 +178,68 @@ function PreviousListing({ listing, currentUser }) {
     setOpenPopup(false)
   }
 
-  const closeListing = async () => {
+  const renewListing = async () => {
+    //get paypal token
+    const basicAuth = `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT}:${process.env.NEXT_PUBLIC_PAYPAL_SECRET}`
+    const qsData = qs.stringify({
+      grant_type: 'client_credentials',
+    })
+
+    const tokenConfig = {
+      headers: {
+        'Content-Type': 'x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(basicAuth).toString('base64')}`,
+      },
+    }
+
+    const paypalToken = await axios.post(
+      'https://api-m.paypal.com/v1/oauth2/token',
+      qsData,
+      tokenConfig
+    )
+
+    //return listing to database
     const config = {
       headers: { Authorization: `Bearer ${currentUser.accessToken}` },
     }
-    const data = await axios.put(
-      '/api/user/close-listing',
+    const data = await axios.post(
+      '/api/user/renew-listing',
       {
         email: currentUser.email,
         number: listing.workerNumber,
       },
       config
     )
+    console.log(data)
 
-    data && console.log(data)
+    // renew listing on paypal
+    if (data.data.newListing) {
+      const activateConfig = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${paypalToken.data.access_token}`,
+        },
+      }
+      const activateData = await axios.post(
+        `https://api-m.paypal.com/v1/billing/subscriptions/${data.data.newListing.orderDetails.id}/activate`,
+        {},
+        activateConfig
+      )
+      activateData && window.location.reload()
+    }
   }
 
   return (
     <div className={styles.blocks__block} key={listing._id}>
       <Popup
-        question='Are you sure you want to close your listing?'
-        desc='Your subscription will be cancelled. This action can be undone by going to the Previous Listings tab in the Listings section of your profile.'
+        question='Are you sure you want to reopen your listing?'
+        desc='Your subscription will be renewed at at the same price as when you cancelled it'
         answer='Continue'
         no='Cancel'
         cancel={cancelDelete}
-        next={closeListing}
+        next={renewListing}
         openPopup={openPopup}
+        renew={true}
       />
       <div className={styles.blocks__block__info}>
         <h2>

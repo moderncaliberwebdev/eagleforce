@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-// import firebase from '../firebase/clientApp'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import app from '../firebase/clientApp'
 import validator from 'validator'
@@ -7,19 +7,25 @@ import Head from 'next/head'
 import Layout from '../Components/Layout'
 import Image from 'next/image'
 import Link from 'next/link'
-// import { useAuthState } from 'react-firebase-hooks/auth'
 
 import styles from '../styles/SignUp.module.scss'
 
 function SignIn() {
-  // User Authentication
-  //   const [user, loading, error] = useAuthState(firebase.auth())
+  const { query } = useRouter()
+  const router = useRouter()
+
   const auth = getAuth(app)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
+
+  useEffect(() => {
+    if (router.isReady && query.error && query.error == 'post-no-user') {
+      setErrorMsg('You must be signed in to create a listing')
+    }
+  }, [query])
 
   const signUp = () => {
     //front end validation
@@ -41,7 +47,10 @@ function SignIn() {
           setEmail('')
           setPassword('')
           setErrorMsg('')
-          window.location.href = '/'
+
+          if (query.error && query.error == 'post-no-user') {
+            window.location.href = '/post/worker'
+          } else window.location.href = '/'
         })
         .catch((error) => {
           const errorMessage = error.message.replace('Firebase: ', '')

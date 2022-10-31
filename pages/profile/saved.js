@@ -45,9 +45,9 @@ function SavedListings() {
     setSelectedWorker(worker[0])
   }
 
-  const unBookmark = (number) => {
-    window.location.reload()
-  }
+  // const unBookmark = (number) => {
+  //   window.location.reload()
+  // }
 
   return (
     <div className={styles.container}>
@@ -167,7 +167,7 @@ function SavedListings() {
                     selectedWorker.listingInfo &&
                     selectedWorker.listingInfo[11]
                   }
-                  unBookmark={unBookmark}
+                  refresh={true}
                 />
               </>
             ) : (
