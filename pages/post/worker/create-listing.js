@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Head from 'next/head'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -35,6 +34,9 @@ function CreateListing({}) {
       if (!localStorage.getItem('planType')) {
         window.location.href = '/post/worker'
       } else {
+        if (JSON.parse(localStorage.getItem('planType')).user == 'Employer') {
+          window.location.href = '/post/employer'
+        }
         if (localStorage.getItem('listingInfo')) {
           const parsedInfo = JSON.parse(localStorage.getItem('listingInfo'))
 
