@@ -1,0 +1,42 @@
+@import 'mixins';
+@import 'variables';
+
+.profile_breadcrumbs {
+  ul {
+    width: 50rem !important;
+  }
+}
+
+.breadcrumbs {
+  ul {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    width: 90rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style-type: none;
+    margin: 4rem auto;
+    border-radius: 10px;
+    background: #fff;
+
+    a {
+      text-decoration: none;
+    }
+
+    li {
+      padding: 1.5rem;
+      color: #000;
+      text-decoration: none;
+      font-size: $font-text;
+    }
+    .first_a {
+      border-radius: 10px 0 0 10px;
+      padding-left: 4rem;
+    }
+    .last_a {
+      border-radius: 0 10px 10px 0;
+      padding-right: 4rem;
+    }
+    // }
+  }
+}

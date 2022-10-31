@@ -46,8 +46,10 @@ function PricingBlock({
   return (
     <Link
       href={
-        currentUser
+        currentUser && user == 'Worker'
           ? '/post/worker/create-listing'
+          : currentUser && user == 'Employer'
+          ? '/post/employer/create-listing'
           : '/sign-in?error=post-no-user'
       }
       passHref
