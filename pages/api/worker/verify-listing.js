@@ -25,8 +25,8 @@ const mailTo = (fullName, email, message, callback) => {
             `
     const mailOptions = {
       from: email,
-      to: 'cmartin@moderncaliber.com',
-      subject: 'Eagle Force Listing Verification Request',
+      to: 'verify@eagleforceemploymentservices.com',
+      subject: 'Eagle Force Get Verified Request',
       html: output,
     }
     transporter.sendMail(mailOptions, (err, data) => {

@@ -11,24 +11,32 @@ const auth = {
 
 const transporter = nodemailer.createTransport(mailGun(auth))
 
-const mailTo = (firstname, lastname, email, phone, message, callback) => {
+const mailTo = (
+  fullName,
+  companyName,
+  yourEmail,
+  message,
+  worker,
+  callback
+) => {
   //validation
-  if (!firstname || !lastname || !email || !phone || !message) {
+  if (!fullName || !companyName || !yourEmail || !message) {
     return callback('Please fill in all fields', undefined)
-  } else if (!validator.isEmail(email)) {
+  } else if (!validator.isEmail(yourEmail)) {
     return callback('Provide a valid email', undefined)
   } else {
     const output = `
-                <h3>First Name: </h3> ${firstname}
-                <h3>Last Name: </h3> ${lastname}
-                <h3>Email: </h3> ${email}
-                <h3>Phone Number: </h3> ${phone}
+                <h3>Name: </h3> ${fullName}
+                <h3>Company Name: </h3> ${companyName}
+                <h3>Worker to Contact: </h3> #${worker}
+                <h3>Email: </h3> ${yourEmail}
                 <h3>Message: </h3> ${message}
             `
     const mailOptions = {
-      from: email,
-      to: 'support@eagleforceemploymentservices.com',
-      subject: 'Eagle Force Support Team',
+      from: yourEmail,
+      to: 'contact@eagleforceemploymentservices.com',
+      //   to: 'cmartin@moderncaliber.com',
+      subject: 'Eagle Force Contact Request',
       html: output,
     }
     transporter.sendMail(mailOptions, (err, data) => {
@@ -42,14 +50,14 @@ const mailTo = (firstname, lastname, email, phone, message, callback) => {
 }
 
 export default function mail(req, res) {
-  const { firstname, lastname, email, phone, message } = req.query
-  mailTo(firstname, lastname, email, phone, message, (err, data) => {
+  const { fullName, companyName, yourEmail, message, worker } = req.body
+  mailTo(fullName, companyName, yourEmail, message, worker, (err, data) => {
     res.send({
-      firstname,
-      lastname,
-      email,
-      phone,
+      fullName,
+      companyName,
+      yourEmail,
       message,
+      worker,
       formResponse: err,
     })
   })

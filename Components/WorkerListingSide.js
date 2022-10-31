@@ -6,6 +6,7 @@ import app from '../firebase/clientApp'
 
 import styles from '../styles/WorkerListingSide.module.scss'
 import axios from 'axios'
+import ContactPopup from './ContactPopup'
 
 const auth = getAuth()
 
@@ -27,6 +28,7 @@ function WorkerListingSide({
   const [bookmarked, setBookmarked] = useState(false)
   const [bookmarks, setBookmarks] = useState([])
   const [error, setError] = useState('')
+  const [contactWorker, setContactWorker] = useState(false)
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -102,8 +104,13 @@ function WorkerListingSide({
     }
   }
 
+  const cancel = () => {
+    setContactWorker(false)
+  }
+
   return (
     <div className={styles.side}>
+      <ContactPopup openPopup={contactWorker} cancel={cancel} worker={number} />
       <div className={styles.side__title}>
         <Image
           src='/images/post/worker.png'
@@ -233,7 +240,9 @@ function WorkerListingSide({
             </div>
           </div>
           <div className={styles.side__contact}>
-            <button>Contact Worker</button>
+            <button onClick={() => setContactWorker(true)}>
+              Contact Worker
+            </button>
           </div>
         </>
       )}
