@@ -80,6 +80,10 @@ function CreateEmployerListing({}) {
     if (!allFilled) {
       setErrorMsg('Please Fill in All Required Fields')
     } else {
+      localStorage.setItem(
+        'employerNumber',
+        Math.floor(100000 + Math.random() * 900000)
+      )
       window.location.href = '/post/employer/preview-listing'
     }
   }

@@ -1,38 +1,39 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Layout from '../Components/Layout'
-import styles from '../styles/Workers.module.scss'
+import styles from '../styles/Employers.module.scss'
 import axios from 'axios'
 import Fuse from 'fuse.js'
 import haversine from 'haversine-distance'
 
 import { useEffect, useState } from 'react'
-import WorkerListingBlock from '../Components/WorkerListingBlock'
-import FeaturedWorkerListingBlock from '../Components/FeaturedWorkerListingBlock'
-import WorkerListingSide from '../Components/WorkerListingSide'
+import EmployerListingBlock from '../Components/EmployerListingBlock'
+import FeaturedEmployerListingBlock from '../Components/FeaturedEmployerListingBlock'
+import EmployerListingSide from '../Components/EmployerListingSide'
 
-export default function Workers({}) {
+export default function Employers({}) {
   const { query } = useRouter()
   const router = useRouter()
 
   const [error, setError] = useState({})
-  const [selectedWorker, setSelectedWorker] = useState([])
+  const [selectedEmployer, setSelectedEmployer] = useState([])
   const [loading, setLoading] = useState(false)
 
   const [searchInput, setSearchInput] = useState('')
 
   const [listings, setListings] = useState({
-    featuredWorkers: [],
-    standardWorkers: [],
+    featuredEmployers: [],
+    standardEmployers: [],
   })
   const [displayListings, setDisplayListings] = useState({
-    featuredWorkers: [],
-    standardWorkers: [],
+    featuredEmployers: [],
+    standardEmployers: [],
   })
 
-  const [skillLevels, setSkillLevels] = useState([])
   const [employmentTypes, setEmploymentTypes] = useState([])
   const [workerTypes, setWorkerTypes] = useState([])
+  const [rateStart, setRateStart] = useState('')
+  const [rateEnd, setRateEnd] = useState('')
   const [proximityInput, setProximityInput] = useState('')
   const [proximityDistance, setProximityDistance] = useState('')
 
@@ -41,7 +42,7 @@ export default function Workers({}) {
       setLoading(true)
       try {
         const data = await axios.get(
-          `${process.env.NEXT_PUBLIC_URL}/api/worker/get-workers`
+          `${process.env.NEXT_PUBLIC_URL}/api/employer/get-employers`
         )
         data && setLoading(false)
         setListings(JSON.parse(JSON.stringify(data.data)))
@@ -63,16 +64,15 @@ export default function Workers({}) {
         const options = {
           keys: [
             ['listingInfo', 0],
-            ['listingInfo', 10, 0, 0],
-            ['listingInfo', 11],
-            'workerNumber',
+            ['listingInfo', 1],
+            ['listingInfo', 10],
           ],
           includeScore: true,
           ignoreLocation: true,
           threshold: 0.3,
         }
-        const fuseFeatured = new Fuse(listings.featuredWorkers, options)
-        const fuseStandard = new Fuse(listings.standardWorkers, options)
+        const fuseFeatured = new Fuse(listings.featuredEmployers, options)
+        const fuseStandard = new Fuse(listings.standardEmployers, options)
         // Change the pattern
         const pattern = query.search || ''
         const featuredSearch = fuseFeatured.search(pattern)
@@ -84,49 +84,25 @@ export default function Workers({}) {
         standardSearch.forEach((item) => itemizedStandardSearch.push(item.item))
         // setIsFuzzy(true)
         editedListings = {
-          featuredWorkers: itemizedFeaturedSearch,
-          standardWorkers: itemizedStandardSearch,
+          featuredEmployers: itemizedFeaturedSearch,
+          standardEmployers: itemizedStandardSearch,
         }
       }
-      if (query.skillLevel) {
-        const splitQuerySkills = query.skillLevel.split('-')
-        setSkillLevels(splitQuerySkills)
-        const listingsForFunction = [
-          editedListings.featuredWorkers,
-          editedListings.standardWorkers,
-        ]
 
-        const newListings = [[], []]
-        listingsForFunction.forEach((list, index) => {
-          list.forEach((listing) => {
-            splitQuerySkills.forEach((skill) => {
-              if (listing.listingInfo[1] == skill) {
-                if (!newListings[index].includes(listing)) {
-                  newListings[index].push(listing)
-                }
-              }
-            })
-          })
-        })
-        editedListings = {
-          featuredWorkers: newListings[0],
-          standardWorkers: newListings[1],
-        }
-      }
       if (query.employmentType) {
         const splitQueryEmployment = query.employmentType.split('-')
         setEmploymentTypes(splitQueryEmployment)
 
         const listingsForFunction = [
-          editedListings.featuredWorkers,
-          editedListings.standardWorkers,
+          editedListings.featuredEmployers,
+          editedListings.standardEmployers,
         ]
 
         const newListings = [[], []]
         listingsForFunction.forEach((list, index) => {
           list.forEach((listing) => {
             splitQueryEmployment.forEach((type) => {
-              if (listing.listingInfo[5].includes(type)) {
+              if (listing.listingInfo[6].includes(type)) {
                 if (!newListings[index].includes(listing)) {
                   newListings[index].push(listing)
                 }
@@ -135,8 +111,8 @@ export default function Workers({}) {
           })
         })
         editedListings = {
-          featuredWorkers: newListings[0],
-          standardWorkers: newListings[1],
+          featuredEmployers: newListings[0],
+          standardEmployers: newListings[1],
         }
       }
       if (query.workerType) {
@@ -144,15 +120,15 @@ export default function Workers({}) {
         setWorkerTypes(splitQueryWorker)
 
         const listingsForFunction = [
-          editedListings.featuredWorkers,
-          editedListings.standardWorkers,
+          editedListings.featuredEmployers,
+          editedListings.standardEmployers,
         ]
 
         const newListings = [[], []]
         listingsForFunction.forEach((list, index) => {
           list.forEach((listing) => {
             splitQueryWorker.forEach((type) => {
-              if (listing.listingInfo[2] == type) {
+              if (listing.listingInfo[3] == type) {
                 if (!newListings[index].includes(listing)) {
                   newListings[index].push(listing)
                 }
@@ -161,8 +137,8 @@ export default function Workers({}) {
           })
         })
         editedListings = {
-          featuredWorkers: newListings[0],
-          standardWorkers: newListings[1],
+          featuredEmployers: newListings[0],
+          standardEmployers: newListings[1],
         }
       }
       if (query.location) {
@@ -176,8 +152,8 @@ export default function Workers({}) {
         const userLocation = data.data.results[0].geometry.location
 
         const listingsForFunction = [
-          editedListings.featuredWorkers,
-          editedListings.standardWorkers,
+          editedListings.featuredEmployers,
+          editedListings.standardEmployers,
         ]
 
         const listingsLocationArr = [[], []]
@@ -194,8 +170,50 @@ export default function Workers({}) {
         })
 
         editedListings = {
-          featuredWorkers: listingsLocationArr[0],
-          standardWorkers: listingsLocationArr[1],
+          featuredEmployers: listingsLocationArr[0],
+          standardEmployers: listingsLocationArr[1],
+        }
+      }
+      if (query.rateStart || query.rateEnd) {
+        setRateStart(query.rateStart || '')
+        setRateEnd(query.rateEnd || '')
+
+        const listingsForFunction = [
+          editedListings.featuredEmployers,
+          editedListings.standardEmployers,
+        ]
+
+        const listingsHourlyArr = [[], []]
+
+        listingsForFunction.forEach((list, index) => {
+          list.forEach((listing) => {
+            const searchRateStart = query.rateStart || ''
+            const searchRateEnd = query.rateEnd || ''
+            const employerRateStart = listing.listingInfo[4]
+            const employerRateEnd = listing.listingInfo[5]
+
+            if (
+              searchRateStart <= employerRateEnd &&
+              searchRateEnd >= employerRateStart
+            ) {
+              listingsHourlyArr[index].push(listing)
+            } else if (
+              searchRateStart == '' &&
+              searchRateEnd >= employerRateEnd
+            ) {
+              listingsHourlyArr[index].push(listing)
+            } else if (
+              searchRateEnd == '' &&
+              searchRateStart <= employerRateStart
+            ) {
+              listingsHourlyArr[index].push(listing)
+            }
+          })
+        })
+
+        editedListings = {
+          featuredEmployers: listingsHourlyArr[0],
+          standardEmployers: listingsHourlyArr[1],
         }
       }
 
@@ -207,30 +225,14 @@ export default function Workers({}) {
 
   const showFullListing = (number, type) => {
     const worker = listings[type].filter((item) => item.workerNumber == number)
-    setSelectedWorker(worker[0])
+    setSelectedEmployer(worker[0])
   }
 
   const resetFilters = () => {
-    window.location.href = `/workers?search=${searchInput}&skillLevel=&employmentType=&workerType=&location=&prox=`
+    window.location.href = `/employers?search=${searchInput}&employmentType=&workerType=&location=&prox=&rateStart=&rateEnd=`
   }
 
-  const setFilters = (level, employment, worker, location, proximity) => {
-    //Skill Filter
-    let updatedSkillLevels = []
-    if (skillLevels.includes(level)) {
-      setSkillLevels(skillLevels.filter((skill) => skill != level))
-      updatedSkillLevels = skillLevels.filter((skill) => skill != level)
-    } else {
-      setSkillLevels([...skillLevels, level])
-      updatedSkillLevels = [...skillLevels, level]
-    }
-
-    const mySkillQueryString = updatedSkillLevels
-      .map((el) => {
-        return el
-      })
-      .join('-')
-
+  const setFilters = (employment, worker, rateStart, rateEnd) => {
     //Employment Type Filter
     let updatedEmploymentTypes = []
     if (employmentTypes.includes(employment)) {
@@ -265,37 +267,40 @@ export default function Workers({}) {
       })
       .join('-')
 
+    //proximity filter
     const isProximityUsed =
       proximityInput.length > 0 && proximityDistance.length > 0
 
+    //hourly filter
+    const isHourlyUsed = rateStart.length > 0 || rateEnd.length > 0
+
     //sending to url with query
-    window.location.href = `/workers?search=${searchInput.replace(
-      '#',
-      ''
-    )}&skillLevel=${mySkillQueryString}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
+    window.location.href = `/employers?search=${searchInput}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
       isProximityUsed ? proximityInput : ''
-    }&prox=${isProximityUsed ? proximityDistance : ''}`
+    }&prox=${isProximityUsed ? proximityDistance : ''}&rateStart=${
+      isHourlyUsed ? rateStart : ''
+    }&rateEnd=${isHourlyUsed ? rateEnd : ''}`
   }
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>Workers | Eagle Force Employment Services</title>
+        <title>Employers | Eagle Force Employment Services</title>
         <meta
           name='description'
-          content='Connect with job seekers and find the best candidates for your company'
+          content='Connect with employers and find the best job for you'
         />
         <meta
           property='og:title'
-          content='Workers | Eagle Force Employment Services'
+          content='Employers | Eagle Force Employment Services'
         />
         <meta
           property='og:description'
-          content='Connect with job seekers and find the best candidates for your company'
+          content='Connect with employers and find the best job for you'
         />
         <meta
           property='og:url'
-          content='https://www.eagleforceemploymentservices.com/workers'
+          content='https://www.eagleforceemploymentservices.com/employers'
         />
         <meta property='og:type' content='website' />
         <link rel='icon' href='/images/layout/logo.png' />
@@ -340,7 +345,7 @@ export default function Workers({}) {
                       proximityInput.length > 0 &&
                       proximityDistance.length > 0
                     ) {
-                      setFilters('', '', '', proximityInput, proximityDistance)
+                      setFilters('', '', '', '')
                     } else
                       setError(
                         'Fill in a location and a proximity before clicking Apply'
@@ -350,48 +355,53 @@ export default function Workers({}) {
                   Apply
                 </button>
               </div>
-              <div className={styles.workers__filter__scroll__checks}>
-                <h3>Skill Level</h3>
-                <label
-                  className={styles.workers__filter__scroll__checks__check}
+
+              <div className={styles.workers__filter__scroll__hourly}>
+                <h3>Hourly Pay</h3>
+                <div className={styles.workers__filter__scroll__hourly__inputs}>
+                  <div
+                    className={
+                      styles.workers__filter__scroll__hourly__inputs__input
+                    }
+                  >
+                    <p>$</p>
+                    <input
+                      type='text'
+                      value={rateStart}
+                      onChange={(e) => setRateStart(e.target.value)}
+                    />
+                  </div>
+                  <p>to</p>
+                  <div
+                    className={
+                      styles.workers__filter__scroll__hourly__inputs__input
+                    }
+                  >
+                    <p>$</p>
+                    <input
+                      type='text'
+                      value={rateEnd}
+                      onChange={(e) => setRateEnd(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    if (
+                      rateStart.length > 0 &&
+                      rateEnd.length > 0 &&
+                      rateEnd <= rateStart
+                    ) {
+                      setError('End rate must be greater than start rate')
+                    } else if (rateStart.length > 0 || rateEnd.length > 0) {
+                      setFilters('', '', rateStart, rateEnd)
+                    }
+                  }}
                 >
-                  <input
-                    type='checkbox'
-                    defaultChecked={
-                      skillLevels.length > 0 && skillLevels.includes('Beginner')
-                    }
-                    onClick={() => setFilters('Beginner', '', '', '', '')}
-                  />
-                  Beginner
-                </label>
-                <label
-                  className={styles.workers__filter__scroll__checks__check}
-                >
-                  <input
-                    type='checkbox'
-                    defaultChecked={
-                      skillLevels.length > 0 && skillLevels.includes('Advanced')
-                    }
-                    onClick={() => setFilters('Advanced', '', '', '', '')}
-                  />
-                  Advanced
-                </label>
-                <label
-                  className={styles.workers__filter__scroll__checks__check}
-                >
-                  <input
-                    type='checkbox'
-                    defaultChecked={
-                      skillLevels.length > 0 &&
-                      skillLevels.includes('Expert Foreman Grade')
-                    }
-                    onClick={() =>
-                      setFilters('Expert Foreman Grade', '', '', '', '')
-                    }
-                  />
-                  Expert Foreman Grade
-                </label>
+                  Apply
+                </button>
               </div>
+
               <div className={styles.workers__filter__scroll__checks}>
                 <h3>Employment Type</h3>
                 <label
@@ -403,7 +413,7 @@ export default function Workers({}) {
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Full Time')
                     }
-                    onClick={() => setFilters('', 'Full Time', '', '', '')}
+                    onClick={() => setFilters('Full Time', '', '', '')}
                   />
                   Full Time
                 </label>
@@ -416,7 +426,7 @@ export default function Workers({}) {
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Part Time')
                     }
-                    onClick={() => setFilters('', 'Part Time', '', '', '')}
+                    onClick={() => setFilters('Part Time', '', '', '')}
                   />
                   Part Time
                 </label>
@@ -429,7 +439,7 @@ export default function Workers({}) {
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Contract')
                     }
-                    onClick={() => setFilters('', 'Contract', '', '', '')}
+                    onClick={() => setFilters('Contract', '', '', '')}
                   />
                   Contract
                 </label>
@@ -444,7 +454,7 @@ export default function Workers({}) {
                     defaultChecked={
                       workerTypes.length > 0 && workerTypes.includes('Worker')
                     }
-                    onClick={() => setFilters('', '', 'Worker', '', '')}
+                    onClick={() => setFilters('', 'Worker', '', '')}
                   />
                   Worker
                 </label>
@@ -457,7 +467,7 @@ export default function Workers({}) {
                       workerTypes.length > 0 &&
                       workerTypes.includes('Crew Driver')
                     }
-                    onClick={() => setFilters('', '', 'Crew Driver', '', '')}
+                    onClick={() => setFilters('', 'Crew Driver', '', '')}
                   />
                   Crew Driver
                 </label>
@@ -469,7 +479,7 @@ export default function Workers({}) {
                     defaultChecked={
                       workerTypes.length > 0 && workerTypes.includes('Both')
                     }
-                    onClick={() => setFilters('', '', 'Both', '', '')}
+                    onClick={() => setFilters('', 'Both', '', '')}
                   />
                   Both
                 </label>
@@ -480,11 +490,11 @@ export default function Workers({}) {
             <input
               type='text'
               className={styles.workers__listings__search}
-              placeholder='Search by job title, trade, or worker number'
+              placeholder='Search by job title, trade, or company'
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyPress={(e) =>
-                e.key === 'Enter' && setFilters('', '', '', '', '')
+                e.key === 'Enter' && setFilters('', '', '', '')
               }
             />
             <p className={styles.workers__listings__notice}>
@@ -495,40 +505,38 @@ export default function Workers({}) {
                 Loading Workers...
               </p>
             ) : displayListings &&
-              displayListings.featuredWorkers &&
-              displayListings.featuredWorkers.length == 0 &&
-              displayListings.standardWorkers &&
-              displayListings.standardWorkers.length == 0 ? (
+              displayListings.featuredEmployers &&
+              displayListings.featuredEmployers.length == 0 &&
+              displayListings.standardEmployers &&
+              displayListings.standardEmployers.length == 0 ? (
               <p className={styles.workers__listings__loading}>No Results</p>
             ) : (
               <div className={styles.workers__listings__display}>
                 {displayListings &&
-                  displayListings.featuredWorkers &&
-                  displayListings.featuredWorkers.map((worker) => (
-                    <FeaturedWorkerListingBlock
-                      key={worker.listingInfo[0]}
-                      jobs={worker.listingInfo[0]}
-                      number={worker.workerNumber}
-                      type={worker.listingInfo[2]}
-                      city={worker.listingInfo[6]}
-                      employmentType={worker.listingInfo[5]}
-                      skill={worker.listingInfo[1]}
-                      summary={worker.listingInfo[9]}
+                  displayListings.featuredEmployers &&
+                  displayListings.featuredEmployers.map((employer) => (
+                    <FeaturedEmployerListingBlock
+                      key={employer.listingInfo[0]}
+                      job={employer.listingInfo[0]}
+                      company={employer.listingInfo[1]}
+                      city={employer.listingInfo[7]}
+                      type={employer.listingInfo[3]}
+                      employmentType={employer.listingInfo[6]}
+                      description={employer.listingInfo[10]}
                       showFullListing={showFullListing}
                     />
                   ))}
                 {displayListings &&
-                  displayListings.standardWorkers &&
-                  displayListings.standardWorkers.map((worker) => (
-                    <WorkerListingBlock
-                      key={worker.listingInfo[0]}
-                      jobs={worker.listingInfo[0]}
-                      number={worker.workerNumber}
-                      type={worker.listingInfo[2]}
-                      city={worker.listingInfo[6]}
-                      employmentType={worker.listingInfo[5]}
-                      skill={worker.listingInfo[1]}
-                      summary={worker.listingInfo[9]}
+                  displayListings.standardEmployers &&
+                  displayListings.standardEmployers.map((employer) => (
+                    <EmployerListingBlock
+                      key={employer.listingInfo[0]}
+                      job={employer.listingInfo[0]}
+                      company={employer.listingInfo[1]}
+                      city={employer.listingInfo[7]}
+                      type={employer.listingInfo[3]}
+                      employmentType={employer.listingInfo[6]}
+                      description={employer.listingInfo[10]}
                       showFullListing={showFullListing}
                     />
                   ))}
@@ -536,61 +544,58 @@ export default function Workers({}) {
             )}
           </div>
 
-          <WorkerListingSide
-            jobs={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[0]
+          <EmployerListingSide
+            job={
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[0]
             }
-            number={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.workerNumber
+            number={selectedEmployer && selectedEmployer.employerNumber}
+            email={selectedEmployer && selectedEmployer.user}
+            company={
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[1]
+            }
+            website={
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[2]
             }
             type={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[2]
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[3]
             }
             city={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[6]
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[7]
             }
             employmentType={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[5]
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[6]
             }
-            skill={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[1]
-            }
-            summary={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[9]
+            description={
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[10]
             }
             rateStart={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[3]
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[4]
             }
             rateEnd={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[4]
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[5]
             }
             experience={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[10]
-            }
-            highlights={
-              selectedWorker &&
-              selectedWorker.listingInfo &&
-              selectedWorker.listingInfo[11]
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[11]
             }
           />
         </main>
