@@ -119,8 +119,8 @@ function CreateEmployerListing({}) {
             <div className={styles.create__desc}>
               <h2>Position Details</h2>
               <p>
-                Fill in all the information regarding the position you're hiring
-                for
+                Fill in all the information regarding the position you&apos;re
+                hiring for
               </p>
             </div>
             <div className={styles.create__inputs}>
