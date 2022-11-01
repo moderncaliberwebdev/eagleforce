@@ -41,6 +41,7 @@ function WorkerListingSide({
           `/api/user/bookmark?email=${user.email}`,
           config
         )
+        console.log(data.data)
         setBookmarks(data.data)
       }
     })
@@ -53,11 +54,12 @@ function WorkerListingSide({
     if (bookmarks && bookmarks.length > 0) {
       bookmarks.forEach((bm) => {
         if (bm.split(' ')[0] == 'Worker' && bm.split('#')[1] == number) {
+          console.log('set bookmarked true')
           setBookmarked(true)
         }
       })
     }
-  }, [jobs])
+  }, [jobs, bookmarks])
 
   useEffect(() => {}, [bookmarks])
 

@@ -5,7 +5,9 @@ import styles from '../../styles/YourListings.module.scss'
 
 import ProfileBreadcrumbs from '../../Components/ProfileBreadcrumbs'
 import YourListing from '../../Components/YourListing'
+import YourEmployerListing from '../../Components/YourEmployerListing'
 import PreviousListing from '../../Components/PreviousListing'
+import PreviousEmployerListing from '../../Components/PreviousEmployerListing'
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import app from '../../firebase/clientApp'
@@ -16,6 +18,7 @@ const auth = getAuth()
 function Listings() {
   const [currentUser, setCurrentUser] = useState()
   const [listings, setListings] = useState()
+  const [employerListings, setEmployerListings] = useState()
   const [previousListings, setPreviousListings] = useState()
   const [listingType, setListingType] = useState(true)
   const [loading, setLoading] = useState(true)
@@ -36,6 +39,7 @@ function Listings() {
           JSON.parse(JSON.stringify(data.data.previousListings))
         )
         setListings(JSON.parse(JSON.stringify(data.data.docs)))
+        setEmployerListings(JSON.parse(JSON.stringify(data.data.employerDocs)))
       } else {
         window.location.href = '/'
       }
@@ -67,7 +71,8 @@ function Listings() {
               style={{ textDecoration: listingType == true && 'underline' }}
               onClick={() => setListingType(true)}
             >
-              Current Listings ({listings && listings.length})
+              Current Listings (
+              {listings && listings.length + employerListings.length})
             </p>
             <p
               style={{ textDecoration: listingType == false && 'underline' }}
@@ -89,14 +94,33 @@ function Listings() {
                   currentUser={currentUser}
                 />
               ))}
-            {previousListings &&
-              !listingType &&
-              previousListings.map((listing) => (
-                <PreviousListing
+            {employerListings &&
+              listingType &&
+              employerListings.map((listing) => (
+                <YourEmployerListing
                   listing={listing}
                   key={listing._id}
                   currentUser={currentUser}
                 />
+              ))}
+            {previousListings &&
+              !listingType &&
+              previousListings.map((listing) => (
+                <>
+                  {listing.userType == 'Worker' ? (
+                    <PreviousListing
+                      listing={listing}
+                      key={listing._id}
+                      currentUser={currentUser}
+                    />
+                  ) : (
+                    <PreviousEmployerListing
+                      listing={listing}
+                      key={listing._id}
+                      currentUser={currentUser}
+                    />
+                  )}
+                </>
               ))}
           </div>
         </main>

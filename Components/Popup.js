@@ -1,7 +1,17 @@
 import React from 'react'
 import styles from '../styles/Popup.module.scss'
 
-function Popup({ question, desc, answer, no, cancel, next, openPopup, renew }) {
+function Popup({
+  question,
+  desc,
+  answer,
+  no,
+  cancel,
+  next,
+  openPopup,
+  renew,
+  color,
+}) {
   return (
     <div
       className={styles.popup}
@@ -16,12 +26,26 @@ function Popup({ question, desc, answer, no, cancel, next, openPopup, renew }) {
         >
           {renew ? (
             <>
-              <button onClick={next}>{answer}</button>
+              <button
+                onClick={next}
+                style={{
+                  backgroundColor: color == 'red' ? '#c9a596' : '#96a4c9',
+                }}
+              >
+                {answer}
+              </button>
               <button onClick={cancel}>{no}</button>
             </>
           ) : (
             <>
-              <button onClick={cancel}>{no}</button>
+              <button
+                onClick={cancel}
+                style={{
+                  backgroundColor: color == 'red' ? '#c9a596' : '#96a4c9',
+                }}
+              >
+                {no}
+              </button>
               <button onClick={next}>{answer}</button>
             </>
           )}

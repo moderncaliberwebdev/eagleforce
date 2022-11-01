@@ -43,6 +43,7 @@ function EmployerListingSide({
           `/api/user/bookmark?email=${user.email}`,
           config
         )
+        console.log(data.data)
         setBookmarks(data.data)
       }
     })
@@ -59,7 +60,7 @@ function EmployerListingSide({
         }
       })
     }
-  }, [job])
+  }, [job, bookmarks])
 
   const bookmarkListing = async () => {
     if (currentUser) {

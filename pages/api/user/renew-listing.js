@@ -14,28 +14,53 @@ const handler = nc()
       const client = await clientPromise
       const db = client.db('eagleforce')
       const workers = db.collection('workers')
+      const employers = db.collection('employers')
       const users = db.collection('users')
 
-      const user = await users.findOneAndUpdate(
-        {
-          email: req.body.email,
-        },
-        { $pull: { previousListings: { workerNumber: req.body.number } } }
-      )
-      console.log(user.value.previousListings)
+      if (req.body.type == 'Worker') {
+        const user = await users.findOneAndUpdate(
+          {
+            email: req.body.email,
+          },
+          { $pull: { previousListings: { workerNumber: req.body.number } } }
+        )
+        console.log(user.value.previousListings)
 
-      let previousListing
-      user.value.previousListings.forEach((listing) => {
-        if (listing.workerNumber == req.body.number) {
-          previousListing = listing
-        }
-      })
+        let previousListing
+        user.value.previousListings.forEach((listing) => {
+          if (listing.workerNumber && listing.workerNumber == req.body.number) {
+            previousListing = listing
+          }
+        })
 
-      const { _id, ...newListing } = previousListing
+        const { _id, ...newListing } = previousListing
 
-      await workers.insertOne(newListing)
+        await workers.insertOne(newListing)
+        res.json({ newListing })
+      } else if (req.body.type == 'Employer') {
+        const user = await users.findOneAndUpdate(
+          {
+            email: req.body.email,
+          },
+          { $pull: { previousListings: { employerNumber: req.body.number } } }
+        )
+        console.log(user.value.previousListings)
 
-      res.json({ newListing })
+        let previousListing
+        user.value.previousListings.forEach((listing) => {
+          if (
+            listing.employerNumber &&
+            listing.employerNumber == req.body.number
+          ) {
+            previousListing = listing
+          }
+        })
+
+        const { _id, ...newListing } = previousListing
+
+        await employers.insertOne(newListing)
+        res.json({ newListing })
+      }
     } catch (e) {
       console.error(e)
     }

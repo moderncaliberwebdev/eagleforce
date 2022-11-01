@@ -15,6 +15,7 @@ const handler = nc()
       const db = client.db('eagleforce')
       const users = db.collection('users')
       const workers = db.collection('workers')
+      const employers = db.collection('employers')
 
       const user = await users.findOne({ email: req.query.email })
 
@@ -24,16 +25,38 @@ const handler = nc()
         listings.push(Number(listing.split('#')[1]))
       })
 
-      await workers
-        .find({ workerNumber: { $in: listings } })
-        .toArray(function (err, docs) {
+      let featuredWorkers
+      let standardWorkers
+
+      const savedWorkers = await workers
+        .find({
+          workerNumber: { $in: listings },
+        })
+        .toArray(async function (err, docs) {
           const featuredWorkers = docs
             .filter((item) => item.listingType == 'Featured')
             .sort((a, b) => b.date - a.date)
           const standardWorkers = docs
             .filter((item) => item.listingType == 'Standard')
             .sort((a, b) => b.date - a.date)
-          res.json({ featuredWorkers, standardWorkers })
+
+          await employers
+            .find({ employerNumber: { $in: listings } })
+            .toArray(function (err, employersDocs) {
+              const featuredEmployers = employersDocs
+                .filter((item) => item.listingType == 'Featured')
+                .sort((a, b) => b.date - a.date)
+              const standardEmployers = employersDocs
+                .filter((item) => item.listingType == 'Standard')
+                .sort((a, b) => b.date - a.date)
+
+              res.json({
+                featuredWorkers,
+                standardWorkers,
+                featuredEmployers,
+                standardEmployers,
+              })
+            })
         })
     } catch (e) {
       console.error(e)

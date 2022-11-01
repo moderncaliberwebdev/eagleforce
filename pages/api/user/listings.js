@@ -14,6 +14,7 @@ const handler = nc()
       const client = await clientPromise
       const db = client.db('eagleforce')
       const workers = db.collection('workers')
+      const employers = db.collection('employers')
       const users = db.collection('users')
 
       const user = await users.findOne({ email: req.query.email })
@@ -21,8 +22,12 @@ const handler = nc()
 
       await workers
         .find({ user: req.query.email })
-        .toArray(function (err, docs) {
-          res.json({ docs, previousListings })
+        .toArray(async function (err, docs) {
+          await employers
+            .find({ user: req.query.email })
+            .toArray(function (err, employerDocs) {
+              res.json({ docs, employerDocs, previousListings })
+            })
         })
     } catch (e) {
       console.error(e)

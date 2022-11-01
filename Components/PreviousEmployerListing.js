@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styles from '../styles/PreviousListing.module.scss'
+import styles from '../styles/PreviousEmployerListing.module.scss'
 
 import axios from 'axios'
 import qs from 'qs'
@@ -30,44 +30,7 @@ function PreviousListing({ listing, currentUser }) {
 
   useEffect(() => {
     setListingInfo(listing.listingInfo)
-    setJobs(
-      listing.listingInfo[10].length && listing.listingInfo[10].length > 0
-        ? listing.listingInfo[10].length
-        : 1
-    )
-    setJobArray(listing.listingInfo[10])
-
-    setHighlights(
-      listing.listingInfo[11].length && listing.listingInfo[11].length > 0
-        ? listing.listingInfo[11].length
-        : 1
-    )
-    setHighlightArray(listing.listingInfo[11])
   }, [listing])
-
-  useEffect(() => {
-    const newState =
-      listingInfo &&
-      listingInfo.map((obj, index) => {
-        if (index == 10 && jobArray.length > 0) {
-          return jobArray
-        }
-        return obj
-      })
-    newState && setListingInfo(newState)
-  }, [jobArray])
-
-  useEffect(() => {
-    const newState =
-      listingInfo &&
-      listingInfo.map((obj, index) => {
-        if (index == 11 && highlightArray.length > 0) {
-          return highlightArray
-        }
-        return obj
-      })
-    newState && setListingInfo(newState)
-  }, [highlightArray])
 
   const cancelDelete = () => {
     setOpenPopup(false)
@@ -101,8 +64,8 @@ function PreviousListing({ listing, currentUser }) {
       '/api/user/renew-listing',
       {
         email: currentUser.email,
-        number: listing.workerNumber,
-        type: 'Worker',
+        number: listing.employerNumber,
+        type: 'Employer',
       },
       config
     )
@@ -135,11 +98,12 @@ function PreviousListing({ listing, currentUser }) {
         cancel={cancelDelete}
         next={renewListing}
         openPopup={openPopup}
+        color='red'
         renew={true}
       />
       <div className={styles.blocks__block__info}>
         <h2>
-          Worker #{listing.workerNumber} - {listing.listingInfo[0]}
+          {listing.listingInfo[1]} - {listing.listingInfo[0]}
         </h2>
         <button onClick={() => setOpenPopup(true)}>Renew Listing</button>
         <img
@@ -153,7 +117,7 @@ function PreviousListing({ listing, currentUser }) {
         <div className={styles.blocks__block__desc}>
           <div className={styles.blocks__block__desc__top}>
             <p>
-              {listing.listingInfo[6]}, {listing.listingInfo[7]}
+              {listing.listingInfo[7]}, {listing.listingInfo[8]}
             </p>
           </div>
           <div className={styles.blocks__block__desc__details}>
@@ -161,61 +125,25 @@ function PreviousListing({ listing, currentUser }) {
             <div className={styles.blocks__block__desc__details__item}>
               <h3>Desired Hourly Rate</h3>
               <p>
-                ${listing.listingInfo[3]} - ${listing.listingInfo[4]}
+                ${listing.listingInfo[4]} - ${listing.listingInfo[5]}
               </p>
             </div>
             <div className={styles.blocks__block__desc__details__item}>
               <h3>Desired Employment Type</h3>
-              <p>{listing.listingInfo[5]}</p>
-            </div>
-            <div className={styles.blocks__block__desc__details__item}>
-              <h3>Skill Level</h3>
-              <p>{listing.listingInfo[1]}</p>
+              <p>{listing.listingInfo[6]}</p>
             </div>
           </div>
           <div className={styles.blocks__block__desc__desc}>
-            <h2>Description</h2>
+            <h2>Job Description</h2>
             <p
               className={styles.blocks__block__desc__desc__summary}
-              dangerouslySetInnerHTML={{ __html: listing.listingInfo[9] }}
+              dangerouslySetInnerHTML={{ __html: listing.listingInfo[10] }}
             ></p>
-            {listing.listingInfo[10] &&
-              listing.listingInfo[10][0] &&
-              listing.listingInfo[10][0].length > 0 && (
-                <div className={styles.blocks__block__desc__desc__jobs}>
-                  <h2>Work Experience</h2>
-                  {listing.listingInfo[10].map((job) => (
-                    <div
-                      key={job[0]}
-                      className={styles.blocks__block__desc__desc__jobs__job}
-                    >
-                      <p>
-                        Job Title: <span>{job[0]}</span>
-                      </p>
-                      <p>
-                        Company Name: <span>{job[1]}</span>
-                      </p>
-                      <p>
-                        Time Period: <span>{job[2]}</span>
-                      </p>
-                      <p>Responsibilities:</p>
-                      <p>
-                        <span
-                          dangerouslySetInnerHTML={{ __html: job[3] }}
-                        ></span>
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            {listing.listingInfo[11] && listing.listingInfo[11].length > 0 && (
-              <div className={styles.blocks__block__desc__desc__jobs}>
-                <h2>Highlights</h2>
-                {listing.listingInfo[11].map((highlight) => (
-                  <p dangerouslySetInnerHTML={{ __html: highlight }}></p>
-                ))}
-              </div>
-            )}
+            <h2>Qualifications</h2>
+            <p
+              className={styles.blocks__block__desc__desc__summary}
+              dangerouslySetInnerHTML={{ __html: listing.listingInfo[11] }}
+            ></p>
           </div>
         </div>
       )}
