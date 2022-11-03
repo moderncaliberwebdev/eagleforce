@@ -21,6 +21,10 @@ function FeaturedWorkerListingBlock({
         showFullListing && showFullListing(number, 'featuredWorkers')
       }
     >
+      <div className={styles.block__tags}>
+        <div className={styles.block__tags__featured}>Featured Listing</div>
+        <div className={styles.block__tags__verified}></div>
+      </div>
       <div className={styles.block__top}>
         <div>
           <Image

@@ -14,6 +14,7 @@ function FeaturedWorkerListingBlock({
   showFullListing,
   saved,
   createObjectURL,
+  logo,
 }) {
   return (
     <div
@@ -22,11 +23,19 @@ function FeaturedWorkerListingBlock({
         showFullListing && showFullListing(number, 'featuredEmployers')
       }
     >
+      <div className={styles.block__tags}>
+        <div className={styles.block__tags__featured}>Featured Listing</div>
+        <div className={styles.block__tags__verified}></div>
+      </div>
       <div className={styles.block__top}>
         <div className={styles.block__top__img}>
           <Image
             src={
-              createObjectURL ? createObjectURL : '/images/post/factory-red.png'
+              logo && logo.length > 0
+                ? `https://eagleforce-avatar.s3.amazonaws.com/${logo}`
+                : createObjectURL
+                ? createObjectURL
+                : '/images/post/factory-red.png'
             }
             width='50'
             height='50'

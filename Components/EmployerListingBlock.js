@@ -14,6 +14,7 @@ function EmployerListingBlock({
   showFullListing,
   saved,
   createObjectURL,
+  logo,
 }) {
   return (
     <div
@@ -26,7 +27,9 @@ function EmployerListingBlock({
         <div>
           <Image
             src={
-              createObjectURL
+              logo && logo.length > 0
+                ? `https://eagleforce-avatar.s3.amazonaws.com/${logo}`
+                : createObjectURL
                 ? createObjectURL
                 : '/images/post/factory-black.png'
             }

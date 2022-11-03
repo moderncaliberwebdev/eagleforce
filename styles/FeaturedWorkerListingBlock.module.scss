@@ -24,6 +24,15 @@
     height: auto;
   }
 
+  &__tags {
+    font-size: $font-small;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
   &__top {
     display: flex;
     flex-direction: row;

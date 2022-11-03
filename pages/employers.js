@@ -224,7 +224,9 @@ export default function Employers({}) {
   }, [query, listings])
 
   const showFullListing = (number, type) => {
-    const worker = listings[type].filter((item) => item.workerNumber == number)
+    const worker = listings[type].filter(
+      (item) => item.employerNumber == number
+    )
     setSelectedEmployer(worker[0])
   }
 
@@ -393,7 +395,7 @@ export default function Employers({}) {
                       rateEnd <= rateStart
                     ) {
                       setError('End rate must be greater than start rate')
-                    } else if (rateStart.length > 0 || rateEnd.length > 0) {
+                    } else {
                       setFilters('', '', rateStart, rateEnd)
                     }
                   }}
@@ -518,11 +520,13 @@ export default function Employers({}) {
                     <FeaturedEmployerListingBlock
                       key={employer.listingInfo[0]}
                       job={employer.listingInfo[0]}
+                      number={employer.employerNumber}
                       company={employer.listingInfo[1]}
                       city={employer.listingInfo[7]}
                       type={employer.listingInfo[3]}
                       employmentType={employer.listingInfo[6]}
                       description={employer.listingInfo[10]}
+                      logo={employer.logo}
                       showFullListing={showFullListing}
                     />
                   ))}
@@ -532,11 +536,13 @@ export default function Employers({}) {
                     <EmployerListingBlock
                       key={employer.listingInfo[0]}
                       job={employer.listingInfo[0]}
+                      number={employer.employerNumber}
                       company={employer.listingInfo[1]}
                       city={employer.listingInfo[7]}
                       type={employer.listingInfo[3]}
                       employmentType={employer.listingInfo[6]}
                       description={employer.listingInfo[10]}
+                      logo={employer.logo}
                       showFullListing={showFullListing}
                     />
                   ))}
@@ -597,6 +603,7 @@ export default function Employers({}) {
               selectedEmployer.listingInfo &&
               selectedEmployer.listingInfo[11]
             }
+            logo={selectedEmployer && selectedEmployer.logo}
           />
         </main>
       </Layout>

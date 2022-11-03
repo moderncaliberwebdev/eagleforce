@@ -26,6 +26,7 @@ function EmployerListingSide({
   experience,
   refresh,
   createObjectURL,
+  logo,
 }) {
   const [currentUser, setCurrentUser] = useState()
   const [bookmarked, setBookmarked] = useState(false)
@@ -116,7 +117,9 @@ function EmployerListingSide({
       <div className={styles.side__title}>
         <Image
           src={
-            createObjectURL
+            logo && logo.length > 0
+              ? `https://eagleforce-avatar.s3.amazonaws.com/${logo}`
+              : createObjectURL
               ? createObjectURL
               : '/images/post/factory-red-larg.png'
           }
