@@ -17,7 +17,7 @@ const handler = nc()
 
       const worker = await employers.updateOne(
         { user: req.body.email, employerNumber: req.body.number },
-        { $set: { listingInfo: req.body.listingInfo } }
+        { $set: { listingInfo: req.body.listingInfo, logo: req.body.logo } }
       )
       res.json(worker)
     } catch (e) {

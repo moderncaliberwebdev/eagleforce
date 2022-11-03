@@ -14,6 +14,7 @@ import { PayPalButton } from 'react-paypal-button-v2'
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import app from '../../../firebase/clientApp'
+import Image from 'next/image'
 
 const auth = getAuth()
 
@@ -37,6 +38,8 @@ function PreviewEmployerListing() {
   const [employerNumber, setEmployerNumber] = useState(0)
   const [currentUser, setCurrentUser] = useState()
   const [planType, setPlanType] = useState({})
+  const [createObjectURL, setCreateObjectURL] = useState(null)
+  const [imageError, setImageError] = useState('')
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -52,6 +55,10 @@ function PreviewEmployerListing() {
       }
     })
   }, [auth])
+
+  useEffect(() => {
+    console.log(createObjectURL)
+  }, [createObjectURL])
 
   useEffect(() => {
     const functionOnLoad = async () => {
@@ -88,6 +95,48 @@ function PreviewEmployerListing() {
     )
 
     return data.data.results[0].geometry.location
+  }
+
+  const uploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0]
+      if (i.size < 1600000) {
+        setCreateObjectURL(URL.createObjectURL(i))
+      } else setImageError('File must be less than 16MB')
+    }
+  }
+
+  const uploadToServer = async () => {
+    const event = document.getElementById('fileUpload')
+    if (event.files && event.files[0]) {
+      const i = event.files[0]
+      if (i.size < 1600000) {
+        const renameFile = (originalFile, newName) => {
+          return new File([originalFile], newName, {
+            type: originalFile.type,
+            lastModified: originalFile.lastModified,
+          })
+        }
+        const newName = renameFile(
+          i,
+          `${i.name.split('.')[0]}-${employerNumber}.${i.name.split('.')[1]}`
+        )
+        const body = new FormData()
+        body.append('file', newName)
+
+        const config = {
+          headers: {
+            'content-type': 'multipart/form-data',
+          },
+        }
+
+        const uploadLogo = await axios.post('/api/employer/logo', body, config)
+        if (uploadLogo) {
+          return newName.name
+        }
+      } else setImageError('File must be less than 16MB')
+    }
+    return ''
   }
 
   return (
@@ -129,127 +178,79 @@ function PreviewEmployerListing() {
                 <a>Edit Listing</a>
               </Link>
             </div>
-            {planType && planType.type == 'Featured' ? (
-              <PayPalButton
-                options={{
-                  vault: true,
-                  'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
-                  intent: 'subscription',
-                }}
-                createSubscription={(data, actions) => {
-                  return actions.subscription.create({
-                    plan_id:
-                      process.env.NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN,
-                  })
-                }}
-                style={{
-                  layout: 'horizontal',
-                  color: 'blue',
-                  label: 'pay',
-                }}
-                onApprove={(data, actions) => {
-                  // Capture the funds from the transaction
-                  return actions.subscription
-                    .get()
-                    .then(async function (details) {
-                      const getGeocode = await getCoords()
-
-                      const config = {
-                        headers: {
-                          Authorization: `Bearer ${auth.currentUser.accessToken}`,
-                        },
-                      }
-                      // OPTIONAL: Call your server to save the subscription
-                      const post = await axios.post(
-                        '/api/employer/create-listing',
-                        {
-                          listingInfo,
-                          verified: false,
-                          user: auth.currentUser.email,
-                          listingType: planType.type,
-                          userType: planType.user,
-                          date: new Date().getTime(),
-                          employerNumber,
-                          orderID: data.orderID,
-                          orderDetails: details,
-                          geocode: getGeocode,
-                        },
-                        config
-                      )
-
-                      if (post) {
-                        window.location.href = '/profile'
-                        localStorage.clear()
-                      }
-                    })
-                }}
+            <label>
+              <input
+                type='file'
+                name='file'
+                id='fileUpload'
+                accept='image/x-png,image/gif,image/jpeg'
+                onChange={uploadToClient}
               />
-            ) : (
-              planType.type == 'Standard' && (
-                //Production Client ID: Aa06y8vEfenUBq-4JR9WCd9tVUr18KdkE4VDXrj1VfhJISrPyz38zGiCUG8pdroDcNgKDjZuxUlZsN9g
-                //Production Plan: P-1S184688RH238182AMMUJUUY
-                //Production 1 Cent Plan: P-2TJ80196MP706632EMNFM53I
+              Upload Logo
+            </label>
 
-                //Sandbox Client ID: Aa0y7UQRO1_M92AM5jsJuHdHonnn9o_xGpQsxNH1FfDAlyhr7nJhgbWrArEr67utB3ZUxis2CJZb41mO
-                //Sandbox Plan: P-3H207100FH963184YMNMCCBA
-
-                <PayPalButton
-                  options={{
-                    vault: true,
-                    'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
-                    intent: 'subscription',
-                  }}
-                  createSubscription={(data, actions) => {
-                    return actions.subscription.create({
-                      plan_id:
+            <PayPalButton
+              options={{
+                vault: true,
+                'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
+                intent: 'subscription',
+              }}
+              createSubscription={(data, actions) => {
+                return actions.subscription.create({
+                  plan_id:
+                    planType.type == 'Featured'
+                      ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN
+                      : planType.type == 'Standard' &&
                         process.env.NEXT_PUBLIC_PAYPAL_STANDARD_EMPLOYER_PLAN,
-                    })
-                  }}
-                  style={{
-                    layout: 'horizontal',
-                    color: 'blue',
-                    label: 'pay',
-                  }}
-                  onApprove={(data, actions) => {
-                    // Capture the funds from the transaction
-                    return actions.subscription
-                      .get()
-                      .then(async function (details) {
-                        const getGeocode = await getCoords()
+                })
+              }}
+              style={{
+                layout: 'horizontal',
+                color: 'blue',
+                label: 'pay',
+              }}
+              onApprove={(data, actions) => {
+                // Capture the funds from the transaction
+                return actions.subscription
+                  .get()
+                  .then(async function (details) {
+                    const getGeocode = await getCoords()
+                    const logoName = await uploadToServer()
+                    const config = {
+                      headers: {
+                        Authorization: `Bearer ${auth.currentUser.accessToken}`,
+                      },
+                    }
 
-                        const config = {
-                          headers: {
-                            Authorization: `Bearer ${auth.currentUser.accessToken}`,
-                          },
-                        }
-                        // OPTIONAL: Call your server to save the subscription
-                        const post = await axios.post(
-                          '/api/employer/create-listing',
-                          {
-                            listingInfo,
-                            verified: false,
-                            user: auth.currentUser.email,
-                            listingType: planType.type,
-                            userType: planType.user,
-                            date: new Date().getTime(),
-                            employerNumber,
-                            orderID: data.orderID,
-                            orderDetails: details,
-                            geocode: getGeocode,
-                          },
-                          config
-                        )
+                    const post = await axios.post(
+                      '/api/employer/create-listing',
+                      {
+                        listingInfo,
+                        verified: false,
+                        user: auth.currentUser.email,
+                        listingType: planType.type,
+                        userType: planType.user,
+                        date: new Date().getTime(),
+                        employerNumber,
+                        orderID: data.orderID,
+                        orderDetails: details,
+                        geocode: getGeocode,
+                        logo: logoName,
+                      },
+                      config
+                    )
 
-                        if (post) {
-                          window.location.href = '/profile'
-                          localStorage.clear()
-                        }
-                      })
-                  }}
-                />
-              )
-            )}
+                    if (post) {
+                      window.location.href = '/profile'
+                      localStorage.clear()
+                    }
+                  })
+              }}
+            />
           </div>
+          {imageError && (
+            <p className={styles.preview__imageerror}>{imageError}</p>
+          )}
           <p className={styles.preview__notice}>
             This is a preview of your employer listing. Switch back to Edit
             Listing if you need to make changes
@@ -265,6 +266,7 @@ function PreviewEmployerListing() {
                   type={listingInfo && listingInfo[3]}
                   employmentType={listingInfo && listingInfo[6]}
                   description={listingInfo && listingInfo[10]}
+                  createObjectURL={createObjectURL}
                 />
               ) : (
                 planType.type == 'Featured' && (
@@ -276,6 +278,7 @@ function PreviewEmployerListing() {
                     type={listingInfo && listingInfo[3]}
                     employmentType={listingInfo && listingInfo[6]}
                     description={listingInfo && listingInfo[10]}
+                    createObjectURL={createObjectURL}
                   />
                 )
               )}
@@ -293,6 +296,7 @@ function PreviewEmployerListing() {
                 rateStart={listingInfo && listingInfo[4]}
                 rateEnd={listingInfo && listingInfo[5]}
                 experience={listingInfo && listingInfo[11]}
+                createObjectURL={createObjectURL}
               />
             </div>
           </div>

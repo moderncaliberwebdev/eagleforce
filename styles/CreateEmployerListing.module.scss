@@ -56,6 +56,10 @@
               }
             }
           }
+          form {
+            display: flex;
+            flex-direction: row;
+          }
           input {
             padding: 1rem;
             border-radius: 5px;

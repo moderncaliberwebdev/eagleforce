@@ -24,6 +24,24 @@
       align-items: center;
       margin-top: 2rem;
 
+      label {
+        font-size: $font-text;
+        background-color: $red;
+        margin-right: 5rem;
+        text-align: center;
+        font-weight: 300;
+        padding: 0.75rem 2rem;
+        color: #000;
+        text-decoration: none;
+        border-radius: 10px;
+        width: 20rem;
+        cursor: pointer;
+
+        input[type='file'] {
+          display: none;
+        }
+      }
+
       div {
         margin-right: 5rem;
         a {
@@ -39,6 +57,12 @@
           background: #fff;
         }
       }
+    }
+
+    &__imageerror {
+      color: red;
+      font-size: $font-small;
+      margin-left: 15rem;
     }
 
     &__notice {

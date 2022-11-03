@@ -96,11 +96,12 @@ function Listings() {
               ))}
             {employerListings &&
               listingType &&
-              employerListings.map((listing) => (
+              employerListings.map((listing, index) => (
                 <YourEmployerListing
                   listing={listing}
                   key={listing._id}
                   currentUser={currentUser}
+                  index={index}
                 />
               ))}
             {previousListings &&

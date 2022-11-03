@@ -13,6 +13,7 @@ function EmployerListingBlock({
   city,
   showFullListing,
   saved,
+  createObjectURL,
 }) {
   return (
     <div
@@ -24,10 +25,15 @@ function EmployerListingBlock({
       <div className={styles.block__top}>
         <div>
           <Image
-            src='/images/post/factory-black.png'
+            src={
+              createObjectURL
+                ? createObjectURL
+                : '/images/post/factory-black.png'
+            }
             width='50'
             height='50'
             layout='fixed'
+            objectFit='contain'
           />
         </div>
         <div className={styles.block__top__titles}>

@@ -27,6 +27,9 @@
       align-items: center;
 
       h2 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         font-size: $font-text;
         width: 40rem;
       }
@@ -38,6 +41,23 @@
         font-size: $font-text;
         cursor: pointer;
       }
+      label {
+        font-size: $font-text;
+        background-color: $red;
+        margin-right: 5rem;
+        text-align: center;
+        font-weight: 400;
+        padding: 0.75rem 2rem;
+        color: #000;
+        text-decoration: none;
+        border-radius: 10px;
+        width: 20rem;
+        cursor: pointer;
+
+        input[type='file'] {
+          display: none;
+        }
+      }
       a {
         padding: 1rem 2rem;
         background-color: $red;
@@ -48,12 +68,24 @@
         color: #000;
         text-decoration: none;
       }
-      img {
+      &__img {
         width: 3rem;
         height: 3rem;
         cursor: pointer;
         transition: all 0.3s;
       }
+    }
+
+    &__success {
+      text-align: center;
+      font-size: $font-text;
+      color: $red;
+    }
+
+    &__error {
+      text-align: center;
+      font-size: $font-text;
+      color: red;
     }
 
     &__create {

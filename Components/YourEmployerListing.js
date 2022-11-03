@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import styles from '../styles/YourEmployerListing.module.scss'
 import RichText from '../Components/RichText'
-import Image from 'next/image'
 import ListingJob from './ListingJob'
 import ListingHighlight from './ListingHighlight'
 import axios from 'axios'
@@ -9,14 +9,13 @@ import qs from 'qs'
 import Link from 'next/link'
 import Popup from './Popup'
 
-function YourEmployerListing({ listing, currentUser }) {
+function YourEmployerListing({ listing, currentUser, index }) {
   const [open, setOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
-  const [jobs, setJobs] = useState(1)
-  const [jobArray, setJobArray] = useState([])
-  const [highlights, setHighlights] = useState(1)
-  const [highlightArray, setHighlightArray] = useState([])
+  const [createObjectURL, setCreateObjectURL] = useState(null)
   const [errorMsg, setErrorMsg] = useState('')
+  const [imageSuccess, setImageSuccess] = useState('')
+  const [imageError, setImageError] = useState('')
   const [listingInfo, setListingInfo] = useState([
     '',
     '',
@@ -28,8 +27,8 @@ function YourEmployerListing({ listing, currentUser }) {
     '',
     '',
     '',
-    [],
-    [],
+    '',
+    '',
   ])
 
   useEffect(() => {
@@ -59,6 +58,8 @@ function YourEmployerListing({ listing, currentUser }) {
       setErrorMsg('Please Fill in All Required Fields')
     } else {
       setErrorMsg('')
+      const newLogo = await uploadToServer()
+
       const config = {
         headers: { Authorization: `Bearer ${currentUser.accessToken}` },
       }
@@ -68,6 +69,7 @@ function YourEmployerListing({ listing, currentUser }) {
           email: currentUser.email,
           listingInfo,
           number: listing.employerNumber,
+          logo: newLogo,
         },
         config
       )
@@ -131,6 +133,56 @@ function YourEmployerListing({ listing, currentUser }) {
     }
   }
 
+  const uploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0]
+      console.log(i)
+      if (i.size < 1600000) {
+        setCreateObjectURL(URL.createObjectURL(i))
+        setImageSuccess('Update Listing to see logo change')
+        setImageError('')
+      } else {
+        setImageError('File must be less than 16MB')
+        setImageSuccess('')
+      }
+    }
+  }
+
+  const uploadToServer = async () => {
+    const i = document.getElementsByName('file')[index].files[0]
+    if (i) {
+      console.log(i)
+      if (i.size < 1600000) {
+        const renameFile = (originalFile, newName) => {
+          return new File([originalFile], newName, {
+            type: originalFile.type,
+            lastModified: originalFile.lastModified,
+          })
+        }
+        const newName = renameFile(
+          i,
+          `${i.name.split('.')[0]}-${listing.employerNumber}.${
+            i.name.split('.')[1]
+          }`
+        )
+        const body = new FormData()
+        body.append('file', newName)
+
+        const config = {
+          headers: {
+            'content-type': 'multipart/form-data',
+          },
+        }
+
+        const uploadLogo = await axios.post('/api/employer/logo', body, config)
+        if (uploadLogo) {
+          return newName.name
+        }
+      } else setImageError('File must be less than 16MB')
+    }
+    return ''
+  }
+
   return (
     <div className={styles.blocks__block} key={listing._id}>
       <Popup
@@ -145,17 +197,49 @@ function YourEmployerListing({ listing, currentUser }) {
       />
       <div className={styles.blocks__block__info}>
         <h2>
+          {!createObjectURL && listing.logo && listing.logo.length > 0 && (
+            <Image
+              src={`https://eagleforce-avatar.s3.amazonaws.com/${listing.logo}`}
+              width={50}
+              height={50}
+              objectFit='contain'
+            />
+          )}
+          {createObjectURL && (
+            <Image
+              src={createObjectURL}
+              width={50}
+              height={50}
+              objectFit='contain'
+            />
+          )}
           {listing.listingInfo[1]} - {listing.listingInfo[0]}
         </h2>
-
+        <label>
+          <input
+            type='file'
+            name='file'
+            id='fileUpload'
+            accept='image/x-png,image/gif,image/jpeg'
+            onChange={uploadToClient}
+          />
+          Upload Logo
+        </label>
         <button onClick={() => setOpenPopup(true)}>Close Listing</button>
         <img
+          className={styles.blocks__block__info__img}
           src='/images/layout/arrow.png'
           alt='Dropdown Arrow'
           onClick={() => setOpen(!open)}
           style={{ transform: open && 'rotate(180deg)' }}
         />
       </div>
+      {imageSuccess.length > 0 && (
+        <p className={styles.blocks__block__success}>{imageSuccess}</p>
+      )}
+      {imageError.length > 0 && (
+        <p className={styles.blocks__block__error}>{imageError}</p>
+      )}
       {open && (
         <div className={styles.blocks__block__create}>
           <div className={styles.create}>

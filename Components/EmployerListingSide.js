@@ -25,6 +25,7 @@ function EmployerListingSide({
   rateEnd,
   experience,
   refresh,
+  createObjectURL,
 }) {
   const [currentUser, setCurrentUser] = useState()
   const [bookmarked, setBookmarked] = useState(false)
@@ -43,7 +44,6 @@ function EmployerListingSide({
           `/api/user/bookmark?email=${user.email}`,
           config
         )
-        console.log(data.data)
         setBookmarks(data.data)
       }
     })
@@ -88,7 +88,6 @@ function EmployerListingSide({
         const config = {
           headers: { Authorization: `Bearer ${auth.currentUser.accessToken}` },
         }
-        console.log(`Employer #${number}`)
         const data = await axios.put(
           `/api/user/bookmark`,
           {
@@ -116,10 +115,14 @@ function EmployerListingSide({
       />
       <div className={styles.side__title}>
         <Image
-          src='/images/post/factory-red-larg.png'
+          src={
+            createObjectURL
+              ? createObjectURL
+              : '/images/post/factory-red-larg.png'
+          }
           width='100'
           height='100'
-          objectFit='fixed'
+          objectFit='contain'
         />
         <p className={styles.side__title__number}>{company}</p>
         <p className={styles.side__title__type}>

@@ -4,13 +4,10 @@ import Layout from '../../../Components/Layout'
 import RichText from '../../../Components/RichText'
 import EmployerBreadcrumbs from '../../../Components/EmployerBreadcrumbs'
 import styles from '../../../styles/CreateEmployerListing.module.scss'
+import Image from 'next/image'
 
 function CreateEmployerListing({}) {
   const [errorMsg, setErrorMsg] = useState('')
-  const [jobs, setJobs] = useState(1)
-  const [jobArray, setJobArray] = useState([])
-  const [highlights, setHighlights] = useState(1)
-  const [highlightArray, setHighlightArray] = useState([])
   const [listingInfo, setListingInfo] = useState([
     '',
     '',
@@ -142,6 +139,7 @@ function CreateEmployerListing({}) {
                   value={listingInfo ? listingInfo[1] : ''}
                 />
               </div>
+
               <div className={styles.create__inputs__input}>
                 <label>Website URL (if you have one)</label>
                 <input

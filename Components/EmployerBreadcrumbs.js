@@ -29,11 +29,6 @@ function EmployerBreadcrumbs() {
           path='/post/employer/purchase-listing'
           currentPath={router.pathname}
           text='Purchase Listing'
-        />
-        <RedBreadcrumb
-          path='/post/employer/verify-listing'
-          currentPath={router.pathname}
-          text='Verify Listing'
           borderClass={'last'}
         />
       </ul>

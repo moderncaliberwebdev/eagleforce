@@ -13,6 +13,7 @@ function FeaturedWorkerListingBlock({
   city,
   showFullListing,
   saved,
+  createObjectURL,
 }) {
   return (
     <div
@@ -24,10 +25,13 @@ function FeaturedWorkerListingBlock({
       <div className={styles.block__top}>
         <div className={styles.block__top__img}>
           <Image
-            src='/images/post/factory-red.png'
+            src={
+              createObjectURL ? createObjectURL : '/images/post/factory-red.png'
+            }
             width='50'
             height='50'
             layout='fixed'
+            objectFit='contain'
           />
         </div>
         <div className={styles.block__top__titles}>
