@@ -64,6 +64,13 @@ main {
             color: #636c72;
           }
         }
+
+        &__error {
+          width: 100%;
+          text-align: center !important;
+          margin: 1rem 0 0 0 !important;
+          color: red;
+        }
       }
 
       button {

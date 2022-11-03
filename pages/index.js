@@ -6,10 +6,23 @@ import styles from '../styles/Home.module.scss'
 
 import { getAuth } from 'firebase/auth'
 import app from '../firebase/clientApp'
+import { useState } from 'react'
 
 export default function Home({}) {
   const auth = getAuth(app)
   const user = auth.currentUser
+
+  const [search, setSearch] = useState('')
+  const [searchType, setSearchType] = useState('')
+  const [error, setError] = useState('')
+
+  const submit = () => {
+    if (searchType == 'Employer') {
+      window.location.href = `/employers?search=${search}&employmentType=&workerType=&location=&prox=&rateStart=&rateEnd=`
+    } else if (searchType == 'Worker') {
+      window.location.href = `/workers?search=${search}&skillLevel=&employmentType=&workerType=&location=&prox=`
+    } else setError('Please fill in all fields before submitting')
+  }
 
   return (
     <div className={styles.container}>
@@ -48,8 +61,21 @@ export default function Home({}) {
                 typing in a job title and clicking search!
               </p>
               <div className={styles.hero__left__inputs}>
-                <input type='text' placeholder='Job title, trade, or company' />
-                <select required>
+                <input
+                  type='text'
+                  placeholder={
+                    searchType == 'Employer'
+                      ? 'Search by job title, trade, or company'
+                      : 'Search by job title, trade, or worker number'
+                  }
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <select
+                  required
+                  value={searchType}
+                  onChange={(e) => setSearchType(e.target.value)}
+                >
                   <option value='' disabled selected hidden>
                     Search for Worker or Employer
                   </option>
@@ -57,7 +83,8 @@ export default function Home({}) {
                   <option value='Employer'>Employer</option>
                 </select>
               </div>
-              <button>Search</button>
+              <button onClick={submit}>Search</button>
+              <p className={styles.hero__left__inputs__error}>{error}</p>
             </div>
             <div className={styles.hero__right}>
               <div className={styles.hero__right__top}>
