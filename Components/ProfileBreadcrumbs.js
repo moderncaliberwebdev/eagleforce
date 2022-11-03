@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import styles from '../styles/WorkerBreadcrumbs.module.scss'
 import BlueBreadcrumb from './BlueBreadcrumb'
 
-function ProfileBreadcrumbs() {
+function ProfileBreadcrumbs({ red }) {
   const router = useRouter()
   return (
     <div className={`${styles.breadcrumbs} ${styles.profile_breadcrumbs}`}>
@@ -15,12 +15,14 @@ function ProfileBreadcrumbs() {
           currentPath={router.pathname}
           text='Settings'
           borderClass={'first'}
+          red={red}
         />
         <BlueBreadcrumb
           path='/profile/saved'
           ahref='/profile/saved'
           currentPath={router.pathname}
           text='Saved Listings'
+          red={red}
         />
         <BlueBreadcrumb
           path='/profile/listings'
@@ -28,6 +30,7 @@ function ProfileBreadcrumbs() {
           currentPath={router.pathname}
           text='Your Listings'
           borderClass={'last'}
+          red={red}
         />
       </ul>
     </div>

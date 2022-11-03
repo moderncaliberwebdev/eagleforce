@@ -88,7 +88,7 @@ function PreviousListing({ listing, currentUser }) {
     }
 
     const paypalToken = await axios.post(
-      'https://api-m.paypal.com/v1/oauth2/token',
+      `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/oauth2/token`,
       qsData,
       tokenConfig
     )
@@ -117,7 +117,7 @@ function PreviousListing({ listing, currentUser }) {
         },
       }
       const activateData = await axios.post(
-        `https://api-m.paypal.com/v1/billing/subscriptions/${data.data.newListing.orderDetails.id}/activate`,
+        `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/billing/subscriptions/${data.data.newListing.orderDetails.id}/activate`,
         {},
         activateConfig
       )

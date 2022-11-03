@@ -200,7 +200,7 @@ function YourListing({ listing, currentUser }) {
     }
 
     const paypalToken = await axios.post(
-      'https://api-m.paypal.com/v1/oauth2/token',
+      `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/oauth2/token`,
       qsData,
       tokenConfig
     )
@@ -227,7 +227,7 @@ function YourListing({ listing, currentUser }) {
         },
       }
       const suspendData = await axios.post(
-        `https://api-m.paypal.com/v1/billing/subscriptions/${data.data.worker.value.orderDetails.id}/suspend`,
+        `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/billing/subscriptions/${data.data.worker.value.orderDetails.id}/suspend`,
         {},
         suspendConfig
       )

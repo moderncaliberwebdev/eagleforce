@@ -141,7 +141,8 @@ function Profile() {
       <Layout>
         <main>
           <h1>Profile</h1>
-          <ProfileBreadcrumbs />
+
+          <ProfileBreadcrumbs admin={currentUser && currentUser.admin} />
           <div className={styles.settings}>
             <div className={styles.settings__input}>
               <label>Full Name</label>

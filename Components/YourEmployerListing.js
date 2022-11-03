@@ -97,7 +97,7 @@ function YourEmployerListing({ listing, currentUser, index }) {
     }
 
     const paypalToken = await axios.post(
-      'https://api-m.paypal.com/v1/oauth2/token',
+      `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/oauth2/token`,
       qsData,
       tokenConfig
     )
@@ -125,7 +125,7 @@ function YourEmployerListing({ listing, currentUser, index }) {
       }
 
       const suspendData = await axios.post(
-        `https://api-m.paypal.com/v1/billing/subscriptions/${data.data.employer.value.orderDetails.id}/suspend`,
+        `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/billing/subscriptions/${data.data.employer.value.orderDetails.id}/suspend`,
         {},
         suspendConfig
       )

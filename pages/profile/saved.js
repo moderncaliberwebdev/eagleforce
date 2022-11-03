@@ -35,8 +35,14 @@ function SavedListings() {
           `/api/user/saved?email=${user.email}`,
           config
         )
+
+        const userData = await axios.get(
+          `/api/user?email=${user.email}`,
+          config
+        )
+        setCurrentUser(userData.data.user)
+
         data && setLoading(false)
-        console.log(data.data)
         setListings(JSON.parse(JSON.stringify(data.data)))
       } else {
         window.location.href = '/'
@@ -45,13 +51,18 @@ function SavedListings() {
   }, [auth])
 
   const showFullListing = (number, type) => {
-    const worker = listings[type].filter((item) => item.workerNumber == number)
+    const checkListings = (item) => {
+      if (item.workerNumber) {
+        return item.workerNumber == number
+      } else if (item.employerNumber) {
+        return item.employerNumber == number
+      }
+    }
+
+    const worker = listings[type].filter(checkListings)
+
     setSelectedWorker(worker[0])
   }
-
-  // const unBookmark = (number) => {
-  //   window.location.reload()
-  // }
 
   return (
     <div className={styles.container}>
@@ -72,7 +83,7 @@ function SavedListings() {
       <Layout>
         <main>
           <h1>Saved Listings</h1>
-          <ProfileBreadcrumbs />
+          <ProfileBreadcrumbs admin={currentUser && currentUser.admin} />
           <div className={styles.saved}>
             {loading ? (
               <p className={styles.saved__loading}>Loading Listings...</p>
@@ -107,6 +118,7 @@ function SavedListings() {
                       <FeaturedEmployerListingBlock
                         key={employer.listingInfo[0]}
                         job={employer.listingInfo[0]}
+                        number={employer.employerNumber}
                         company={employer.listingInfo[1]}
                         city={employer.listingInfo[7]}
                         type={employer.listingInfo[3]}
@@ -136,6 +148,7 @@ function SavedListings() {
                       <EmployerListingBlock
                         key={employer.listingInfo[0]}
                         job={employer.listingInfo[0]}
+                        number={employer.employerNumber}
                         company={employer.listingInfo[1]}
                         city={employer.listingInfo[7]}
                         type={employer.listingInfo[3]}

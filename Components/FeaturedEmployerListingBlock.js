@@ -3,7 +3,7 @@ import React from 'react'
 
 import styles from '../styles/FeaturedEmployerListingBlock.module.scss'
 
-function FeaturedWorkerListingBlock({
+function FeaturedEmployerListingBlock({
   job,
   number,
   company,
@@ -67,4 +67,4 @@ function FeaturedWorkerListingBlock({
   )
 }
 
-export default FeaturedWorkerListingBlock
+export default FeaturedEmployerListingBlock

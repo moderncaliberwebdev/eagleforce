@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import styles from '../styles/WorkerBreadcrumbs.module.scss'
 
@@ -10,7 +10,14 @@ function BlueBreadcrumb({
   text,
   position,
   borderClass,
+  red,
 }) {
+  const [color, setColor] = useState('#fff')
+
+  useEffect(() => {
+    red ? setColor('#C9A596') : setColor('#96a4c9')
+  }, [color])
+
   return (
     <>
       {ahref ? (
@@ -25,7 +32,7 @@ function BlueBreadcrumb({
                   : styles.list_a
               }
               style={{
-                backgroundColor: currentPath == path ? '#96a4c9' : '#fff',
+                backgroundColor: currentPath == path ? color : '#fff',
               }}
             >
               {text}
@@ -41,7 +48,7 @@ function BlueBreadcrumb({
               ? styles.last_a
               : styles.list_a
           }
-          style={{ backgroundColor: currentPath == path ? '#96a4c9' : '#fff' }}
+          style={{ backgroundColor: currentPath == path ? color : '#fff' }}
         >
           {text}
         </li>
