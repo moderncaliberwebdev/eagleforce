@@ -505,32 +505,40 @@ export default function Workers({}) {
                 {displayListings &&
                   displayListings.featuredWorkers &&
                   displayListings.featuredWorkers.map((worker) => (
-                    <FeaturedWorkerListingBlock
-                      key={worker.listingInfo[0]}
-                      jobs={worker.listingInfo[0]}
-                      number={worker.workerNumber}
-                      type={worker.listingInfo[2]}
-                      city={worker.listingInfo[6]}
-                      employmentType={worker.listingInfo[5]}
-                      skill={worker.listingInfo[1]}
-                      summary={worker.listingInfo[9]}
-                      showFullListing={showFullListing}
-                    />
+                    <>
+                      {worker.approved && (
+                        <FeaturedWorkerListingBlock
+                          key={worker.listingInfo[0]}
+                          jobs={worker.listingInfo[0]}
+                          number={worker.workerNumber}
+                          type={worker.listingInfo[2]}
+                          city={worker.listingInfo[6]}
+                          employmentType={worker.listingInfo[5]}
+                          skill={worker.listingInfo[1]}
+                          summary={worker.listingInfo[9]}
+                          showFullListing={showFullListing}
+                        />
+                      )}
+                    </>
                   ))}
                 {displayListings &&
                   displayListings.standardWorkers &&
                   displayListings.standardWorkers.map((worker) => (
-                    <WorkerListingBlock
-                      key={worker.listingInfo[0]}
-                      jobs={worker.listingInfo[0]}
-                      number={worker.workerNumber}
-                      type={worker.listingInfo[2]}
-                      city={worker.listingInfo[6]}
-                      employmentType={worker.listingInfo[5]}
-                      skill={worker.listingInfo[1]}
-                      summary={worker.listingInfo[9]}
-                      showFullListing={showFullListing}
-                    />
+                    <>
+                      {worker.approved && (
+                        <WorkerListingBlock
+                          key={worker.listingInfo[0]}
+                          jobs={worker.listingInfo[0]}
+                          number={worker.workerNumber}
+                          type={worker.listingInfo[2]}
+                          city={worker.listingInfo[6]}
+                          employmentType={worker.listingInfo[5]}
+                          skill={worker.listingInfo[1]}
+                          summary={worker.listingInfo[9]}
+                          showFullListing={showFullListing}
+                        />
+                      )}
+                    </>
                   ))}
               </div>
             )}

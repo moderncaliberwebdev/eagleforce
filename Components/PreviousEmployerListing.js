@@ -5,35 +5,30 @@ import axios from 'axios'
 import qs from 'qs'
 import Popup from './Popup'
 
-function PreviousListing({ listing, currentUser }) {
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import app from '../firebase/clientApp'
+
+const auth = getAuth()
+
+function PreviousListing({ listing, currentUser, admin }) {
   const [open, setOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
-  const [jobs, setJobs] = useState(1)
-  const [jobArray, setJobArray] = useState([])
-  const [highlights, setHighlights] = useState(1)
-  const [highlightArray, setHighlightArray] = useState([])
-  const [errorMsg, setErrorMsg] = useState('')
-  const [listingInfo, setListingInfo] = useState([
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    [],
-    [],
-  ])
+  const [openRemovePopup, setOpenRemovePopup] = useState(false)
+  const [authUser, setAuthUser] = useState()
 
   useEffect(() => {
-    setListingInfo(listing.listingInfo)
-  }, [listing])
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setAuthUser(user)
+      }
+    })
+  }, [auth])
 
   const cancelDelete = () => {
     setOpenPopup(false)
+  }
+  const cancelRemoveDelete = () => {
+    setOpenRemovePopup(false)
   }
 
   const renewListing = async () => {
@@ -88,6 +83,81 @@ function PreviousListing({ listing, currentUser }) {
     }
   }
 
+  const approveListing = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${authUser.accessToken}` },
+    }
+    const data = await axios.put(
+      `/api/user/approve-employer`,
+      { number: listing.employerNumber },
+      config
+    )
+    data && window.location.reload()
+  }
+
+  const verifyListing = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${authUser.accessToken}` },
+    }
+    const data = await axios.put(
+      `/api/user/verify-employer`,
+      { number: listing.employerNumber },
+      config
+    )
+    data && window.location.reload()
+  }
+
+  const closeListing = async () => {
+    //get paypal token
+    const basicAuth = `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT}:${process.env.NEXT_PUBLIC_PAYPAL_SECRET}`
+    const qsData = qs.stringify({
+      grant_type: 'client_credentials',
+    })
+
+    const tokenConfig = {
+      headers: {
+        'Content-Type': 'x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(basicAuth).toString('base64')}`,
+      },
+    }
+
+    const paypalToken = await axios.post(
+      `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/oauth2/token`,
+      qsData,
+      tokenConfig
+    )
+
+    //delete listing from database
+    const config = {
+      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+    }
+    const data = await axios.put(
+      '/api/user/admin-close-employer-listing',
+      {
+        email: listing.user,
+        number: listing.employerNumber,
+        admin: listing.admin,
+      },
+      config
+    )
+
+    //pause listing on paypal
+    if (data.data.employer) {
+      const suspendConfig = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${paypalToken.data.access_token}`,
+        },
+      }
+      const suspendData = await axios.post(
+        `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/billing/subscriptions/${data.data.employer.value.orderDetails.id}/suspend`,
+        {},
+        suspendConfig
+      )
+      suspendData && window.location.reload()
+    }
+  }
+
   return (
     <div className={styles.blocks__block} key={listing._id}>
       <Popup
@@ -101,11 +171,37 @@ function PreviousListing({ listing, currentUser }) {
         color='red'
         renew={true}
       />
+      <Popup
+        question='Are you sure you want to close this listing?'
+        desc="The user's subscription will be cancelled. This action cannot be undone"
+        answer='Continue'
+        no='Cancel'
+        cancel={cancelRemoveDelete}
+        next={closeListing}
+        color='red'
+        openPopup={openRemovePopup}
+      />
       <div className={styles.blocks__block__info}>
         <h2>
           {listing.listingInfo[1]} - {listing.listingInfo[0]}
         </h2>
-        <button onClick={() => setOpenPopup(true)}>Renew Listing</button>
+        {admin ? (
+          <>
+            {listing && !listing.approved ? (
+              <button onClick={approveListing}>Approve</button>
+            ) : (
+              <p>Approved</p>
+            )}
+            {listing && !listing.verified ? (
+              <button onClick={verifyListing}>Verify</button>
+            ) : (
+              <p>Verified</p>
+            )}
+            <button onClick={() => setOpenRemovePopup(true)}>Remove</button>
+          </>
+        ) : (
+          <button onClick={() => setOpenPopup(true)}>Renew Listing</button>
+        )}
         <img
           src='/images/layout/arrow.png'
           alt='Dropdown Arrow'

@@ -236,6 +236,7 @@ function PreviewEmployerListing() {
                         orderDetails: details,
                         geocode: getGeocode,
                         logo: logoName,
+                        approved: false,
                       },
                       config
                     )

@@ -230,6 +230,7 @@ function PreviewWorkerListing({ isConnected }) {
                             orderID: data.orderID,
                             orderDetails: details,
                             geocode: getGeocode,
+                            approved: false,
                           },
                           config
                         )

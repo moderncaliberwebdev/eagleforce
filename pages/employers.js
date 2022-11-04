@@ -517,34 +517,42 @@ export default function Employers({}) {
                 {displayListings &&
                   displayListings.featuredEmployers &&
                   displayListings.featuredEmployers.map((employer) => (
-                    <FeaturedEmployerListingBlock
-                      key={employer.listingInfo[0]}
-                      job={employer.listingInfo[0]}
-                      number={employer.employerNumber}
-                      company={employer.listingInfo[1]}
-                      city={employer.listingInfo[7]}
-                      type={employer.listingInfo[3]}
-                      employmentType={employer.listingInfo[6]}
-                      description={employer.listingInfo[10]}
-                      logo={employer.logo}
-                      showFullListing={showFullListing}
-                    />
+                    <>
+                      {employer.approved && (
+                        <FeaturedEmployerListingBlock
+                          key={employer.listingInfo[0]}
+                          job={employer.listingInfo[0]}
+                          number={employer.employerNumber}
+                          company={employer.listingInfo[1]}
+                          city={employer.listingInfo[7]}
+                          type={employer.listingInfo[3]}
+                          employmentType={employer.listingInfo[6]}
+                          description={employer.listingInfo[10]}
+                          logo={employer.logo}
+                          showFullListing={showFullListing}
+                        />
+                      )}
+                    </>
                   ))}
                 {displayListings &&
                   displayListings.standardEmployers &&
                   displayListings.standardEmployers.map((employer) => (
-                    <EmployerListingBlock
-                      key={employer.listingInfo[0]}
-                      job={employer.listingInfo[0]}
-                      number={employer.employerNumber}
-                      company={employer.listingInfo[1]}
-                      city={employer.listingInfo[7]}
-                      type={employer.listingInfo[3]}
-                      employmentType={employer.listingInfo[6]}
-                      description={employer.listingInfo[10]}
-                      logo={employer.logo}
-                      showFullListing={showFullListing}
-                    />
+                    <>
+                      {employer.approved && (
+                        <EmployerListingBlock
+                          key={employer.listingInfo[0]}
+                          job={employer.listingInfo[0]}
+                          number={employer.employerNumber}
+                          company={employer.listingInfo[1]}
+                          city={employer.listingInfo[7]}
+                          type={employer.listingInfo[3]}
+                          employmentType={employer.listingInfo[6]}
+                          description={employer.listingInfo[10]}
+                          logo={employer.logo}
+                          showFullListing={showFullListing}
+                        />
+                      )}
+                    </>
                   ))}
               </div>
             )}

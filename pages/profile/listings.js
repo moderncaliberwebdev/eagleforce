@@ -17,6 +17,7 @@ const auth = getAuth()
 
 function Listings() {
   const [currentUser, setCurrentUser] = useState()
+  const [userFromDB, setUserFromDB] = useState()
   const [listings, setListings] = useState()
   const [employerListings, setEmployerListings] = useState()
   const [previousListings, setPreviousListings] = useState()
@@ -34,6 +35,13 @@ function Listings() {
           `/api/user/listings?email=${user.email}`,
           config
         )
+
+        const userData = await axios.get(
+          `/api/user?email=${user.email}`,
+          config
+        )
+        setUserFromDB(userData.data.user)
+
         data && setLoading(false)
         setPreviousListings(
           JSON.parse(JSON.stringify(data.data.previousListings))
@@ -65,7 +73,7 @@ function Listings() {
       <Layout>
         <main>
           <h1>Your Listings</h1>
-          <ProfileBreadcrumbs />
+          <ProfileBreadcrumbs admin={userFromDB && userFromDB.admin} />
           <div className={styles.nav}>
             <p
               style={{ textDecoration: listingType == true && 'underline' }}

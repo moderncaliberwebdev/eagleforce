@@ -30,6 +30,10 @@
         font-size: $font-text;
         width: 40rem;
       }
+      p {
+        font-size: $font-text;
+        color: $red;
+      }
       button {
         padding: 1rem 2rem;
         background-color: $red;
