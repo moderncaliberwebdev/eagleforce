@@ -194,10 +194,10 @@ function PreviewEmployerListing() {
             </label>
 
             <PayPalButton
-              // key={useDiscount}
+              key={useDiscount}
               options={{
                 vault: true,
-                clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
+                'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
                 // intent: 'subscription',
               }}
               createSubscription={(data, actions) => {
