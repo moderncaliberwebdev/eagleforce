@@ -197,25 +197,22 @@ function PreviewEmployerListing() {
               // key={useDiscount}
               options={{
                 vault: true,
-                clientId:
-                  'AeJZWCp_YDUoe0qnFEzGyigl5s3qxHJzxTp_tlcyIUCcey2Eyn2F0fNhhK4nTvih2dzNQqshQJHV2jPg',
-                // process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
-                intent: 'subscription',
+                clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
+                // intent: 'subscription',
               }}
               createSubscription={(data, actions) => {
                 return actions.subscription.create({
-                  plan_id: 'P-3B724015PB648072WMNG3MZY',
-                  // useDiscount
-                  //   ? planType.type == 'Featured'
-                  //     ? process.env
-                  //         .NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN_FREE
-                  //     : planType.type == 'Standard' &&
-                  //       process.env
-                  //         .NEXT_PUBLIC_PAYPAL_STANDARD_EMPLOYER_PLAN_FREE
-                  //   : planType.type == 'Featured'
-                  //   ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN
-                  //   : planType.type == 'Standard' &&
-                  //     process.env.NEXT_PUBLIC_PAYPAL_STANDARD_EMPLOYER_PLAN,
+                  plan_id: useDiscount
+                    ? planType.type == 'Featured'
+                      ? process.env
+                          .NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN_FREE
+                      : planType.type == 'Standard' &&
+                        process.env
+                          .NEXT_PUBLIC_PAYPAL_STANDARD_EMPLOYER_PLAN_FREE
+                    : planType.type == 'Featured'
+                    ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN
+                    : planType.type == 'Standard' &&
+                      process.env.NEXT_PUBLIC_PAYPAL_STANDARD_EMPLOYER_PLAN,
                 })
               }}
               style={{
