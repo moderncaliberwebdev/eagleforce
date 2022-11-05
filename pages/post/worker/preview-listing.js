@@ -143,15 +143,16 @@ function PreviewWorkerListing({ isConnected }) {
               }}
               createSubscription={(data, actions) => {
                 return actions.subscription.create({
-                  plan_id: useDiscount
-                    ? planType.type == 'Featured'
-                      ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN_FREE
-                      : planType.type == 'Standard' &&
-                        process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN_FREE
-                    : planType.type == 'Featured'
-                    ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN
-                    : planType.type == 'Standard' &&
-                      process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN,
+                  plan_id: process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN,
+                  // useDiscount
+                  //   ? planType.type == 'Featured'
+                  //     ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN_FREE
+                  //     : planType.type == 'Standard' &&
+                  //       process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN_FREE
+                  //   : planType.type == 'Featured'
+                  //   ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN
+                  //   : planType.type == 'Standard' &&
+                  //     process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN,
                 })
               }}
               style={{
