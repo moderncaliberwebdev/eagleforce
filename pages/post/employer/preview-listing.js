@@ -197,7 +197,7 @@ function PreviewEmployerListing() {
               key={useDiscount}
               options={{
                 vault: true,
-                'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
+                clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
                 intent: 'subscription',
               }}
               createSubscription={(data, actions) => {
