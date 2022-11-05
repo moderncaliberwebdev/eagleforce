@@ -15,6 +15,7 @@ function FeaturedEmployerListingBlock({
   saved,
   createObjectURL,
   logo,
+  verified,
 }) {
   return (
     <div
@@ -25,7 +26,18 @@ function FeaturedEmployerListingBlock({
     >
       <div className={styles.block__tags}>
         <div className={styles.block__tags__featured}>Featured Listing</div>
-        <div className={styles.block__tags__verified}></div>
+        <div className={styles.block__tags__verified}>
+          {verified && (
+            <>
+              <Image
+                src='/images/post/verified-red.png'
+                width={20}
+                height={20}
+              />
+              <p>Verified Listing</p>
+            </>
+          )}
+        </div>
       </div>
       <div className={styles.block__top}>
         <div className={styles.block__top__img}>

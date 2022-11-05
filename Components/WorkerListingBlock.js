@@ -13,6 +13,7 @@ function WorkerListingBlock({
   summary,
   showFullListing,
   saved,
+  verified,
 }) {
   // const [rand, setRand] = useState(Math.floor(100000 + Math.random() * 900000))
 
@@ -23,6 +24,21 @@ function WorkerListingBlock({
         showFullListing && showFullListing(number, 'standardWorkers')
       }
     >
+      <div className={styles.block__tags}>
+        <div className={styles.block__tags__featured}></div>
+        <div className={styles.block__tags__verified}>
+          {verified && (
+            <>
+              <Image
+                src='/images/post/verified-black.png'
+                width={20}
+                height={20}
+              />
+              <p>Verified Listing</p>
+            </>
+          )}
+        </div>
+      </div>
       <div className={styles.block__top}>
         <div>
           <Image

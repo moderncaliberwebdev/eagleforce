@@ -15,6 +15,7 @@ function EmployerListingBlock({
   saved,
   createObjectURL,
   logo,
+  verified,
 }) {
   return (
     <div
@@ -23,6 +24,21 @@ function EmployerListingBlock({
         showFullListing && showFullListing(number, 'standardEmployers')
       }
     >
+      <div className={styles.block__tags}>
+        <div className={styles.block__tags__featured}></div>
+        <div className={styles.block__tags__verified}>
+          {verified && (
+            <>
+              <Image
+                src='/images/post/verified-black.png'
+                width={20}
+                height={20}
+              />
+              <p>Verified Listing</p>
+            </>
+          )}
+        </div>
+      </div>
       <div className={styles.block__top}>
         <div>
           <Image

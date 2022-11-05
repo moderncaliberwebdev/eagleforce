@@ -23,6 +23,7 @@ function WorkerListingSide({
   experience,
   highlights,
   refresh,
+  preview,
 }) {
   const [currentUser, setCurrentUser] = useState()
   const [bookmarked, setBookmarked] = useState(false)
@@ -242,7 +243,7 @@ function WorkerListingSide({
             </div>
           </div>
           <div className={styles.side__contact}>
-            <button onClick={() => setContactWorker(true)}>
+            <button onClick={() => !preview && setContactWorker(true)}>
               Contact Worker
             </button>
           </div>

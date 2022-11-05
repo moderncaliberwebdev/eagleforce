@@ -517,6 +517,7 @@ export default function Workers({}) {
                           skill={worker.listingInfo[1]}
                           summary={worker.listingInfo[9]}
                           showFullListing={showFullListing}
+                          verified={worker.verified}
                         />
                       )}
                     </>
@@ -536,6 +537,7 @@ export default function Workers({}) {
                           skill={worker.listingInfo[1]}
                           summary={worker.listingInfo[9]}
                           showFullListing={showFullListing}
+                          verified={worker.verified}
                         />
                       )}
                     </>

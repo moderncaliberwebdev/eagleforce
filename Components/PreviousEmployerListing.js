@@ -95,18 +95,6 @@ function PreviousListing({ listing, currentUser, admin }) {
     data && window.location.reload()
   }
 
-  const verifyListing = async () => {
-    const config = {
-      headers: { Authorization: `Bearer ${authUser.accessToken}` },
-    }
-    const data = await axios.put(
-      `/api/user/verify-employer`,
-      { number: listing.employerNumber },
-      config
-    )
-    data && window.location.reload()
-  }
-
   const closeListing = async () => {
     //get paypal token
     const basicAuth = `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT}:${process.env.NEXT_PUBLIC_PAYPAL_SECRET}`
@@ -192,11 +180,7 @@ function PreviousListing({ listing, currentUser, admin }) {
             ) : (
               <p>Approved</p>
             )}
-            {listing && !listing.verified ? (
-              <button onClick={verifyListing}>Verify</button>
-            ) : (
-              <p>Verified</p>
-            )}
+
             <button onClick={() => setOpenRemovePopup(true)}>Remove</button>
           </>
         ) : (

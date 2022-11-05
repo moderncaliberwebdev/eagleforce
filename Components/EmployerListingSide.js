@@ -27,6 +27,7 @@ function EmployerListingSide({
   refresh,
   createObjectURL,
   logo,
+  preview,
 }) {
   const [currentUser, setCurrentUser] = useState()
   const [bookmarked, setBookmarked] = useState(false)
@@ -210,7 +211,7 @@ function EmployerListingSide({
             </div>
           </div>
           <div className={styles.side__contact}>
-            <button onClick={() => setContactEmployer(true)}>
+            <button onClick={() => !preview && setContactEmployer(true)}>
               Contact Employer
             </button>
           </div>

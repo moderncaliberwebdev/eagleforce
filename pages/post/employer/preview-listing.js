@@ -40,6 +40,8 @@ function PreviewEmployerListing() {
   const [planType, setPlanType] = useState({})
   const [createObjectURL, setCreateObjectURL] = useState(null)
   const [imageError, setImageError] = useState('')
+  const [discount, setDiscount] = useState('')
+  const [useDiscount, setUseDiscount] = useState(false)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -55,10 +57,6 @@ function PreviewEmployerListing() {
       }
     })
   }, [auth])
-
-  useEffect(() => {
-    console.log(createObjectURL)
-  }, [createObjectURL])
 
   useEffect(() => {
     const functionOnLoad = async () => {
@@ -88,6 +86,12 @@ function PreviewEmployerListing() {
     }
     functionOnLoad()
   }, [])
+
+  useEffect(() => {
+    discount == process.env.NEXT_PUBLIC_DISCOUNT
+      ? setUseDiscount(true)
+      : setUseDiscount(false)
+  }, [discount])
 
   const getCoords = async () => {
     const data = await axios.get(
@@ -190,6 +194,7 @@ function PreviewEmployerListing() {
             </label>
 
             <PayPalButton
+              key={useDiscount}
               options={{
                 vault: true,
                 'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
@@ -197,11 +202,17 @@ function PreviewEmployerListing() {
               }}
               createSubscription={(data, actions) => {
                 return actions.subscription.create({
-                  plan_id:
-                    planType.type == 'Featured'
-                      ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN
+                  plan_id: useDiscount
+                    ? planType.type == 'Featured'
+                      ? process.env
+                          .NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN_FREE
                       : planType.type == 'Standard' &&
-                        process.env.NEXT_PUBLIC_PAYPAL_STANDARD_EMPLOYER_PLAN,
+                        process.env
+                          .NEXT_PUBLIC_PAYPAL_STANDARD_EMPLOYER_PLAN_FREE
+                    : planType.type == 'Featured'
+                    ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_EMPLOYER_PLAN
+                    : planType.type == 'Standard' &&
+                      process.env.NEXT_PUBLIC_PAYPAL_STANDARD_EMPLOYER_PLAN,
                 })
               }}
               style={{
@@ -252,6 +263,14 @@ function PreviewEmployerListing() {
           {imageError && (
             <p className={styles.preview__imageerror}>{imageError}</p>
           )}
+          <div className={styles.preview__discount}>
+            <p>Discount Code</p>
+            <input
+              type='text'
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+            />
+          </div>
           <p className={styles.preview__notice}>
             This is a preview of your employer listing. Switch back to Edit
             Listing if you need to make changes
@@ -298,6 +317,7 @@ function PreviewEmployerListing() {
                 rateEnd={listingInfo && listingInfo[5]}
                 experience={listingInfo && listingInfo[11]}
                 createObjectURL={createObjectURL}
+                preview={true}
               />
             </div>
           </div>

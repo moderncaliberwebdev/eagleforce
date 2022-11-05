@@ -13,6 +13,7 @@ function FeaturedWorkerListingBlock({
   summary,
   showFullListing,
   saved,
+  verified,
 }) {
   return (
     <div
@@ -23,7 +24,18 @@ function FeaturedWorkerListingBlock({
     >
       <div className={styles.block__tags}>
         <div className={styles.block__tags__featured}>Featured Listing</div>
-        <div className={styles.block__tags__verified}></div>
+        <div className={styles.block__tags__verified}>
+          {verified && (
+            <>
+              <Image
+                src='/images/post/verified-blue.png'
+                width={20}
+                height={20}
+              />
+              <p>Verified Listing</p>
+            </>
+          )}
+        </div>
       </div>
       <div className={styles.block__top}>
         <div>

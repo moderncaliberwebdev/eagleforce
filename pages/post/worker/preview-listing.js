@@ -37,6 +37,8 @@ function PreviewWorkerListing({ isConnected }) {
   const [workerNumber, setWorkerNumber] = useState(0)
   const [currentUser, setCurrentUser] = useState()
   const [planType, setPlanType] = useState({})
+  const [discount, setDiscount] = useState('')
+  const [useDiscount, setUseDiscount] = useState(false)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -79,6 +81,12 @@ function PreviewWorkerListing({ isConnected }) {
     }
     functionOnLoad()
   }, [])
+
+  useEffect(() => {
+    discount == process.env.NEXT_PUBLIC_DISCOUNT
+      ? setUseDiscount(true)
+      : setUseDiscount(false)
+  }, [discount])
 
   const getCoords = async () => {
     const data = await axios.get(
@@ -125,125 +133,78 @@ function PreviewWorkerListing({ isConnected }) {
                 <a>Edit Listing</a>
               </Link>
             </div>
-            {planType && planType.type == 'Featured' ? (
-              <PayPalButton
-                options={{
-                  vault: true,
-                  'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
-                  intent: 'subscription',
-                }}
-                createSubscription={(data, actions) => {
-                  return actions.subscription.create({
-                    plan_id: process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN,
+
+            <PayPalButton
+              key={useDiscount}
+              options={{
+                vault: true,
+                'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
+                intent: 'subscription',
+              }}
+              createSubscription={(data, actions) => {
+                return actions.subscription.create({
+                  plan_id: useDiscount
+                    ? planType.type == 'Featured'
+                      ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN_FREE
+                      : planType.type == 'Standard' &&
+                        process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN_FREE
+                    : planType.type == 'Featured'
+                    ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN
+                    : planType.type == 'Standard' &&
+                      process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN,
+                })
+              }}
+              style={{
+                layout: 'horizontal',
+                color: 'blue',
+                label: 'pay',
+              }}
+              onApprove={(data, actions) => {
+                // Capture the funds from the transaction
+                return actions.subscription
+                  .get()
+                  .then(async function (details) {
+                    const getGeocode = await getCoords()
+
+                    const config = {
+                      headers: {
+                        Authorization: `Bearer ${auth.currentUser.accessToken}`,
+                      },
+                    }
+                    // OPTIONAL: Call your server to save the subscription
+                    const post = await axios.post(
+                      '/api/worker/create-listing',
+                      {
+                        listingInfo,
+                        verified: false,
+                        user: auth.currentUser.email,
+                        listingType: planType.type,
+                        userType: planType.user,
+                        date: new Date().getTime(),
+                        workerNumber,
+                        orderID: data.orderID,
+                        orderDetails: details,
+                        geocode: getGeocode,
+                        approved: false,
+                      },
+                      config
+                    )
+
+                    if (post) {
+                      window.location.href = '/post/worker/verify-listing'
+                      localStorage.clear()
+                    }
                   })
-                }}
-                style={{
-                  layout: 'horizontal',
-                  color: 'blue',
-                  label: 'pay',
-                }}
-                onApprove={(data, actions) => {
-                  // Capture the funds from the transaction
-                  return actions.subscription
-                    .get()
-                    .then(async function (details) {
-                      const getGeocode = await getCoords()
-
-                      const config = {
-                        headers: {
-                          Authorization: `Bearer ${auth.currentUser.accessToken}`,
-                        },
-                      }
-                      // OPTIONAL: Call your server to save the subscription
-                      const post = await axios.post(
-                        '/api/worker/create-listing',
-                        {
-                          listingInfo,
-                          verified: false,
-                          user: auth.currentUser.email,
-                          listingType: planType.type,
-                          userType: planType.user,
-                          date: new Date().getTime(),
-                          workerNumber,
-                          orderID: data.orderID,
-                          orderDetails: details,
-                          geocode: getGeocode,
-                        },
-                        config
-                      )
-
-                      if (post) {
-                        window.location.href = '/post/worker/verify-listing'
-                        localStorage.clear()
-                      }
-                    })
-                }}
-              />
-            ) : (
-              planType.type == 'Standard' && (
-                //Production Client ID: Aa06y8vEfenUBq-4JR9WCd9tVUr18KdkE4VDXrj1VfhJISrPyz38zGiCUG8pdroDcNgKDjZuxUlZsN9g
-                //Production Plan: P-1S184688RH238182AMMUJUUY
-                //Production 1 Cent Plan: P-2TJ80196MP706632EMNFM53I
-
-                //Sandbox Client ID: Aa0y7UQRO1_M92AM5jsJuHdHonnn9o_xGpQsxNH1FfDAlyhr7nJhgbWrArEr67utB3ZUxis2CJZb41mO
-                //Sandbox Plan: P-3H207100FH963184YMNMCCBA
-
-                <PayPalButton
-                  options={{
-                    vault: true,
-                    'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
-                    intent: 'subscription',
-                  }}
-                  createSubscription={(data, actions) => {
-                    return actions.subscription.create({
-                      plan_id: process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN,
-                    })
-                  }}
-                  style={{
-                    layout: 'horizontal',
-                    color: 'blue',
-                    label: 'pay',
-                  }}
-                  onApprove={(data, actions) => {
-                    // Capture the funds from the transaction
-                    return actions.subscription
-                      .get()
-                      .then(async function (details) {
-                        const getGeocode = await getCoords()
-
-                        const config = {
-                          headers: {
-                            Authorization: `Bearer ${auth.currentUser.accessToken}`,
-                          },
-                        }
-                        // OPTIONAL: Call your server to save the subscription
-                        const post = await axios.post(
-                          '/api/worker/create-listing',
-                          {
-                            listingInfo,
-                            verified: false,
-                            user: auth.currentUser.email,
-                            listingType: planType.type,
-                            userType: planType.user,
-                            date: new Date().getTime(),
-                            workerNumber,
-                            orderID: data.orderID,
-                            orderDetails: details,
-                            geocode: getGeocode,
-                            approved: false,
-                          },
-                          config
-                        )
-
-                        if (post) {
-                          window.location.href = '/post/worker/verify-listing'
-                          localStorage.clear()
-                        }
-                      })
-                  }}
-                />
-              )
-            )}
+              }}
+            />
+          </div>
+          <div className={styles.preview__discount}>
+            <p>Discount Code</p>
+            <input
+              type='text'
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+            />
           </div>
           <p className={styles.preview__notice}>
             This is a preview of your worker listing. Switch back to Edit
@@ -288,6 +249,7 @@ function PreviewWorkerListing({ isConnected }) {
                 rateEnd={listingInfo && listingInfo[4]}
                 experience={listingInfo && listingInfo[10]}
                 highlights={listingInfo && listingInfo[11]}
+                preview={true}
               />
             </div>
           </div>

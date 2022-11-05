@@ -530,6 +530,7 @@ export default function Employers({}) {
                           description={employer.listingInfo[10]}
                           logo={employer.logo}
                           showFullListing={showFullListing}
+                          verified={employer.verified}
                         />
                       )}
                     </>
@@ -550,6 +551,7 @@ export default function Employers({}) {
                           description={employer.listingInfo[10]}
                           logo={employer.logo}
                           showFullListing={showFullListing}
+                          verified={employer.verified}
                         />
                       )}
                     </>
