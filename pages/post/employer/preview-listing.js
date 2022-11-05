@@ -194,7 +194,7 @@ function PreviewEmployerListing() {
             </label>
 
             <PayPalButton
-              key={useDiscount}
+              // key={useDiscount}
               options={{
                 vault: true,
                 'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
