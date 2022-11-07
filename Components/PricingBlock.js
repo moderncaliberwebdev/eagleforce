@@ -50,6 +50,8 @@ function PricingBlock({
           ? '/post/worker/create-listing'
           : currentUser && user == 'Employer'
           ? '/post/employer/create-listing'
+          : user == 'Employer'
+          ? '/sign-in?error=post-no-user-employer'
           : '/sign-in?error=post-no-user'
       }
       passHref

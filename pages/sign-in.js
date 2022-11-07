@@ -48,8 +48,11 @@ function SignIn() {
           setPassword('')
           setErrorMsg('')
 
-          if (query.error && query.error == 'post-no-user') {
-            window.location.href = '/post/worker'
+          if (query.error) {
+            if (query.error == 'post-no-user') {
+              window.location.href = '/post/worker'
+            } else if (query.error == 'post-no-user-employer')
+              window.location.href = '/post/employer'
           } else window.location.href = '/'
         })
         .catch((error) => {
