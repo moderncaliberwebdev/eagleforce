@@ -253,7 +253,9 @@ function PreviewEmployerListing() {
                       config
                     )
 
-                    if (post) {
+                    const notification = await axios.post('/api/new-user-email')
+
+                    if (post && notification) {
                       window.location.href = '/profile'
                       localStorage.clear()
                     }

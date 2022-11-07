@@ -54,7 +54,7 @@ function Layout({ children }) {
               </div>
               <h1>
                 Eagle Force <span>Employment Services℠</span>
-                <span>"Get Your Career On"</span>
+                <span>Get Your Career On℠</span>
               </h1>
             </a>
           </Link>
@@ -140,7 +140,7 @@ function Layout({ children }) {
                 />
                 <h2>
                   Eagle Force <span>Employment Services℠</span>
-                  <span>"Get Your Career On"</span>
+                  <span>Get Your Career On℠</span>
                 </h2>
               </a>
             </Link>
@@ -198,10 +198,11 @@ function Layout({ children }) {
         </div>
         <div className={styles.layout__footer__bottom}>
           <div className={styles.layout__footer__bottom__left}>
-            <p>Eagle Force Employment Services℠</p>
-            <p className={styles.layout__footer__bottom__left__host}>
-              Hosted by De Stefano Enterprises, LLC, all rights reserved
+            <p>
+              Eagle Force Employment Services℠ is a division of De Stefano
+              Enterprises, LLC. All rights are reserved
             </p>
+            <p className={styles.layout__footer__bottom__left__host}></p>
           </div>
           <div className={styles.layout__footer__bottom__right}>
             <p>

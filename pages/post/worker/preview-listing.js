@@ -192,6 +192,7 @@ function PreviewWorkerListing({ isConnected }) {
                     )
 
                     if (post) {
+                      await axios.post('/api/new-user-email')
                       window.location.href = '/post/worker/verify-listing'
                       localStorage.clear()
                     }
