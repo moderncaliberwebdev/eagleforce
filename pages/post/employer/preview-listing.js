@@ -248,6 +248,7 @@ function PreviewEmployerListing() {
                         geocode: getGeocode,
                         logo: logoName,
                         approved: false,
+                        trial: useDiscount,
                       },
                       config
                     )

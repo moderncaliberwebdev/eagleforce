@@ -186,6 +186,7 @@ function PreviewWorkerListing({ isConnected }) {
                         orderDetails: details,
                         geocode: getGeocode,
                         approved: false,
+                        trial: useDiscount,
                       },
                       config
                     )

@@ -15,6 +15,7 @@ function PreviousListing({ listing, currentUser, admin }) {
   const [open, setOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [openRemovePopup, setOpenRemovePopup] = useState(false)
+  const [openUpgradePopup, setOpenUpgradePopup] = useState(false)
   const [jobs, setJobs] = useState(1)
   const [jobArray, setJobArray] = useState([])
   const [highlights, setHighlights] = useState(1)
@@ -89,6 +90,9 @@ function PreviousListing({ listing, currentUser, admin }) {
   }
   const cancelRemoveDelete = () => {
     setOpenRemovePopup(false)
+  }
+  const cancelUpgradeDelete = () => {
+    setOpenUpgradePopup(false)
   }
 
   const renewListing = async () => {
@@ -217,6 +221,62 @@ function PreviousListing({ listing, currentUser, admin }) {
     }
   }
 
+  const upgradeListing = async () => {
+    //get paypal token
+    const basicAuth = `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT}:${process.env.NEXT_PUBLIC_PAYPAL_SECRET}`
+    const qsData = qs.stringify({
+      grant_type: 'client_credentials',
+    })
+
+    const tokenConfig = {
+      headers: {
+        'Content-Type': 'x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(basicAuth).toString('base64')}`,
+      },
+    }
+
+    const paypalToken = await axios.post(
+      `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/oauth2/token`,
+      qsData,
+      tokenConfig
+    )
+
+    //change trial to false in database
+    const config = {
+      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+    }
+    const data = await axios.put(
+      '/api/user/admin-upgrade-listing',
+      {
+        email: listing.user,
+        number: listing.workerNumber,
+        admin: listing.admin,
+      },
+      config
+    )
+
+    //upgrade paypal subscription
+    if (data.data.worker) {
+      const upgradeConfig = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${paypalToken.data.access_token}`,
+        },
+      }
+      const upgradeData = await axios.post(
+        `${process.env.NEXT_PUBLIC_PAYPAL_API_URL}/v1/billing/subscriptions/${data.data.worker.value.orderDetails.id}/revise`,
+        {
+          plan_id:
+            listing.listingType == 'Featured'
+              ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN
+              : NEXT_PUBLIC_PAYPAL_STANDARD_PLAN,
+        },
+        upgradeConfig
+      )
+      upgradeData && window.location.reload()
+    }
+  }
+
   return (
     <div className={styles.blocks__block} key={listing._id}>
       <Popup
@@ -238,6 +298,16 @@ function PreviousListing({ listing, currentUser, admin }) {
         next={closeListing}
         openPopup={openRemovePopup}
       />
+      <Popup
+        question='Are you sure you want to upgrade this listing?'
+        desc="The user's subscription will be upgraded. This action cannot be undone"
+        answer='Continue'
+        no='Cancel'
+        cancel={cancelUpgradeDelete}
+        next={upgradeListing}
+        openPopup={openUpgradePopup}
+        renew={true}
+      />
       <div className={styles.blocks__block__info}>
         <h2>
           Worker #{listing.workerNumber} - {listing.listingInfo[0]}
@@ -253,6 +323,9 @@ function PreviousListing({ listing, currentUser, admin }) {
               <button onClick={verifyListing}>Verify</button>
             ) : (
               <p>Verified</p>
+            )}
+            {listing && listing.trial && (
+              <button onClick={() => setOpenUpgradePopup(true)}>Upgrade</button>
             )}
             <button onClick={() => setOpenRemovePopup(true)}>Remove</button>
           </>
