@@ -36,17 +36,27 @@ function PreviewWorkerListing({ isConnected }) {
   const [listingInfo, setListingInfo] = useState()
   const [workerNumber, setWorkerNumber] = useState(0)
   const [currentUser, setCurrentUser] = useState()
+  const [phone, setPhone] = useState('')
   const [planType, setPlanType] = useState({})
   const [discount, setDiscount] = useState('')
   const [useDiscount, setUseDiscount] = useState(false)
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid
         setCurrentUser(user)
+        const config = {
+          headers: { Authorization: `Bearer ${user.accessToken}` },
+        }
+
+        const userData = await axios.get(
+          `/api/user?email=${user.email}`,
+          config
+        )
+        setPhone(userData.data.user.phone)
         // ...
       } else {
         // User is signed out
@@ -187,6 +197,7 @@ function PreviewWorkerListing({ isConnected }) {
                         geocode: getGeocode,
                         approved: false,
                         trial: useDiscount,
+                        phone,
                       },
                       config
                     )

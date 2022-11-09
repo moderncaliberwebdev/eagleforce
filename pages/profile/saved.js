@@ -125,6 +125,7 @@ function SavedListings() {
                         employmentType={employer.listingInfo[6]}
                         description={employer.listingInfo[10]}
                         showFullListing={showFullListing}
+                        logo={employer.logo}
                         saved={true}
                       />
                     ))}
@@ -155,6 +156,7 @@ function SavedListings() {
                         employmentType={employer.listingInfo[6]}
                         description={employer.listingInfo[10]}
                         showFullListing={showFullListing}
+                        logo={employer.logo}
                         saved={true}
                       />
                     ))}
@@ -272,6 +274,12 @@ function SavedListings() {
                       selectedWorker &&
                       selectedWorker.listingInfo &&
                       selectedWorker.listingInfo[11]
+                    }
+                    logo={selectedWorker && selectedWorker.logo}
+                    phone={
+                      selectedWorker &&
+                      selectedWorker.listingInfo &&
+                      selectedWorker.listingInfo[12]
                     }
                     refresh={true}
                   />

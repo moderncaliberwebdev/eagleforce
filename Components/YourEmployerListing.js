@@ -32,6 +32,7 @@ function YourEmployerListing({ listing, currentUser, index }) {
     '',
     '',
     '',
+    '',
   ])
 
   useEffect(() => {

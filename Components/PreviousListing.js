@@ -45,20 +45,24 @@ function PreviousListing({ listing, currentUser, admin }) {
   }, [auth])
 
   useEffect(() => {
-    setListingInfo(listing.listingInfo)
-    setJobs(
-      listing.listingInfo[10].length && listing.listingInfo[10].length > 0
-        ? listing.listingInfo[10].length
-        : 1
-    )
-    setJobArray(listing.listingInfo[10])
+    const functionsOnListingLoad = async () => {
+      setListingInfo(listing.listingInfo)
+      setJobs(
+        listing.listingInfo[10].length && listing.listingInfo[10].length > 0
+          ? listing.listingInfo[10].length
+          : 1
+      )
+      setJobArray(listing.listingInfo[10])
 
-    setHighlights(
-      listing.listingInfo[11].length && listing.listingInfo[11].length > 0
-        ? listing.listingInfo[11].length
-        : 1
-    )
-    setHighlightArray(listing.listingInfo[11])
+      setHighlights(
+        listing.listingInfo[11].length && listing.listingInfo[11].length > 0
+          ? listing.listingInfo[11].length
+          : 1
+      )
+      setHighlightArray(listing.listingInfo[11])
+    }
+
+    functionsOnListingLoad()
   }, [listing])
 
   useEffect(() => {
@@ -344,6 +348,12 @@ function PreviousListing({ listing, currentUser, admin }) {
           <div className={styles.blocks__block__desc__top}>
             <p>
               {listing.listingInfo[6]}, {listing.listingInfo[7]}
+              {admin && (
+                <>
+                  <span>{listing.phone}</span>
+                  <span>{listing.user}</span>
+                </>
+              )}
             </p>
           </div>
           <div className={styles.blocks__block__desc__details}>

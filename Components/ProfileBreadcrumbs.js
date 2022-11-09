@@ -20,28 +20,34 @@ function ProfileBreadcrumbs({ admin }) {
           path='/profile/saved'
           ahref='/profile/saved'
           currentPath={router.pathname}
-          text='Saved Listings'
+          text='Bookmarked'
         />
         <BlueBreadcrumb
           path='/profile/listings'
           ahref='/profile/listings'
           currentPath={router.pathname}
-          text='Your Listings'
+          text='Listings'
           borderClass={admin ? '' : 'last'}
         />
         {admin && (
           <>
             <BlueBreadcrumb
+              path='/profile/users'
+              ahref='/profile/users'
+              currentPath={router.pathname}
+              text='Users'
+            />
+            <BlueBreadcrumb
               path='/profile/workers'
               ahref='/profile/workers'
               currentPath={router.pathname}
-              text='Worker Listings'
+              text='Workers'
             />
             <BlueBreadcrumb
               path='/profile/employers'
               ahref='/profile/employers'
               currentPath={router.pathname}
-              text='Employer Listings'
+              text='Employers'
               borderClass={'last'}
             />
           </>

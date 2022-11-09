@@ -280,6 +280,12 @@ function PreviousListing({ listing, currentUser, admin }) {
           <div className={styles.blocks__block__desc__top}>
             <p>
               {listing.listingInfo[7]}, {listing.listingInfo[8]}
+              {admin && (
+                <>
+                  <span>{listing.phone}</span>
+                  <span>{listing.user}</span>
+                </>
+              )}
             </p>
           </div>
           <div className={styles.blocks__block__desc__details}>

@@ -614,6 +614,11 @@ export default function Employers({}) {
               selectedEmployer.listingInfo[11]
             }
             logo={selectedEmployer && selectedEmployer.logo}
+            phone={
+              selectedEmployer &&
+              selectedEmployer.listingInfo &&
+              selectedEmployer.listingInfo[12]
+            }
           />
         </main>
       </Layout>

@@ -37,6 +37,7 @@ function PreviewEmployerListing() {
   const [listingInfo, setListingInfo] = useState()
   const [employerNumber, setEmployerNumber] = useState(0)
   const [currentUser, setCurrentUser] = useState()
+  const [phone, setPhone] = useState('')
   const [planType, setPlanType] = useState({})
   const [createObjectURL, setCreateObjectURL] = useState(null)
   const [imageError, setImageError] = useState('')
@@ -44,12 +45,21 @@ function PreviewEmployerListing() {
   const [useDiscount, setUseDiscount] = useState(false)
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid
         setCurrentUser(user)
+        const config = {
+          headers: { Authorization: `Bearer ${user.accessToken}` },
+        }
+
+        const userData = await axios.get(
+          `/api/user?email=${user.email}`,
+          config
+        )
+        setPhone(userData.data.user.phone)
         // ...
       } else {
         // User is signed out
@@ -249,6 +259,7 @@ function PreviewEmployerListing() {
                         logo: logoName,
                         approved: false,
                         trial: useDiscount,
+                        phone,
                       },
                       config
                     )
@@ -319,6 +330,7 @@ function PreviewEmployerListing() {
                 rateStart={listingInfo && listingInfo[4]}
                 rateEnd={listingInfo && listingInfo[5]}
                 experience={listingInfo && listingInfo[11]}
+                phone={listingInfo && listingInfo[12]}
                 createObjectURL={createObjectURL}
                 preview={true}
               />

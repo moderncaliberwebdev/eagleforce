@@ -3,7 +3,7 @@ import { auth } from '../utils/firebase-admin'
 export function withAdminAuth(handler) {
   return async (req, res) => {
     const authHeader = req.headers.authorization
-    const admin = req.body.admin
+    const admin = req.body.admin || req.query.admin
 
     if (!authHeader) {
       return res.status(401).end('Not authenticated. No Auth header')
@@ -15,7 +15,7 @@ export function withAdminAuth(handler) {
       decodedToken = await auth.verifyIdToken(token)
       if (!decodedToken || !decodedToken.uid)
         return res.status(401).end('Not authenticated')
-      if (admin == false) return res.status(401).end('Not authenticated')
+      if (!admin) return res.status(401).end('Not authenticated')
       req.uid = decodedToken.uid
     } catch (error) {
       console.log(error)

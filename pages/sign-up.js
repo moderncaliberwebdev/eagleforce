@@ -22,6 +22,7 @@ function SignUp() {
   const auth = getAuth(app)
 
   const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [userType, setUserType] = useState('')
@@ -34,6 +35,7 @@ function SignUp() {
     //front end validation
     const allFilled =
       name.length > 0 &&
+      phone.length > 0 &&
       email.length > 0 &&
       password.length > 0 &&
       userType.length > 0
@@ -57,6 +59,7 @@ function SignUp() {
 
           await axios.post('/api/create-user', {
             name: `${userType} - ${name}`,
+            phone,
             email,
             userType,
             savedListings: [],
@@ -66,6 +69,7 @@ function SignUp() {
 
           setSuccessMsg('Successfully created user')
           setName('')
+          setPhone('')
           setEmail('')
           setPassword('')
           setUserType('')
@@ -171,6 +175,14 @@ function SignUp() {
                   type='text'
                   placeholder='John Doe'
                   onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className={styles.signup__form__input}>
+                <label>Phone Number</label>
+                <input
+                  type='text'
+                  placeholder='717-111-1111'
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
               <div className={styles.signup__form__input}>

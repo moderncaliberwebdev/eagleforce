@@ -32,6 +32,12 @@
       font-weight: 400;
       text-align: center;
     }
+    &__phone {
+      color: #6a6a6a;
+      font-weight: 300;
+      font-size: $font-small;
+      text-align: center;
+    }
   }
 
   &__scroll {

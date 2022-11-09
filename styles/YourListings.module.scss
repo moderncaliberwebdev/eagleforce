@@ -52,6 +52,14 @@
             font-size: $font-text;
             width: 40rem;
           }
+          h3 {
+            font-size: $font-text;
+
+            span {
+              font-weight: 400;
+              margin-right: 2rem;
+            }
+          }
           button {
             padding: 1rem 2rem;
             background-color: $blue;

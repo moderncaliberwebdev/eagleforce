@@ -28,6 +28,7 @@ function EmployerListingSide({
   createObjectURL,
   logo,
   preview,
+  phone,
 }) {
   const [currentUser, setCurrentUser] = useState()
   const [bookmarked, setBookmarked] = useState(false)
@@ -136,6 +137,7 @@ function EmployerListingSide({
               : `${type} Only`
             : 'Select a listing to see their full info'}
         </p>
+        <p className={styles.side__title__phone}>{phone}</p>
       </div>
       {job && job.length > 0 && (
         <>

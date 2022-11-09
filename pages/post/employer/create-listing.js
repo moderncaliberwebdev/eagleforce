@@ -21,6 +21,7 @@ function CreateEmployerListing({}) {
     '',
     '',
     '',
+    '',
   ])
 
   useEffect(() => {
@@ -139,7 +140,15 @@ function CreateEmployerListing({}) {
                   value={listingInfo ? listingInfo[1] : ''}
                 />
               </div>
-
+              <div className={styles.create__inputs__input}>
+                <label>Advertised Business Phone Number **</label>
+                <input
+                  type='text'
+                  placeholder='717-111-111'
+                  onChange={(e) => updateListingInfo(12, e.target.value)}
+                  value={listingInfo ? listingInfo[12] : ''}
+                />
+              </div>
               <div className={styles.create__inputs__input}>
                 <label>Website URL (if you have one)</label>
                 <input
