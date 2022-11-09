@@ -179,9 +179,9 @@ export default function Home({}) {
               <div className={styles.bestfit__workers__graphic}>
                 <Image
                   src='/images/home/blue-graphic-2.png'
-                  width={751}
-                  height={618}
-                  objectFit='cover'
+                  width={1000}
+                  height={800}
+                  objectFit='fixed'
                 />
               </div>
             </div>
@@ -189,9 +189,9 @@ export default function Home({}) {
               <div className={styles.bestfit__workers__graphic_red}>
                 <Image
                   src='/images/home/red-graphic-2.png'
-                  width={751}
-                  height={523}
-                  objectFit='cover'
+                  width={1000}
+                  height={800}
+                  objectFit='fixed'
                 />
               </div>
               <div className={styles.bestfit__workers__desc_red}>

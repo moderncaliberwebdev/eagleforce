@@ -41,8 +41,8 @@ function FeaturedWorkerListingBlock({
                 />
               </div>
               <div className={styles.block__tags__verified__tooltip}>
-                Owners of verified listings have had their identity and listing
-                examined and verified
+                Verified workers have been contacted by the site admin to verify
+                their identity
               </div>
             </>
           )}

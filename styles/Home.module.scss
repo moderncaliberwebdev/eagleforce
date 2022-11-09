@@ -284,6 +284,7 @@ main {
 
       &__desc {
         margin: auto 2rem auto 0;
+        width: 90%;
 
         h3 {
           font-size: $font-small-head;
@@ -306,6 +307,7 @@ main {
       }
       &__desc_red {
         margin: auto 0 auto 3rem;
+        width: 90%;
 
         h3 {
           font-size: $font-small-head;
@@ -332,13 +334,13 @@ main {
       }
       &__graphic {
         display: block;
-        margin-right: -4rem;
-        width: 150rem;
+        margin-right: -10rem;
+        // width: 150rem;
       }
       &__graphic_red {
         display: block;
         margin-left: -4rem;
-        width: 150rem;
+        // width: 150rem;
       }
     }
   }

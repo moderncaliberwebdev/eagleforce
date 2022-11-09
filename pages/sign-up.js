@@ -41,12 +41,20 @@ function SignUp() {
       userType.length > 0
     const isEmail = validator.isEmail(email)
 
+    const validatePhoneNumber = (input_str) => {
+      var re = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/
+
+      return re.test(input_str)
+    }
+
     if (!allFilled) {
       setErrorMsg('Please fill in all fields')
     } else if (!isEmail) {
       setErrorMsg('Please provide a valid email')
     } else if (!checked) {
       setErrorMsg('Please confirm that you have read the terms and conditions')
+    } else if (validatePhoneNumber(phone) == false) {
+      setErrorMsg('Please provide a valid phone number')
     } else if (document.querySelector('#honeypot').value.length == 0) {
       setErrorMsg('')
       createUserWithEmailAndPassword(auth, email, password)
@@ -178,7 +186,9 @@ function SignUp() {
                 />
               </div>
               <div className={styles.signup__form__input}>
-                <label>Phone Number</label>
+                <label>
+                  Phone Number (May be different than advertised phone number)
+                </label>
                 <input
                   type='text'
                   placeholder='717-111-1111'

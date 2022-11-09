@@ -75,8 +75,16 @@ function CreateEmployerListing({}) {
       }
     }
 
+    const validatePhoneNumber = (input_str) => {
+      var re = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/
+
+      return re.test(input_str)
+    }
+
     if (!allFilled) {
       setErrorMsg('Please Fill in All Required Fields')
+    } else if (validatePhoneNumber(listingInfo[12]) == false) {
+      setErrorMsg('Please provide a valid phone number')
     } else {
       localStorage.setItem(
         'employerNumber',
