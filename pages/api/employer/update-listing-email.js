@@ -19,7 +19,7 @@ const mailTo = (number, callback) => {
             `
   const mailOptions = {
     from: 'no-reply@eagleforceemploymentservices.com',
-    to: 'cmartin@moderncaliber.com',
+    to: 'harold@eagleforceemploymentservices.com',
     subject: 'Updated User Listings',
     html: output,
   }
