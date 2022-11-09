@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../styles/YourListings.module.scss'
-
+import { useRouter } from 'next/router'
 import RichText from '../Components/RichText'
 import Image from 'next/image'
 import ListingJob from './ListingJob'
@@ -11,6 +11,8 @@ import Link from 'next/link'
 import Popup from './Popup'
 
 function YourListing({ listing, currentUser }) {
+  const { query } = useRouter()
+
   const [open, setOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [jobs, setJobs] = useState(1)
@@ -18,6 +20,7 @@ function YourListing({ listing, currentUser }) {
   const [highlights, setHighlights] = useState(1)
   const [highlightArray, setHighlightArray] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
+  const [message, setMessage] = useState()
   const [listingInfo, setListingInfo] = useState([
     '',
     '',
@@ -32,6 +35,13 @@ function YourListing({ listing, currentUser }) {
     [],
     [],
   ])
+
+  useEffect(() => {
+    if (query && listing && query.updated == listing.workerNumber)
+      setMessage(
+        'Listing updated. Your listing will not appear in search until approved by admin'
+      )
+  }, [query, listing])
 
   useEffect(() => {
     setListingInfo(listing.listingInfo)
@@ -177,7 +187,12 @@ function YourListing({ listing, currentUser }) {
         config
       )
 
-      data && window.location.reload()
+      await axios.post('/api/worker/update-listing-email', {
+        number: listing.workerNumber,
+      })
+
+      if (data)
+        window.location.href = `/profile/listings?updated=${listing.workerNumber}`
     }
   }
 
@@ -263,6 +278,9 @@ function YourListing({ listing, currentUser }) {
           style={{ transform: open && 'rotate(180deg)' }}
         />
       </div>
+      {message && message.length > 0 && (
+        <p className={styles.blocks__block__message}>{message}</p>
+      )}
       {open && (
         <div className={styles.blocks__block__create}>
           <div className={styles.create}>

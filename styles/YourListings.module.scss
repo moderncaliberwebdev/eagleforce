@@ -78,6 +78,13 @@
           }
         }
 
+        &__message {
+          text-align: center;
+          font-size: $font-text;
+          color: $blue;
+          margin-top: 0.5rem;
+        }
+
         &__create {
           .create {
             display: flex;

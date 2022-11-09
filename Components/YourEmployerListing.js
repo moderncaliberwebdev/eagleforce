@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from '../styles/YourEmployerListing.module.scss'
+import { useRouter } from 'next/router'
 import RichText from '../Components/RichText'
 import ListingJob from './ListingJob'
 import ListingHighlight from './ListingHighlight'
@@ -10,6 +11,8 @@ import Link from 'next/link'
 import Popup from './Popup'
 
 function YourEmployerListing({ listing, currentUser, index }) {
+  const { query } = useRouter()
+
   const [open, setOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [createObjectURL, setCreateObjectURL] = useState(null)
@@ -30,6 +33,13 @@ function YourEmployerListing({ listing, currentUser, index }) {
     '',
     '',
   ])
+
+  useEffect(() => {
+    if (query && listingInfo && query.employerupdated == listingInfo[1])
+      setImageSuccess(
+        'Listing updated. Your listing will not appear in search until approved by admin'
+      )
+  }, [query, listingInfo])
 
   useEffect(() => {
     setListingInfo(listing.listingInfo)
@@ -74,7 +84,12 @@ function YourEmployerListing({ listing, currentUser, index }) {
         config
       )
 
-      data && window.location.reload()
+      await axios.post('/api/employer/update-listing-email', {
+        number: listingInfo[1],
+      })
+
+      if (data)
+        window.location.href = `/profile/listings?employerupdated=${listingInfo[1]}`
     }
   }
 
