@@ -116,7 +116,15 @@ function WorkerListingSide({
       <ContactPopup openPopup={contactWorker} cancel={cancel} worker={number} />
       <div className={styles.side__title}>
         <Image
-          src='/images/post/worker.png'
+          src={
+            jobs
+              ? type == 'Both'
+                ? '/images/post/worker-driver.png'
+                : type == 'Worker'
+                ? '/images/post/worker.png'
+                : '/images/post/driver.png'
+              : '/images/post/worker.png'
+          }
           width='100'
           height='100'
           objectFit='fixed'

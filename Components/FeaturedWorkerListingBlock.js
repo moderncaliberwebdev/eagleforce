@@ -33,6 +33,17 @@ function FeaturedWorkerListingBlock({
                 height={20}
               />
               <p>Verified Listing</p>
+              <div className={styles.block__tags__verified__help}>
+                <Image
+                  src='/images/post/help-blue.png'
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <div className={styles.block__tags__verified__tooltip}>
+                Owners of verified listings have had their identity and listing
+                examined and verified
+              </div>
             </>
           )}
         </div>

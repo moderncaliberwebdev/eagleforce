@@ -22,7 +22,11 @@ function SignIn() {
   const [successMsg, setSuccessMsg] = useState('')
 
   useEffect(() => {
-    if (router.isReady && query.error && query.error == 'post-no-user') {
+    if (
+      router.isReady &&
+      query.error &&
+      (query.error == 'post-no-user' || query.error == 'post-no-user-employer')
+    ) {
       setErrorMsg('You must be signed in to create a listing')
     }
   }, [query])

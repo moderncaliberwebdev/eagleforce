@@ -7,6 +7,7 @@ import Popup from './Popup'
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import app from '../firebase/clientApp'
+import Image from 'next/image'
 
 const auth = getAuth()
 
@@ -242,6 +243,14 @@ function PreviousListing({ listing, currentUser, admin }) {
       />
       <div className={styles.blocks__block__info}>
         <h2>
+          {listing.logo && listing.logo.length > 0 && (
+            <Image
+              src={`https://eagleforce-avatar.s3.amazonaws.com/${listing.logo}`}
+              width={50}
+              height={50}
+              objectFit='contain'
+            />
+          )}
           {listing.listingInfo[1]} - {listing.listingInfo[0]}
         </h2>
         {admin ? (
