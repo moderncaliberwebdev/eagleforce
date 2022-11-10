@@ -54,6 +54,10 @@ export default function Workers({}) {
   }, [])
 
   useEffect(() => {
+    console.log('employmenttypes state >>', employmentTypes)
+  }, [employmentTypes])
+
+  useEffect(() => {
     const getQueries = async () => {
       let editedListings = listings
 
@@ -211,6 +215,11 @@ export default function Workers({}) {
   }
 
   const resetFilters = () => {
+    setSkillLevels([])
+    setEmploymentTypes([])
+    setWorkerTypes([])
+    setProximityInput('')
+    setProximityDistance('')
     router.push(
       `/workers?search=${searchInput}&skillLevel=&employmentType=&workerType=&location=&prox=`,
       undefined,
@@ -223,10 +232,17 @@ export default function Workers({}) {
     let updatedSkillLevels = []
     if (skillLevels.includes(level)) {
       setSkillLevels(skillLevels.filter((skill) => skill != level))
-      updatedSkillLevels = skillLevels.filter((skill) => skill != level)
+      updatedSkillLevels = skillLevels.filter(
+        (skill) => skill != level && skill != ''
+      )
     } else {
-      setSkillLevels([...skillLevels, level])
-      updatedSkillLevels = [...skillLevels, level]
+      if (level == '') {
+        setSkillLevels([...skillLevels])
+        updatedSkillLevels = [...skillLevels]
+      } else {
+        setSkillLevels([...skillLevels, level])
+        updatedSkillLevels = [...skillLevels, level]
+      }
     }
 
     const mySkillQueryString = updatedSkillLevels
@@ -240,27 +256,42 @@ export default function Workers({}) {
     if (employmentTypes.includes(employment)) {
       setEmploymentTypes(employmentTypes.filter((type) => type != employment))
       updatedEmploymentTypes = employmentTypes.filter(
-        (type) => type != employment
+        (type) => type != employment && type != ''
       )
     } else {
-      setEmploymentTypes([...employmentTypes, employment])
-      updatedEmploymentTypes = [...employmentTypes, employment]
+      if (employment == '') {
+        setEmploymentTypes([...employmentTypes])
+        updatedEmploymentTypes = [...employmentTypes]
+      } else {
+        setEmploymentTypes([...employmentTypes, employment])
+        updatedEmploymentTypes = [...employmentTypes, employment]
+      }
     }
 
+    console.log(updatedEmploymentTypes)
     const myEmploymentQueryString = updatedEmploymentTypes
       .map((el) => {
         return el
       })
       .join('-')
 
+    console.log(myEmploymentQueryString)
+
     //Worker Type Filter
     let updatedWorkerTypes = []
     if (workerTypes.includes(worker)) {
       setWorkerTypes(workerTypes.filter((type) => type != worker))
-      updatedWorkerTypes = workerTypes.filter((type) => type != worker)
+      updatedWorkerTypes = workerTypes.filter(
+        (type) => type != worker && type != ''
+      )
     } else {
-      setWorkerTypes([...workerTypes, worker])
-      updatedWorkerTypes = [...workerTypes, worker]
+      if (worker == '') {
+        setWorkerTypes([...workerTypes])
+        updatedWorkerTypes = [...workerTypes]
+      } else {
+        setWorkerTypes([...workerTypes, worker])
+        updatedWorkerTypes = [...workerTypes, worker]
+      }
     }
 
     const myWorkerQueryString = updatedWorkerTypes
@@ -365,7 +396,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       skillLevels.length > 0 && skillLevels.includes('Beginner')
                     }
                     onClick={() => setFilters('Beginner', '', '', '', '')}
@@ -377,7 +408,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       skillLevels.length > 0 && skillLevels.includes('Advanced')
                     }
                     onClick={() => setFilters('Advanced', '', '', '', '')}
@@ -389,7 +420,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       skillLevels.length > 0 &&
                       skillLevels.includes('Expert Foreman Grade')
                     }
@@ -407,7 +438,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Full Time')
                     }
@@ -420,7 +451,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Part Time')
                     }
@@ -433,7 +464,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Contract')
                     }
@@ -449,7 +480,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       workerTypes.length > 0 && workerTypes.includes('Worker')
                     }
                     onClick={() => setFilters('', '', 'Worker', '', '')}
@@ -461,7 +492,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       workerTypes.length > 0 &&
                       workerTypes.includes('Crew Driver')
                     }
@@ -474,7 +505,7 @@ export default function Workers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       workerTypes.length > 0 && workerTypes.includes('Both')
                     }
                     onClick={() => setFilters('', '', 'Both', '', '')}

@@ -175,8 +175,10 @@ export default function Employers({}) {
         }
       }
       if (query.rateStart || query.rateEnd) {
-        setRateStart(query.rateStart || '')
-        setRateEnd(query.rateEnd || '')
+        const searchRateStart = query.rateStart || ''
+        const searchRateEnd = query.rateEnd || ''
+        setRateStart(searchRateStart)
+        setRateEnd(searchRateEnd)
 
         const listingsForFunction = [
           editedListings.featuredEmployers,
@@ -187,13 +189,13 @@ export default function Employers({}) {
 
         listingsForFunction.forEach((list, index) => {
           list.forEach((listing) => {
-            const searchRateStart = query.rateStart || ''
-            const searchRateEnd = query.rateEnd || ''
             const employerRateStart = listing.listingInfo[4]
             const employerRateEnd = listing.listingInfo[5]
 
             if (
+              searchRateStart != '' &&
               searchRateStart <= employerRateEnd &&
+              searchRateEnd != '' &&
               searchRateEnd >= employerRateStart
             ) {
               listingsHourlyArr[index].push(listing)
@@ -204,7 +206,7 @@ export default function Employers({}) {
               listingsHourlyArr[index].push(listing)
             } else if (
               searchRateEnd == '' &&
-              searchRateStart <= employerRateStart
+              searchRateStart <= employerRateEnd
             ) {
               listingsHourlyArr[index].push(listing)
             }
@@ -231,6 +233,12 @@ export default function Employers({}) {
   }
 
   const resetFilters = () => {
+    setEmploymentTypes([])
+    setWorkerTypes([])
+    setRateStart('')
+    setRateEnd('')
+    setProximityInput('')
+    setProximityDistance('')
     router.push(
       `/employers?search=${searchInput}&employmentType=&workerType=&location=&prox=&rateStart=&rateEnd=`,
       undefined,
@@ -238,7 +246,7 @@ export default function Employers({}) {
     )
   }
 
-  const setFilters = (employment, worker, rateStart, rateEnd) => {
+  const setFilters = (employment, worker, rateStartInput, rateEndInput) => {
     //Employment Type Filter
     let updatedEmploymentTypes = []
     if (employmentTypes.includes(employment)) {
@@ -247,8 +255,13 @@ export default function Employers({}) {
         (type) => type != employment
       )
     } else {
-      setEmploymentTypes([...employmentTypes, employment])
-      updatedEmploymentTypes = [...employmentTypes, employment]
+      if (employment == '') {
+        setEmploymentTypes([...employmentTypes])
+        updatedEmploymentTypes = [...employmentTypes]
+      } else {
+        setEmploymentTypes([...employmentTypes, employment])
+        updatedEmploymentTypes = [...employmentTypes, employment]
+      }
     }
 
     const myEmploymentQueryString = updatedEmploymentTypes
@@ -263,8 +276,13 @@ export default function Employers({}) {
       setWorkerTypes(workerTypes.filter((type) => type != worker))
       updatedWorkerTypes = workerTypes.filter((type) => type != worker)
     } else {
-      setWorkerTypes([...workerTypes, worker])
-      updatedWorkerTypes = [...workerTypes, worker]
+      if (worker == '') {
+        setWorkerTypes([...workerTypes])
+        updatedWorkerTypes = [...workerTypes]
+      } else {
+        setWorkerTypes([...workerTypes, worker])
+        updatedWorkerTypes = [...workerTypes, worker]
+      }
     }
 
     const myWorkerQueryString = updatedWorkerTypes
@@ -277,16 +295,13 @@ export default function Employers({}) {
     const isProximityUsed =
       proximityInput.length > 0 && proximityDistance.length > 0
 
-    //hourly filter
-    const isHourlyUsed = rateStart.length > 0 || rateEnd.length > 0
-
     //sending to url with query
     router.push(
       `/employers?search=${searchInput}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
         isProximityUsed ? proximityInput : ''
-      }&prox=${isProximityUsed ? proximityDistance : ''}&rateStart=${
-        isHourlyUsed ? rateStart : ''
-      }&rateEnd=${isHourlyUsed ? rateEnd : ''}`,
+      }&prox=${
+        isProximityUsed ? proximityDistance : ''
+      }&rateStart=${rateStart}&rateEnd=${rateEnd}`,
       undefined,
       { scroll: false }
     )
@@ -419,7 +434,7 @@ export default function Employers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Full Time')
                     }
@@ -432,7 +447,7 @@ export default function Employers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Part Time')
                     }
@@ -445,7 +460,7 @@ export default function Employers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       employmentTypes.length > 0 &&
                       employmentTypes.includes('Contract')
                     }
@@ -461,7 +476,7 @@ export default function Employers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       workerTypes.length > 0 && workerTypes.includes('Worker')
                     }
                     onClick={() => setFilters('', 'Worker', '', '')}
@@ -473,7 +488,7 @@ export default function Employers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       workerTypes.length > 0 &&
                       workerTypes.includes('Crew Driver')
                     }
@@ -486,7 +501,7 @@ export default function Employers({}) {
                 >
                   <input
                     type='checkbox'
-                    defaultChecked={
+                    checked={
                       workerTypes.length > 0 && workerTypes.includes('Both')
                     }
                     onClick={() => setFilters('', 'Both', '', '')}
