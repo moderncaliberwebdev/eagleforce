@@ -124,6 +124,15 @@ function Layout({ children }) {
             </Link>
           )}
         </div>
+        <div className={styles.layout__nav__button}>
+          <Image
+            src='/images/layout/nav.png'
+            alt='Navigation Icon'
+            width={50}
+            height={25}
+            layout='fixed'
+          />
+        </div>
       </nav>
       {children}
       <footer className={styles.layout__footer}>

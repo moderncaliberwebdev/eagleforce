@@ -211,7 +211,11 @@ export default function Workers({}) {
   }
 
   const resetFilters = () => {
-    window.location.href = `/workers?search=${searchInput}&skillLevel=&employmentType=&workerType=&location=&prox=`
+    router.push(
+      `/workers?search=${searchInput}&skillLevel=&employmentType=&workerType=&location=&prox=`,
+      undefined,
+      { scroll: false }
+    )
   }
 
   const setFilters = (level, employment, worker, location, proximity) => {
@@ -269,12 +273,16 @@ export default function Workers({}) {
       proximityInput.length > 0 && proximityDistance.length > 0
 
     //sending to url with query
-    window.location.href = `/workers?search=${searchInput.replace(
-      '#',
-      ''
-    )}&skillLevel=${mySkillQueryString}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
-      isProximityUsed ? proximityInput : ''
-    }&prox=${isProximityUsed ? proximityDistance : ''}`
+    router.push(
+      `/workers?search=${searchInput.replace(
+        '#',
+        ''
+      )}&skillLevel=${mySkillQueryString}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
+        isProximityUsed ? proximityInput : ''
+      }&prox=${isProximityUsed ? proximityDistance : ''}`,
+      undefined,
+      { scroll: false }
+    )
   }
 
   return (

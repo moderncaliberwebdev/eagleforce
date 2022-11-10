@@ -83,7 +83,7 @@ function SignUp() {
           setUserType('')
           setChecked(false)
           setErrorMsg('')
-          window.location.href = '/profile'
+          window.location.href = '/'
         })
         .catch((error) => {
           const errorMessage = error.message.replace('Firebase: ', '')

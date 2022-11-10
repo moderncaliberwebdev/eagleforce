@@ -231,7 +231,11 @@ export default function Employers({}) {
   }
 
   const resetFilters = () => {
-    window.location.href = `/employers?search=${searchInput}&employmentType=&workerType=&location=&prox=&rateStart=&rateEnd=`
+    router.push(
+      `/employers?search=${searchInput}&employmentType=&workerType=&location=&prox=&rateStart=&rateEnd=`,
+      undefined,
+      { scroll: false }
+    )
   }
 
   const setFilters = (employment, worker, rateStart, rateEnd) => {
@@ -277,11 +281,15 @@ export default function Employers({}) {
     const isHourlyUsed = rateStart.length > 0 || rateEnd.length > 0
 
     //sending to url with query
-    window.location.href = `/employers?search=${searchInput}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
-      isProximityUsed ? proximityInput : ''
-    }&prox=${isProximityUsed ? proximityDistance : ''}&rateStart=${
-      isHourlyUsed ? rateStart : ''
-    }&rateEnd=${isHourlyUsed ? rateEnd : ''}`
+    router.push(
+      `/employers?search=${searchInput}&employmentType=${myEmploymentQueryString}&workerType=${myWorkerQueryString}&location=${
+        isProximityUsed ? proximityInput : ''
+      }&prox=${isProximityUsed ? proximityDistance : ''}&rateStart=${
+        isHourlyUsed ? rateStart : ''
+      }&rateEnd=${isHourlyUsed ? rateEnd : ''}`,
+      undefined,
+      { scroll: false }
+    )
   }
 
   return (

@@ -8,6 +8,8 @@
     justify-content: space-between;
 
     &__logo {
+      position: relative;
+      z-index: 100;
       a {
         display: flex;
         flex-direction: row;
@@ -41,6 +43,20 @@
         flex-direction: row;
         list-style-type: none;
 
+        @include respond(tab) {
+          display: none;
+          width: 100vw;
+          position: absolute;
+          left: 0;
+          top: 0;
+          background: #fff;
+          padding: 12rem 0 5rem 0;
+          color: #000;
+          z-index: 10;
+          flex-wrap: wrap;
+          box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        }
+
         li {
           margin-right: 2rem;
           font-size: $font-text;
@@ -53,6 +69,14 @@
           flex-direction: row;
           align-items: center;
 
+          @include respond(tab) {
+            flex-direction: column;
+            height: auto;
+            align-items: flex-start;
+            margin-left: 5rem;
+            font-weight: 500;
+          }
+
           &:hover {
             div {
               display: flex;
@@ -63,6 +87,10 @@
             height: 2.5rem;
             width: 2.5rem;
             margin-left: 0.5rem;
+
+            @include respond(tab) {
+              display: none;
+            }
           }
 
           a {
@@ -81,11 +109,28 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
             z-index: 100;
 
+            @include respond(tab) {
+              display: flex;
+              position: relative;
+              color: #000;
+              background-color: transparent;
+              border-style: none;
+              top: -1rem;
+              box-shadow: none;
+            }
+
             a {
               padding: 1rem 1.5rem;
               line-height: 3rem;
               display: block;
               width: 25rem;
+
+              @include respond(tab) {
+                color: #000;
+                padding: 0;
+                width: auto;
+                font-weight: 300;
+              }
             }
           }
         }
@@ -93,6 +138,10 @@
     }
 
     &__signin {
+      @include respond(tab) {
+        display: none;
+      }
+
       &:hover {
         p {
           display: block;
@@ -146,6 +195,16 @@
           cursor: pointer;
           font-size: $font-text;
         }
+      }
+    }
+
+    &__button {
+      display: none;
+
+      @include respond(tab) {
+        display: block;
+        height: 2.5rem;
+        cursor: pointer;
       }
     }
   }
