@@ -1,12 +1,6 @@
 @import 'mixins';
 @import 'variables';
 
-// .profile_breadcrumbs {
-//   ul {
-//     width: 50rem !important;
-//   }
-// }
-
 .breadcrumbs {
   ul {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -19,6 +13,11 @@
     border-radius: 10px;
     background: #fff;
 
+    @include respond(tab) {
+      flex-direction: column;
+      width: 100%;
+    }
+
     a {
       text-decoration: none;
     }
@@ -28,15 +27,26 @@
       color: #000;
       text-decoration: none;
       font-size: $font-text;
+
+      @include respond(tab) {
+        padding: 2rem 4rem;
+      }
     }
     .first_a {
       border-radius: 10px 0 0 10px;
       padding-left: 4rem;
+
+      @include respond(tab) {
+        border-radius: 10px 10px 0 0;
+      }
     }
     .last_a {
       border-radius: 0 10px 10px 0;
       padding-right: 4rem;
+
+      @include respond(tab) {
+        border-radius: 0 0 10px 10px;
+      }
     }
-    // }
   }
 }

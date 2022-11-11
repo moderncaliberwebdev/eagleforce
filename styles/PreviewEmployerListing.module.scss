@@ -6,6 +6,10 @@
     width: 90rem;
     margin: 0 auto;
 
+    @include respond(tab) {
+      width: 100%;
+    }
+
     h1 {
       font-size: $font-small-head;
       text-align: center;
@@ -24,10 +28,16 @@
       align-items: center;
       margin-top: 2rem;
 
+      @include respond(tab-small) {
+        flex-direction: column;
+        width: 100%;
+        align-items: normal;
+      }
+
       label {
         font-size: $font-text;
         background-color: $red;
-        margin-right: 5rem;
+        margin: 1rem;
         text-align: center;
         font-weight: 300;
         padding: 0.75rem 2rem;
@@ -37,24 +47,29 @@
         width: 20rem;
         cursor: pointer;
 
+        @include respond(tab-small) {
+          width: 100%;
+          margin: 1rem 0;
+        }
+
         input[type='file'] {
           display: none;
         }
       }
 
-      div {
-        margin-right: 5rem;
-        a {
-          margin-left: 2rem;
-          font-size: $font-text;
-          text-align: center;
-          font-weight: 300;
-          padding: 0.75rem 5rem;
-          color: #000;
-          text-decoration: none;
-          border-radius: 10px;
-          width: 25rem;
-          background: #fff;
+      a {
+        font-size: $font-text;
+        text-align: center;
+        font-weight: 300;
+        padding: 0.75rem 5rem;
+        color: #000;
+        text-decoration: none;
+        border-radius: 10px;
+        width: 25rem;
+        background: #fff;
+
+        @include respond(tab-small) {
+          width: 100%;
         }
       }
     }
@@ -70,7 +85,7 @@
       flex-direction: row;
       justify-content: flex-end;
       align-items: center;
-      margin: 2rem 5rem 0 2rem;
+      margin: 2rem 0 0 2rem;
 
       p {
         font-size: $font-small;

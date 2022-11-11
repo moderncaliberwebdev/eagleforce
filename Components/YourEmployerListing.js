@@ -235,17 +235,19 @@ function YourEmployerListing({ listing, currentUser, index }) {
           )}
           {listing.listingInfo[1]} - {listing.listingInfo[0]}
         </h2>
-        <label>
-          <input
-            type='file'
-            name='file'
-            id='fileUpload'
-            accept='image/x-png,image/gif,image/jpeg'
-            onChange={uploadToClient}
-          />
-          Upload Logo
-        </label>
-        <button onClick={() => setOpenPopup(true)}>Close Listing</button>
+        <div className={styles.blocks__block__info__buttons}>
+          <label>
+            <input
+              type='file'
+              name='file'
+              id='fileUpload'
+              accept='image/x-png,image/gif,image/jpeg'
+              onChange={uploadToClient}
+            />
+            Upload Logo
+          </label>
+          <button onClick={() => setOpenPopup(true)}>Close Listing</button>
+        </div>
         <img
           className={styles.blocks__block__info__img}
           src='/images/layout/arrow.png'

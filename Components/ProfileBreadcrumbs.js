@@ -1,14 +1,24 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import styles from '../styles/WorkerBreadcrumbs.module.scss'
+import { useMediaQuery } from 'react-responsive'
 import BlueBreadcrumb from './BlueBreadcrumb'
 
 function ProfileBreadcrumbs({ admin }) {
   const router = useRouter()
+
+  const [isSmallScreenState, setIsSmallScreenState] = useState(false)
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 1000px)' })
+
+  useEffect(() => {
+    setIsSmallScreenState(isSmallScreen)
+  }, [isSmallScreen])
+
   return (
     <div className={`${styles.breadcrumbs} ${styles.profile_breadcrumbs}`}>
-      <ul style={{ width: admin ? '90rem' : '50rem' }}>
+      <ul style={{ width: isSmallScreen ? '100%' : admin ? '90rem' : '50rem' }}>
         <BlueBreadcrumb
           path='/profile'
           ahref='/profile'

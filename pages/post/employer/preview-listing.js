@@ -187,11 +187,10 @@ function PreviewEmployerListing() {
             account to use this service
           </p>
           <div className={styles.preview__buttons}>
-            <div>
-              <Link href='/post/employer/create-listing' passHref>
-                <a>Edit Listing</a>
-              </Link>
-            </div>
+            <Link href='/post/employer/create-listing' passHref>
+              <a>Edit Listing</a>
+            </Link>
+
             <label>
               <input
                 type='file'

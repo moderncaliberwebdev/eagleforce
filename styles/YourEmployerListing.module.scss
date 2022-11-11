@@ -26,12 +26,21 @@
       justify-content: space-between;
       align-items: center;
 
+      @include respond(tab) {
+        flex-direction: column;
+      }
+
       h2 {
         display: flex;
         flex-direction: row;
         align-items: center;
         font-size: $font-text;
         width: 40rem;
+
+        @include respond(tab) {
+          width: auto;
+          margin: 0 auto;
+        }
       }
       button {
         padding: 1rem 2rem;
@@ -40,6 +49,10 @@
         border-style: none;
         font-size: $font-text;
         cursor: pointer;
+
+        @include respond(tab) {
+          margin: 1rem 0;
+        }
       }
       label {
         font-size: $font-text;
@@ -56,6 +69,10 @@
 
         input[type='file'] {
           display: none;
+        }
+
+        @include respond(tab) {
+          margin: 1rem;
         }
       }
       a {
@@ -96,6 +113,11 @@
         width: 85rem;
         margin: 2rem auto;
 
+        @include respond(tab) {
+          width: 100%;
+          flex-direction: column;
+        }
+
         &__desc {
           h2 {
             font-size: 2.5rem;
@@ -103,6 +125,11 @@
           p {
             font-size: $font-text;
             width: 30rem;
+
+            @include respond(tab) {
+              width: 100%;
+              margin-bottom: 2rem;
+            }
           }
         }
 

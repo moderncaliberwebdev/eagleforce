@@ -254,21 +254,25 @@ function PreviousListing({ listing, currentUser, admin }) {
           )}
           {listing.listingInfo[1]} - {listing.listingInfo[0]}
         </h2>
-        {admin ? (
-          <>
-            {listing && !listing.approved ? (
-              <button onClick={approveListing}>Approve</button>
-            ) : (
-              <p>Approved</p>
-            )}
-            {listing && listing.trial && (
-              <button onClick={() => setOpenUpgradePopup(true)}>Upgrade</button>
-            )}
-            <button onClick={() => setOpenRemovePopup(true)}>Remove</button>
-          </>
-        ) : (
-          <button onClick={() => setOpenPopup(true)}>Renew Listing</button>
-        )}
+        <div>
+          {admin ? (
+            <>
+              {listing && !listing.approved ? (
+                <button onClick={approveListing}>Approve</button>
+              ) : (
+                <p>Approved</p>
+              )}
+              {listing && listing.trial && (
+                <button onClick={() => setOpenUpgradePopup(true)}>
+                  Upgrade
+                </button>
+              )}
+              <button onClick={() => setOpenRemovePopup(true)}>Remove</button>
+            </>
+          ) : (
+            <button onClick={() => setOpenPopup(true)}>Renew Listing</button>
+          )}
+        </div>
         <img
           src='/images/layout/arrow.png'
           alt='Dropdown Arrow'

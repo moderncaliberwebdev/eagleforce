@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../Components/Layout'
 import styles from '../../styles/Saved.module.scss'
 
+import { useMediaQuery } from 'react-responsive'
+
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import app from '../../firebase/clientApp'
 import axios from 'axios'
@@ -23,6 +25,13 @@ function SavedListings() {
   const [error, setError] = useState({})
   const [selectedWorker, setSelectedWorker] = useState([])
   const [loading, setLoading] = useState(false)
+  const [isSmallScreenState, setIsSmallScreenState] = useState(false)
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 1000px)' })
+
+  useEffect(() => {
+    setIsSmallScreenState(isSmallScreen)
+  }, [isSmallScreen])
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -64,6 +73,10 @@ function SavedListings() {
     setSelectedWorker(worker[0])
   }
 
+  const hideFullListing = () => {
+    setSelectedWorker([])
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -97,70 +110,76 @@ function SavedListings() {
                 (listings.standardEmployers &&
                   listings.standardEmployers.length > 0)) ? (
               <>
-                <div className={styles.saved__listings}>
-                  {listings.featuredWorkers &&
-                    listings.featuredWorkers.map((worker) => (
-                      <FeaturedWorkerListingBlock
-                        key={worker.listingInfo[0]}
-                        jobs={worker.listingInfo[0]}
-                        number={worker.workerNumber}
-                        type={worker.listingInfo[2]}
-                        city={worker.listingInfo[6]}
-                        employmentType={worker.listingInfo[5]}
-                        skill={worker.listingInfo[1]}
-                        summary={worker.listingInfo[9]}
-                        showFullListing={showFullListing}
-                        saved={true}
-                      />
-                    ))}
-                  {listings.featuredEmployers &&
-                    listings.featuredEmployers.map((employer) => (
-                      <FeaturedEmployerListingBlock
-                        key={employer.listingInfo[0]}
-                        job={employer.listingInfo[0]}
-                        number={employer.employerNumber}
-                        company={employer.listingInfo[1]}
-                        city={employer.listingInfo[7]}
-                        type={employer.listingInfo[3]}
-                        employmentType={employer.listingInfo[6]}
-                        description={employer.listingInfo[10]}
-                        showFullListing={showFullListing}
-                        logo={employer.logo}
-                        saved={true}
-                      />
-                    ))}
-                  {listings.standardWorkers &&
-                    listings.standardWorkers.map((worker) => (
-                      <WorkerListingBlock
-                        key={worker.listingInfo[0]}
-                        jobs={worker.listingInfo[0]}
-                        number={worker.workerNumber}
-                        type={worker.listingInfo[2]}
-                        city={worker.listingInfo[6]}
-                        employmentType={worker.listingInfo[5]}
-                        skill={worker.listingInfo[1]}
-                        summary={worker.listingInfo[9]}
-                        showFullListing={showFullListing}
-                        saved={true}
-                      />
-                    ))}
-                  {listings.standardEmployers &&
-                    listings.standardEmployers.map((employer) => (
-                      <EmployerListingBlock
-                        key={employer.listingInfo[0]}
-                        job={employer.listingInfo[0]}
-                        number={employer.employerNumber}
-                        company={employer.listingInfo[1]}
-                        city={employer.listingInfo[7]}
-                        type={employer.listingInfo[3]}
-                        employmentType={employer.listingInfo[6]}
-                        description={employer.listingInfo[10]}
-                        showFullListing={showFullListing}
-                        logo={employer.logo}
-                        saved={true}
-                      />
-                    ))}
-                </div>
+                {isSmallScreenState &&
+                selectedWorker &&
+                selectedWorker.listingInfo ? (
+                  <></>
+                ) : (
+                  <div className={styles.saved__listings}>
+                    {listings.featuredWorkers &&
+                      listings.featuredWorkers.map((worker) => (
+                        <FeaturedWorkerListingBlock
+                          key={worker.listingInfo[0]}
+                          jobs={worker.listingInfo[0]}
+                          number={worker.workerNumber}
+                          type={worker.listingInfo[2]}
+                          city={worker.listingInfo[6]}
+                          employmentType={worker.listingInfo[5]}
+                          skill={worker.listingInfo[1]}
+                          summary={worker.listingInfo[9]}
+                          showFullListing={showFullListing}
+                          saved={true}
+                        />
+                      ))}
+                    {listings.featuredEmployers &&
+                      listings.featuredEmployers.map((employer) => (
+                        <FeaturedEmployerListingBlock
+                          key={employer.listingInfo[0]}
+                          job={employer.listingInfo[0]}
+                          number={employer.employerNumber}
+                          company={employer.listingInfo[1]}
+                          city={employer.listingInfo[7]}
+                          type={employer.listingInfo[3]}
+                          employmentType={employer.listingInfo[6]}
+                          description={employer.listingInfo[10]}
+                          showFullListing={showFullListing}
+                          logo={employer.logo}
+                          saved={true}
+                        />
+                      ))}
+                    {listings.standardWorkers &&
+                      listings.standardWorkers.map((worker) => (
+                        <WorkerListingBlock
+                          key={worker.listingInfo[0]}
+                          jobs={worker.listingInfo[0]}
+                          number={worker.workerNumber}
+                          type={worker.listingInfo[2]}
+                          city={worker.listingInfo[6]}
+                          employmentType={worker.listingInfo[5]}
+                          skill={worker.listingInfo[1]}
+                          summary={worker.listingInfo[9]}
+                          showFullListing={showFullListing}
+                          saved={true}
+                        />
+                      ))}
+                    {listings.standardEmployers &&
+                      listings.standardEmployers.map((employer) => (
+                        <EmployerListingBlock
+                          key={employer.listingInfo[0]}
+                          job={employer.listingInfo[0]}
+                          number={employer.employerNumber}
+                          company={employer.listingInfo[1]}
+                          city={employer.listingInfo[7]}
+                          type={employer.listingInfo[3]}
+                          employmentType={employer.listingInfo[6]}
+                          description={employer.listingInfo[10]}
+                          showFullListing={showFullListing}
+                          logo={employer.logo}
+                          saved={true}
+                        />
+                      ))}
+                  </div>
+                )}
 
                 {selectedWorker && selectedWorker.userType == 'Worker' ? (
                   <WorkerListingSide
@@ -220,6 +239,7 @@ function SavedListings() {
                       selectedWorker.listingInfo[11]
                     }
                     refresh={true}
+                    hideFullListing={hideFullListing}
                   />
                 ) : (
                   <EmployerListingSide
@@ -282,6 +302,7 @@ function SavedListings() {
                       selectedWorker.listingInfo[12]
                     }
                     refresh={true}
+                    hideFullListing={hideFullListing}
                   />
                 )}
               </>

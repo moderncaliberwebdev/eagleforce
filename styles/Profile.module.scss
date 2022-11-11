@@ -11,6 +11,10 @@
       width: 60rem;
       margin: 0 auto;
 
+      @include respond(tab) {
+        width: 100%;
+      }
+
       label {
         display: block;
         font-size: $font-small;
@@ -26,6 +30,10 @@
           border-radius: 5px;
           border: 2px solid $blue;
           padding-left: 1rem;
+
+          @include respond(tab) {
+            width: 100%;
+          }
         }
         button {
           width: 18rem;
@@ -37,6 +45,11 @@
           border-radius: 10px;
           border-style: none;
           cursor: pointer;
+
+          @include respond(tab) {
+            width: 100%;
+            margin: 1rem 0;
+          }
 
           &[disabled] {
             background-color: #b0b0b0;

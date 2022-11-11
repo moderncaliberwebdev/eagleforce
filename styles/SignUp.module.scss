@@ -20,11 +20,20 @@
 
       &__graphic {
         width: 40%;
+
+        @include respond(tab) {
+          display: none;
+        }
       }
       &__form {
         width: 60%;
         max-width: 60rem;
         margin: auto 0 auto 3rem;
+
+        @include respond(tab) {
+          width: 100%;
+        }
+
         h1 {
           font-size: $font-small-head;
           margin-bottom: 1rem;
