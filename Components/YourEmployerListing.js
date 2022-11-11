@@ -69,7 +69,11 @@ function YourEmployerListing({ listing, currentUser, index }) {
       setErrorMsg('Please Fill in All Required Fields')
     } else {
       setErrorMsg('')
-      const newLogo = await uploadToServer()
+      let newLogo
+
+      if (createObjectURL) {
+        newLogo = await uploadToServer()
+      } else newLogo = listing.logo
 
       const config = {
         headers: { Authorization: `Bearer ${currentUser.accessToken}` },

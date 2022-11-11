@@ -6,6 +6,7 @@ import app from '../firebase/clientApp'
 
 import styles from '../styles/WorkerListingSide.module.scss'
 import axios from 'axios'
+import { useMediaQuery } from 'react-responsive'
 import ContactPopup from './ContactPopup'
 
 const auth = getAuth()
@@ -24,12 +25,20 @@ function WorkerListingSide({
   highlights,
   refresh,
   preview,
+  hideFullListing,
 }) {
   const [currentUser, setCurrentUser] = useState()
   const [bookmarked, setBookmarked] = useState(false)
   const [bookmarks, setBookmarks] = useState([])
   const [error, setError] = useState('')
   const [contactWorker, setContactWorker] = useState(false)
+  const [isSmallScreenState, setIsSmallScreenState] = useState(false)
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 1000px)' })
+
+  useEffect(() => {
+    setIsSmallScreenState(isSmallScreen)
+  }, [isSmallScreen])
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -112,8 +121,26 @@ function WorkerListingSide({
   }
 
   return (
-    <div className={styles.side}>
+    <div
+      className={styles.side}
+      style={{
+        display:
+          isSmallScreenState && !jobs
+            ? 'none'
+            : isSmallScreenState && jobs
+            ? 'flex'
+            : 'flex',
+      }}
+    >
       <ContactPopup openPopup={contactWorker} cancel={cancel} worker={number} />
+      {isSmallScreenState && (
+        <img
+          className={styles.side__arrow}
+          src='/images/layout/arrow.png'
+          alt='arrow'
+          onClick={hideFullListing}
+        />
+      )}
       <div className={styles.side__title}>
         <Image
           src={

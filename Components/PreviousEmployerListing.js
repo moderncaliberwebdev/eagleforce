@@ -89,6 +89,7 @@ function PreviousListing({ listing, currentUser, admin }) {
   }
 
   const approveListing = async () => {
+    console.log('approving listing')
     const config = {
       headers: { Authorization: `Bearer ${authUser.accessToken}` },
     }

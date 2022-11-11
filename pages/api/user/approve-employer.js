@@ -19,6 +19,7 @@ const handler = nc()
         { employerNumber: req.body.number },
         { $set: { approved: true } }
       )
+      res.send(employer)
     } catch (e) {
       console.error(e)
     }

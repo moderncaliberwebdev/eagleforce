@@ -9,6 +9,8 @@ import axios from 'axios'
 import EmployerContactPopup from './EmployerContactPopup'
 import Link from 'next/link'
 
+import { useMediaQuery } from 'react-responsive'
+
 const auth = getAuth()
 
 function EmployerListingSide({
@@ -29,12 +31,20 @@ function EmployerListingSide({
   logo,
   preview,
   phone,
+  hideFullListing,
 }) {
   const [currentUser, setCurrentUser] = useState()
   const [bookmarked, setBookmarked] = useState(false)
   const [bookmarks, setBookmarks] = useState([])
   const [error, setError] = useState('')
   const [contactEmployer, setContactEmployer] = useState(false)
+  const [isSmallScreenState, setIsSmallScreenState] = useState(false)
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 1000px)' })
+
+  useEffect(() => {
+    setIsSmallScreenState(isSmallScreen)
+  }, [isSmallScreen])
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -110,12 +120,30 @@ function EmployerListingSide({
   }
 
   return (
-    <div className={styles.side}>
+    <div
+      className={styles.side}
+      style={{
+        display:
+          isSmallScreenState && !job
+            ? 'none'
+            : isSmallScreenState && job
+            ? 'flex'
+            : 'flex',
+      }}
+    >
       <EmployerContactPopup
         openPopup={contactEmployer}
         cancel={cancel}
         email={email}
       />
+      {isSmallScreenState && (
+        <img
+          className={styles.side__arrow}
+          src='/images/layout/arrow.png'
+          alt='arrow'
+          onClick={hideFullListing}
+        />
+      )}
       <div className={styles.side__title}>
         <Image
           src={

@@ -12,6 +12,17 @@
   height: calc(100vh - 16.2rem);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 
+  @include respond(tab) {
+    display: none;
+    margin: 0 auto;
+  }
+
+  &__arrow {
+    transform: rotate(90deg);
+    width: 3rem;
+    cursor: pointer;
+  }
+
   &__title {
     width: 21rem;
     display: flex;
@@ -122,7 +133,6 @@
             font-weight: 300;
 
             ul {
-              // list-style-type: disc;
               li {
                 list-style-type: disc;
                 margin-left: 2rem;
