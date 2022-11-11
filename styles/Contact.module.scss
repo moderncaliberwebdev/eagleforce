@@ -19,9 +19,9 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s;
 
-  // @include respond(phone) {
-  //   margin-left: 0;
-  // }
+  @include respond(tab-small) {
+    margin-left: 0;
+  }
 
   &:hover {
     box-shadow: inset 10px 10px 10px rgba(0, 0, 0, 0.05),
@@ -50,20 +50,18 @@
     justify-content: space-between;
     margin: 2rem 10rem;
 
-    // @include respond(tab-port) {
-    //   margin: 5rem 0;
-    // }
-    // @include respond(phone) {
-    //   flex-direction: column;
-    // }
+    @include respond(tab-small) {
+      flex-direction: column;
+      margin: 2rem 0;
+    }
 
     &__input_short {
       width: 48%;
       margin-bottom: 5rem;
 
-      // @include respond(phone) {
-      //   width: 100%;
-      // }
+      @include respond(tab-small) {
+        width: 100%;
+      }
 
       &:focus-within {
         p {
@@ -172,9 +170,9 @@
     flex-direction: row;
     justify-content: space-between;
 
-    // @include respond(phone) {
-    //   flex-direction: column;
-    //   margin: 0 0 10rem 0;
-    // }
+    @include respond(tab-small) {
+      flex-direction: column;
+      margin: 0 0 10rem 0;
+    }
   }
 }

@@ -17,6 +17,11 @@ $breakpoint argument choices:
       @content;
     }
   }
+  @if $breakpoint == tab-small {
+    @media (max-width: 800px) {
+      @content;
+    }
+  }
   @if $breakpoint == tab {
     @media (max-width: 1000px) {
       @content;

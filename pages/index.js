@@ -48,7 +48,7 @@ export default function Home({}) {
         <link rel='icon' href='/images/layout/logo.png' />
       </Head>
       <Layout>
-        <main>
+        <main className={styles.main}>
           <section className={styles.hero}>
             <div className={styles.hero__left}>
               <h2>
@@ -163,6 +163,12 @@ export default function Home({}) {
             <h2>find the best fit for you</h2>
             <div className={styles.bestfit__workers}>
               <div className={styles.bestfit__workers__desc}>
+                <div className={styles.bestfit__workers__desc__triangle}>
+                  <img src='/images/home/triangle-blue.png' />
+                </div>
+                <div className={styles.bestfit__workers__desc__graphic}>
+                  <img src='/images/home/mobile-blue.png' />
+                </div>
                 <h3>
                   Find qualified workers that meet your standards and exceed
                   your expectations
@@ -195,44 +201,56 @@ export default function Home({}) {
                 />
               </div>
               <div className={styles.bestfit__workers__desc_red}>
-                <h3>
-                  Find amazing employers who offer fantastic benefits and a
-                  wholesome work environment
-                </h3>
-                <p>
-                  Find the best employers Lancaster County has to offer! Eagle
-                  Force Employment Serviecs has partnered with many local
-                  business to help you find your dream job.
-                </p>
-                <Link href='/employers'>
-                  <a>Workers find an employer</a>
-                </Link>
-                <div className={styles.bestfit__workers__desc_red__logos}>
-                  <Image
-                    src='/images/home/company-logo.png'
-                    width={50}
-                    height={50}
-                  />
-                  <Image
-                    src='/images/home/company-logo.png'
-                    width={50}
-                    height={50}
-                  />
-                  <Image
-                    src='/images/home/company-logo.png'
-                    width={50}
-                    height={50}
-                  />
-                  <Image
-                    src='/images/home/company-logo.png'
-                    width={50}
-                    height={50}
-                  />
-                  <Image
-                    src='/images/home/company-logo.png'
-                    width={50}
-                    height={50}
-                  />
+                <div className={styles.bestfit__workers__desc_red__triangle}>
+                  <img src='/images/home/triangle-red.png' />
+                </div>
+                <div className={styles.bestfit__workers__desc_red__graphic}>
+                  <img src='/images/home/mobile-red.png' />
+                </div>
+                <div className={styles.bestfit__workers__desc_red__container}>
+                  <h3>
+                    Find amazing employers who offer fantastic benefits and a
+                    wholesome work environment
+                  </h3>
+                  <p>
+                    Find the best employers Lancaster County has to offer! Eagle
+                    Force Employment Serviecs has partnered with many local
+                    business to help you find your dream job.
+                  </p>
+                  <Link href='/employers'>
+                    <a>Workers find an employer</a>
+                  </Link>
+                  <div
+                    className={
+                      styles.bestfit__workers__desc_red__container__logos
+                    }
+                  >
+                    <Image
+                      src='/images/home/company-logo.png'
+                      width={50}
+                      height={50}
+                    />
+                    <Image
+                      src='/images/home/company-logo.png'
+                      width={50}
+                      height={50}
+                    />
+                    <Image
+                      src='/images/home/company-logo.png'
+                      width={50}
+                      height={50}
+                    />
+                    <Image
+                      src='/images/home/company-logo.png'
+                      width={50}
+                      height={50}
+                    />
+                    <Image
+                      src='/images/home/company-logo.png'
+                      width={50}
+                      height={50}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

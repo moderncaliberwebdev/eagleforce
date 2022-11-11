@@ -32,6 +32,10 @@
         // width: 50%;
         margin: auto 0;
         float: right;
+
+        @include respond(tab) {
+          display: none;
+        }
       }
       .right {
         margin: auto 0 auto 2rem;
@@ -39,6 +43,11 @@
         min-width: 50rem;
         max-width: 70rem;
         font-size: $font-text;
+
+        @include respond(tab) {
+          max-width: none;
+          width: 80%;
+        }
 
         p {
           width: auto;

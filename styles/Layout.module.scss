@@ -46,6 +46,7 @@
         @include respond(tab) {
           display: none;
           width: 100vw;
+          padding: 0 4rem;
           position: absolute;
           left: 0;
           top: 0;
@@ -54,6 +55,7 @@
           color: #000;
           z-index: 10;
           flex-wrap: wrap;
+          justify-content: space-between;
           box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -75,6 +77,7 @@
             align-items: flex-start;
             margin-left: 5rem;
             font-weight: 500;
+            width: 20rem;
           }
 
           &:hover {
@@ -124,6 +127,7 @@
               line-height: 3rem;
               display: block;
               width: 25rem;
+              cursor: pointer;
 
               @include respond(tab) {
                 color: #000;
@@ -203,8 +207,38 @@
 
       @include respond(tab) {
         display: block;
-        height: 2.5rem;
+        position: relative;
+        z-index: 100;
+        width: 6rem;
+        float: right;
         cursor: pointer;
+        transition: all 400ms cubic-bezier(0.84, 0.06, 0.52, 1.8);
+
+        &_1,
+        &_2,
+        &_3 {
+          position: absolute;
+          right: 0;
+          top: 0;
+          height: 5px;
+          border-radius: 5px;
+          background-color: black;
+          transition: all 400ms cubic-bezier(0.84, 0.06, 0.52, 1.8);
+        }
+
+        &_1 {
+          animation-delay: 100ms;
+          width: 6rem;
+        }
+        &_2 {
+          animation-delay: 100ms;
+        }
+
+        &_3 {
+          width: 4rem;
+          transform: translateY(20px);
+          animation-delay: 250ms;
+        }
       }
     }
   }
@@ -218,6 +252,10 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
+      @include respond(tab) {
+        flex-direction: column;
+      }
 
       &__left {
         a {
@@ -249,8 +287,16 @@
           flex-direction: row;
           list-style-type: none;
 
+          @include respond(tab) {
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+          }
+
           li {
             margin: 0.5rem 1rem;
+
             a {
               color: #000;
               text-decoration: none;
@@ -271,6 +317,11 @@
       justify-content: space-between;
       margin-top: 2rem;
       font-size: $font-text;
+
+      @include respond(tab) {
+        flex-direction: column;
+        text-align: right;
+      }
 
       &__right {
         text-align: right;

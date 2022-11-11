@@ -32,6 +32,7 @@
     "react-firebase-hooks": "^5.0.3",
     "react-paypal-button-v2": "^2.6.3",
     "react-quill": "^2.0.0",
+    "react-responsive": "^9.0.0",
     "sass": "^1.55.0",
     "validator": "^13.7.0"
   },

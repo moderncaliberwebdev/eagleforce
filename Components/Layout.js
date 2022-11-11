@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
 import styles from '../styles/Layout.module.scss'
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
@@ -10,6 +11,14 @@ const auth = getAuth()
 
 function Layout({ children }) {
   const [currentUser, setCurrentUser] = useState()
+  const [open, setOpen] = useState(false)
+  const [isSmallScreenState, setIsSmallScreenState] = useState(false)
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 1000px)' })
+
+  useEffect(() => {
+    setIsSmallScreenState(isSmallScreen)
+  }, [isSmallScreen])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -60,7 +69,7 @@ function Layout({ children }) {
           </Link>
         </div>
         <div className={styles.layout__nav__links}>
-          <ul>
+          <ul id='ul'>
             <li>
               About
               <img src='/images/layout/arrow.png' alt='Dropdown Arrow' />
@@ -102,6 +111,23 @@ function Layout({ children }) {
                 </Link>
               </div>
             </li>
+            {isSmallScreenState &&
+              (currentUser ? (
+                <li>
+                  <Link href='/profile' passHref>
+                    <a>Profile</a>
+                  </Link>
+                  <div>
+                    <a onClick={firebaseSignOut}>Sign Out</a>
+                  </div>
+                </li>
+              ) : (
+                <li>
+                  <Link href='/sign-in' passHref>
+                    <a>Sign In</a>
+                  </Link>
+                </li>
+              ))}
           </ul>
         </div>
         <div className={styles.layout__nav__signin}>
@@ -124,14 +150,36 @@ function Layout({ children }) {
             </Link>
           )}
         </div>
-        <div className={styles.layout__nav__button}>
-          <Image
-            src='/images/layout/nav.png'
-            alt='Navigation Icon'
-            width={50}
-            height={25}
-            layout='fixed'
-          />
+        <div
+          className={styles.layout__nav__button}
+          onClick={() => {
+            document.getElementById('ul').style.display = open ? 'none' : 'flex'
+            setOpen(!open)
+          }}
+          style={{
+            transform: open && 'translateY(20px)',
+          }}
+        >
+          <div
+            className={styles.layout__nav__button_1}
+            id='a'
+            style={{
+              transform: open && 'rotate(45deg)',
+            }}
+          ></div>
+          <div
+            className={styles.layout__nav__button_2}
+            id='b'
+            style={{
+              width: open ? '6rem' : '5rem',
+              transform: open ? 'rotate(-45deg)' : 'translateY(10px)',
+            }}
+          ></div>
+          <div
+            className={styles.layout__nav__button_3}
+            id='c'
+            style={{ opacity: open ? '0' : '1' }}
+          ></div>
         </div>
       </nav>
       {children}
@@ -197,11 +245,13 @@ function Layout({ children }) {
                   </Link>
                 </li>
               </ul>
-              <li>
-                <Link href='/sign-in' passHref>
-                  <a>Sign In</a>
-                </Link>
-              </li>
+              <ul>
+                <li>
+                  <Link href='/sign-in' passHref>
+                    <a>Sign In</a>
+                  </Link>
+                </li>
+              </ul>
             </ul>
           </div>
         </div>
