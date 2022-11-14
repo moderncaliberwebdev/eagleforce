@@ -67,6 +67,7 @@
           border-style: none;
           font-size: $font-text;
           cursor: pointer;
+          color: #000;
 
           @include respond(tab) {
             margin: 1rem;

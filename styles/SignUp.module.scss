@@ -67,12 +67,21 @@
             justify-content: space-between;
             margin-bottom: 2rem;
 
+            @include respond(phone) {
+              flex-direction: column;
+              gap: 10px;
+            }
+
             label {
               padding: 2rem 3rem;
               border-radius: 10px;
               border: 2px solid $red-dark;
               width: 48%;
               color: $red-dark;
+
+              @include respond(phone) {
+                width: 100%;
+              }
 
               input {
                 -webkit-appearance: none;
@@ -127,6 +136,10 @@
             cursor: pointer;
             font-size: $font-small;
             font-weight: 300;
+
+            @include respond(tab-small) {
+              font-size: $font-text;
+            }
           }
         }
 
