@@ -52,12 +52,21 @@ function Layout({ children }) {
         <div className={styles.layout__nav__logo}>
           <Link href='/' passHref>
             <a>
-              <div>
+              <div className={styles.layout__nav__logo__logo}>
                 <Image
                   src='/images/layout/logo.png'
                   alt='Eagle Force Logo'
                   width={80}
                   height={80}
+                  layout='fixed'
+                />
+              </div>
+              <div className={styles.layout__nav__logo__mobile}>
+                <Image
+                  src='/images/layout/logo.png'
+                  alt='Eagle Force Logo'
+                  width={50}
+                  height={50}
                   layout='fixed'
                 />
               </div>
@@ -188,13 +197,24 @@ function Layout({ children }) {
           <div className={styles.layout__footer__top__left}>
             <Link href='/' passHref>
               <a>
-                <Image
-                  src='/images/layout/logo.png'
-                  alt='Eagle Force Logo'
-                  width={80}
-                  height={80}
-                  layout='fixed'
-                />
+                <div className={styles.layout__footer__top__left__logo}>
+                  <Image
+                    src='/images/layout/logo.png'
+                    alt='Eagle Force Logo'
+                    width={80}
+                    height={80}
+                    layout='fixed'
+                  />
+                </div>
+                <div className={styles.layout__footer__top__left__mobile}>
+                  <Image
+                    src='/images/layout/logo.png'
+                    alt='Eagle Force Logo'
+                    width={50}
+                    height={50}
+                    layout='fixed'
+                  />
+                </div>
                 <h2>
                   Eagle Force <span>Employment Services℠</span>
                   <span>Get Your Career On℠</span>

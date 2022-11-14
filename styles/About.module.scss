@@ -17,6 +17,10 @@
       font-weight: 300;
       font-style: italic;
 
+      @include respond(phone) {
+        width: 100%;
+      }
+
       span {
         color: $blue-dark;
         font-weight: 700;
@@ -49,6 +53,11 @@
           width: 80%;
         }
 
+        @include respond(phone) {
+          min-width: initial;
+          width: 100%;
+        }
+
         p {
           width: auto;
           text-align: left;
@@ -67,6 +76,10 @@
           display: flex;
           flex-direction: row;
           margin: 2rem 0 0 0;
+
+          @include respond(phone) {
+            flex-direction: column;
+          }
 
           &__primary {
             color: #fff;

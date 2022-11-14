@@ -49,6 +49,8 @@
           display: flex;
           flex-direction: row;
           align-items: center;
+          flex-wrap: wrap;
+          justify-content: center;
         }
 
         p {
@@ -93,6 +95,10 @@
       margin-top: 1rem;
       font-size: $font-small;
 
+      @include respond(tab-small) {
+        font-size: $font-text;
+      }
+
       &__top {
         margin-bottom: 2rem;
         padding-bottom: 2rem;
@@ -122,6 +128,10 @@
           h3 {
             font-weight: 500;
             font-size: $font-small;
+
+            @include respond(tab-small) {
+              font-size: $font-text;
+            }
           }
           p {
             color: #6a6a6a;

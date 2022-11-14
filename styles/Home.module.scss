@@ -31,6 +31,11 @@
         text-align: right;
         line-height: 9rem;
 
+        @include respond(phone) {
+          font-size: $font-big-head-mobile;
+          line-height: 7rem;
+        }
+
         span {
           display: block;
           border: 2px solid #000;
@@ -39,6 +44,10 @@
           margin: 0 0 0 1rem;
           width: 48rem;
           float: right;
+
+          @include respond(phone) {
+            width: 36rem;
+          }
         }
       }
 
@@ -51,12 +60,19 @@
 
       &__inputs {
         width: 100%;
+
         input {
           width: calc(50% - 0.5rem);
           margin-right: 0.5rem;
           padding: 1rem;
           border-radius: 5px;
           border: 2px solid #000;
+
+          @include respond(phone) {
+            width: 100%;
+            margin: 0.5rem 0;
+            height: 6rem;
+          }
         }
         select {
           margin-left: 0.5rem;
@@ -69,6 +85,12 @@
           background-repeat: no-repeat;
           background-position: right 0.7rem top 50%;
           background-size: 2rem auto;
+
+          @include respond(phone) {
+            width: 100%;
+            margin: 0.5rem 0;
+            height: 6rem;
+          }
 
           &:invalid {
             color: #636c72;
@@ -94,6 +116,10 @@
         border-style: none;
         border-radius: 10px;
         cursor: pointer;
+
+        @include respond(phone) {
+          height: 6rem;
+        }
       }
     }
 
@@ -137,6 +163,9 @@
             max-width: none;
             width: 80%;
           }
+          @include respond(phone) {
+            width: 35rem;
+          }
 
           &:after {
             content: '';
@@ -177,7 +206,7 @@
           width: 50%;
           padding-left: 2.5rem;
           margin: auto 0;
-          font-size: 1.5rem;
+          font-size: $font-small;
           font-family: times, 'Times';
 
           @include respond(tab-land) {
@@ -186,6 +215,9 @@
           @include respond(tab-small) {
             width: 80%;
             margin: 2rem 0;
+          }
+          @include respond(phone) {
+            font-size: $font-text;
           }
         }
       }
@@ -215,6 +247,9 @@
           }
           @include respond(tab-small) {
             max-width: none;
+          }
+          @include respond(phone) {
+            width: 35rem;
           }
 
           &:after {
@@ -266,6 +301,9 @@
             width: 80%;
             margin: 2rem 0;
           }
+          @include respond(phone) {
+            font-size: $font-text;
+          }
         }
       }
     }
@@ -287,6 +325,10 @@
       padding: 1rem 0;
       overflow-x: hidden;
       background: #000;
+
+      @include respond(phone) {
+        margin: 2rem 0 0 -2rem;
+      }
 
       span {
         font-size: $font-text;
@@ -320,6 +362,11 @@
       font-weight: 400;
       text-align: center;
       display: block;
+
+      @include respond(phone) {
+        width: 100%;
+        margin: 8rem auto;
+      }
     }
 
     &__workers {
@@ -335,6 +382,9 @@
       @include respond(tab-small) {
         width: 100vw;
         margin: 0 0 0 -4rem;
+      }
+      @include respond(phone) {
+        margin: 0 0 0 -2rem;
       }
 
       &__desc {
@@ -367,6 +417,10 @@
             height: 50%;
             top: -5rem;
             z-index: 0;
+
+            @include respond(phone) {
+              height: 25%;
+            }
           }
         }
 
@@ -379,9 +433,18 @@
             z-index: 100;
             margin-right: -4rem;
 
+            @include respond(phone) {
+              text-align: right;
+            }
+
             img {
               float: right;
               width: 30rem;
+
+              @include respond(phone) {
+                float: none;
+                width: 35rem;
+              }
             }
           }
         }
@@ -441,6 +504,10 @@
             height: 50%;
             top: -5rem;
             z-index: 0;
+
+            @include respond(phone) {
+              height: 25%;
+            }
           }
         }
         &__graphic {
@@ -452,9 +519,17 @@
             z-index: 100;
             margin-right: -4rem;
 
+            @include respond(phone) {
+              text-align: right;
+            }
             img {
               float: right;
               width: 30rem;
+
+              @include respond(phone) {
+                float: none;
+                width: 35rem;
+              }
             }
           }
         }
@@ -520,6 +595,10 @@
       font-weight: 400;
       text-align: center;
       display: block;
+
+      @include respond(phone) {
+        width: 100%;
+      }
     }
 
     .reverse {
@@ -617,6 +696,10 @@
     width: 100vw;
     margin-left: -4rem;
     padding: 8rem 4rem;
+
+    @include respond(phone) {
+      margin-left: -2rem;
+    }
 
     &__left {
       width: 50%;

@@ -73,6 +73,10 @@
         border-radius: 5px;
         border-style: none;
         cursor: pointer;
+
+        @include respond(tab-small) {
+          font-size: $font-text;
+        }
       }
     }
   }

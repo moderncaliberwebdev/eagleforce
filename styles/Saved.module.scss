@@ -28,6 +28,10 @@
         margin-right: 3rem;
         justify-content: space-around;
 
+        @include respond(tab) {
+          margin: 0;
+        }
+
         &__error {
           font-size: $font-text;
           margin-bottom: 25vh;

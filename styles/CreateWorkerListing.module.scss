@@ -43,6 +43,10 @@
         h3 {
           font-size: $font-small;
           margin-bottom: 1rem;
+
+          @include respond(tab) {
+            font-size: $font-text;
+          }
         }
 
         &__input {
@@ -56,6 +60,10 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+
+            @include respond(tab) {
+              font-size: $font-text;
+            }
 
             div {
               display: flex;
@@ -137,6 +145,10 @@
         &__disclaimer {
           font-size: $font-small;
           // color: red;
+
+          @include respond(tab) {
+            font-size: $font-text;
+          }
         }
 
         &__preview {
@@ -155,6 +167,10 @@
           margin-top: 1rem;
           font-size: $font-small;
           color: red;
+
+          @include respond(tab) {
+            font-size: $font-text;
+          }
         }
       }
     }

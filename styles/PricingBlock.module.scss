@@ -10,6 +10,11 @@
   position: relative;
   text-decoration: none;
 
+  @include respond(phone) {
+    max-width: 40rem;
+    width: 100%;
+  }
+
   &:after {
     content: '';
     position: absolute;

@@ -19,6 +19,10 @@
       font-weight: 300;
       font-size: $font-small;
       text-align: right;
+
+      @include respond(tab-small) {
+        font-size: $font-text;
+      }
     }
 
     &__buttons {
@@ -78,6 +82,10 @@
       color: red;
       font-size: $font-small;
       margin-left: 15rem;
+
+      @include respond(tab-small) {
+        font-size: $font-text;
+      }
     }
 
     &__discount {
@@ -91,6 +99,10 @@
         font-size: $font-small;
         font-weight: 300;
         margin-right: 2rem;
+
+        @include respond(tab-small) {
+          font-size: $font-text;
+        }
       }
 
       input {
@@ -121,6 +133,12 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
+      @include respond(tab) {
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+      }
     }
   }
 }

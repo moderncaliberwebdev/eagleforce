@@ -19,6 +19,10 @@
         display: block;
         font-size: $font-small;
         color: #393939;
+
+        @include respond(tab-small) {
+          font-size: $font-text;
+        }
       }
 
       &__input {
@@ -71,11 +75,19 @@
           margin-top: 1rem;
           cursor: pointer;
           font-size: $font-text;
+
+          @include respond(phone) {
+            width: 100%;
+          }
         }
 
         p {
           font-size: $font-small;
           margin-top: 0.5rem;
+
+          @include respond(tab-small) {
+            font-size: $font-text;
+          }
         }
       }
 
@@ -83,6 +95,10 @@
         font-size: $font-small;
         color: red;
         margin-top: 1rem;
+
+        @include respond(tab-small) {
+          font-size: $font-text;
+        }
       }
     }
   }

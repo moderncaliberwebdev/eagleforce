@@ -19,6 +19,10 @@
       font-weight: 300;
       font-size: $font-small;
       text-align: right;
+
+      @include respond(tab-small) {
+        font-size: $font-text;
+      }
     }
 
     &__buttons {
@@ -28,26 +32,36 @@
       align-items: center;
       margin-top: 2rem;
 
-      div {
-        a {
-          margin: 0 2rem;
-          font-size: $font-text;
-          text-align: center;
-          font-weight: 300;
-          padding: 0.75rem 5rem;
-          color: #000;
-          text-decoration: none;
-          border-radius: 10px;
-          width: 25rem;
-          background: #fff;
+      @include respond(tab-small) {
+        flex-direction: column;
+        width: 100%;
+        align-items: normal;
+        gap: 20px;
+      }
 
-          // &:first-of-type {
-          // }
+      a {
+        margin: 0 2rem;
+        font-size: $font-text;
+        text-align: center;
+        font-weight: 300;
+        padding: 0.75rem 5rem;
+        color: #000;
+        text-decoration: none;
+        border-radius: 10px;
+        width: 25rem;
+        background: #fff;
 
-          // &:last-of-type {
-          //   background: $blue;
-          // }
+        @include respond(tab-small) {
+          width: 100%;
+          margin: 0;
         }
+
+        // &:first-of-type {
+        // }
+
+        // &:last-of-type {
+        //   background: $blue;
+        // }
       }
     }
 
@@ -62,6 +76,10 @@
         font-size: $font-small;
         font-weight: 300;
         margin-right: 2rem;
+
+        @include respond(tab-small) {
+          font-size: $font-text;
+        }
       }
 
       input {

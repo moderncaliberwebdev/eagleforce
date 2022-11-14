@@ -42,37 +42,47 @@
           margin: 0 auto;
         }
       }
-      button {
-        padding: 1rem 2rem;
-        background-color: $red;
-        border-radius: 10px;
-        border-style: none;
-        font-size: $font-text;
-        cursor: pointer;
 
-        @include respond(tab) {
-          margin: 1rem 0;
-        }
-      }
-      label {
-        font-size: $font-text;
-        background-color: $red;
-        margin-right: 5rem;
-        text-align: center;
-        font-weight: 400;
-        padding: 0.75rem 2rem;
-        color: #000;
-        text-decoration: none;
-        border-radius: 10px;
-        width: 20rem;
-        cursor: pointer;
-
-        input[type='file'] {
-          display: none;
+      &__buttons {
+        @include respond(phone) {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          flex-wrap: wrap;
         }
 
-        @include respond(tab) {
-          margin: 1rem;
+        button {
+          padding: 1rem 2rem;
+          background-color: $red;
+          border-radius: 10px;
+          border-style: none;
+          font-size: $font-text;
+          cursor: pointer;
+
+          @include respond(tab) {
+            margin: 1rem 0;
+          }
+        }
+        label {
+          font-size: $font-text;
+          background-color: $red;
+          margin-right: 5rem;
+          text-align: center;
+          font-weight: 400;
+          padding: 0.75rem 2rem;
+          color: #000;
+          text-decoration: none;
+          border-radius: 10px;
+          width: 20rem;
+          cursor: pointer;
+
+          input[type='file'] {
+            display: none;
+          }
+
+          @include respond(tab) {
+            margin: 1rem;
+          }
         }
       }
       a {
@@ -139,6 +149,10 @@
           h3 {
             font-size: $font-small;
             margin-bottom: 1rem;
+
+            @include respond(tab-small) {
+              font-size: $font-text;
+            }
           }
 
           &__input {
@@ -152,6 +166,10 @@
               display: flex;
               flex-direction: row;
               justify-content: space-between;
+
+              @include respond(tab-small) {
+                font-size: $font-text;
+              }
 
               div {
                 display: flex;
@@ -233,6 +251,10 @@
           &__disclaimer {
             font-size: $font-small;
             // color: red;
+
+            @include respond(tab-small) {
+              font-size: $font-text;
+            }
           }
 
           &__preview {
@@ -251,6 +273,10 @@
             margin-top: 1rem;
             font-size: $font-small;
             color: red;
+
+            @include respond(tab-small) {
+              font-size: $font-text;
+            }
           }
         }
       }
