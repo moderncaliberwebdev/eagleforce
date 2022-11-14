@@ -40,6 +40,7 @@ export default function Employers({}) {
   const [isSmallScreenState, setIsSmallScreenState] = useState(false)
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 1000px)' })
+  const isPhone = useMediaQuery({ query: '(max-width: 600px)' })
 
   useEffect(() => {
     setIsSmallScreenState(isSmallScreen)
@@ -547,6 +548,12 @@ export default function Employers({}) {
                   All verified workers have been screened by the site
                   administrator
                 </p>
+                {isPhone && (
+                  <div className={styles.workers__listings__filter}>
+                    <img src='/images/post/filter.png' alt='Filter' />
+                    <h3>Filter Search</h3>
+                  </div>
+                )}
                 {loading ? (
                   <p className={styles.workers__listings__loading}>
                     Loading Workers...

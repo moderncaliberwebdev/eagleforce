@@ -18,6 +18,13 @@
     max-width: 21rem;
     height: calc(100vh - 16.2rem);
 
+    @include respond(phone) {
+      margin: 2rem auto;
+      max-width: none;
+      width: 30rem;
+      height: 100%;
+    }
+
     h3 {
       font-size: $font-text;
       font-weight: 500;
@@ -174,6 +181,21 @@
     flex-direction: column;
     height: calc(100vh - 12.2rem);
 
+    @include respond(phone) {
+      margin: 2rem;
+    }
+
+    &__filter {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      justify-content: center;
+      gap: 2rem;
+      font-size: $font-text;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+
     &__search {
       height: 4rem;
       padding: 0 1rem 0 3rem;
@@ -184,6 +206,12 @@
       background-position: 7px 10px;
       background-repeat: no-repeat;
       background-size: 20px 20px;
+
+      @include respond(phone) {
+        height: 8rem;
+        background-position: 7px 8px;
+        padding: 0 1rem 0 4rem;
+      }
     }
 
     &__notice {
