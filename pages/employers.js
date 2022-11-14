@@ -38,6 +38,8 @@ export default function Employers({}) {
   const [proximityInput, setProximityInput] = useState('')
   const [proximityDistance, setProximityDistance] = useState('')
   const [isSmallScreenState, setIsSmallScreenState] = useState(false)
+  const [isPhoneState, setIsPhoneState] = useState(false)
+  const [openFilter, setOpenFilter] = useState(false)
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 1000px)' })
   const isPhone = useMediaQuery({ query: '(max-width: 600px)' })
@@ -45,6 +47,9 @@ export default function Employers({}) {
   useEffect(() => {
     setIsSmallScreenState(isSmallScreen)
   }, [isSmallScreen])
+  useEffect(() => {
+    setIsPhoneState(isPhone)
+  }, [isPhone])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -351,268 +356,300 @@ export default function Employers({}) {
             <></>
           ) : (
             <>
-              <div className={styles.workers__filter}>
-                <div className={styles.workers__filter__top}>
-                  <h2>Filter Search</h2>
-                  <p onClick={resetFilters}>Reset</p>
-                </div>
-                <div className={styles.workers__filter__scroll}>
-                  <div className={styles.workers__filter__scroll__location}>
-                    <h3>Location</h3>
-                    <input
-                      type='text'
-                      placeholder='Lancaster, PA'
-                      value={proximityInput}
-                      onChange={(e) => setProximityInput(e.target.value)}
+              {(!isPhoneState || openFilter) && (
+                <div className={styles.workers__filter}>
+                  {isPhoneState && (
+                    <img
+                      className={styles.workers__filter__arrow}
+                      src='/images/layout/arrow.png'
+                      alt='arrow'
+                      onClick={() => setOpenFilter(false)}
                     />
-                    <select
-                      required
-                      value={
-                        proximityDistance.length > 0 ? proximityDistance : ''
-                      }
-                      onChange={(e) => setProximityDistance(e.target.value)}
-                    >
-                      <option value='' disabled selected hidden>
-                        Proximity
-                      </option>
-                      <option value='5 Miles'>5 Miles</option>
-                      <option value='10 Miles'>10 Miles</option>
-                      <option value='20 Miles'>20 Miles</option>
-                      <option value='40 Miles'>40 Miles</option>
-                      <option value='60 Miles'>60 Miles</option>
-                      <option value='80 Miles'>80 Miles</option>
-                      <option value='100 Miles'>100 Miles</option>
-                      <option value='250 Miles'>250 Miles</option>
-                      <option value='500 Miles'>500 Miles</option>
-                    </select>
-                    <button
-                      onClick={() => {
-                        if (
-                          proximityInput.length > 0 &&
-                          proximityDistance.length > 0
-                        ) {
-                          setFilters('', '', '', '')
-                        } else
-                          setError(
-                            'Fill in a location and a proximity before clicking Apply'
-                          )
-                      }}
-                    >
-                      Apply
-                    </button>
+                  )}
+                  <div className={styles.workers__filter__top}>
+                    <h2>Filter Search</h2>
+                    <p onClick={resetFilters}>Reset</p>
                   </div>
-                  <div className={styles.workers__filter__scroll__hourly}>
-                    <h3>Hourly Pay</h3>
-                    <div
-                      className={styles.workers__filter__scroll__hourly__inputs}
-                    >
-                      <div
-                        className={
-                          styles.workers__filter__scroll__hourly__inputs__input
+                  <div className={styles.workers__filter__scroll}>
+                    <div className={styles.workers__filter__scroll__location}>
+                      <h3>Location</h3>
+                      <input
+                        type='text'
+                        placeholder='Lancaster, PA'
+                        value={proximityInput}
+                        onChange={(e) => setProximityInput(e.target.value)}
+                      />
+                      <select
+                        required
+                        value={
+                          proximityDistance.length > 0 ? proximityDistance : ''
                         }
+                        onChange={(e) => setProximityDistance(e.target.value)}
                       >
-                        <p>$</p>
-                        <input
-                          type='text'
-                          value={rateStart}
-                          onChange={(e) => setRateStart(e.target.value)}
-                        />
-                      </div>
-                      <p>to</p>
-                      <div
-                        className={
-                          styles.workers__filter__scroll__hourly__inputs__input
-                        }
+                        <option value='' disabled selected hidden>
+                          Proximity
+                        </option>
+                        <option value='5 Miles'>5 Miles</option>
+                        <option value='10 Miles'>10 Miles</option>
+                        <option value='20 Miles'>20 Miles</option>
+                        <option value='40 Miles'>40 Miles</option>
+                        <option value='60 Miles'>60 Miles</option>
+                        <option value='80 Miles'>80 Miles</option>
+                        <option value='100 Miles'>100 Miles</option>
+                        <option value='250 Miles'>250 Miles</option>
+                        <option value='500 Miles'>500 Miles</option>
+                      </select>
+                      <button
+                        onClick={() => {
+                          if (
+                            proximityInput.length > 0 &&
+                            proximityDistance.length > 0
+                          ) {
+                            setFilters('', '', '', '')
+                          } else
+                            setError(
+                              'Fill in a location and a proximity before clicking Apply'
+                            )
+                        }}
                       >
-                        <p>$</p>
-                        <input
-                          type='text'
-                          value={rateEnd}
-                          onChange={(e) => setRateEnd(e.target.value)}
-                        />
-                      </div>
+                        Apply
+                      </button>
                     </div>
-                    <button
-                      onClick={() => {
-                        if (
-                          rateStart.length > 0 &&
-                          rateEnd.length > 0 &&
-                          rateEnd <= rateStart
-                        ) {
-                          setError('End rate must be greater than start rate')
-                        } else {
-                          setFilters('', '', rateStart, rateEnd)
+                    <div className={styles.workers__filter__scroll__hourly}>
+                      <h3>Hourly Pay</h3>
+                      <div
+                        className={
+                          styles.workers__filter__scroll__hourly__inputs
                         }
-                      }}
-                    >
-                      Apply
-                    </button>
-                  </div>
-                  <div className={styles.workers__filter__scroll__checks}>
-                    <h3>Employment Type</h3>
-                    <label
-                      className={styles.workers__filter__scroll__checks__check}
-                    >
-                      <input
-                        type='checkbox'
-                        checked={
-                          employmentTypes.length > 0 &&
-                          employmentTypes.includes('Full Time')
+                      >
+                        <div
+                          className={
+                            styles.workers__filter__scroll__hourly__inputs__input
+                          }
+                        >
+                          <p>$</p>
+                          <input
+                            type='text'
+                            value={rateStart}
+                            onChange={(e) => setRateStart(e.target.value)}
+                          />
+                        </div>
+                        <p>to</p>
+                        <div
+                          className={
+                            styles.workers__filter__scroll__hourly__inputs__input
+                          }
+                        >
+                          <p>$</p>
+                          <input
+                            type='text'
+                            value={rateEnd}
+                            onChange={(e) => setRateEnd(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (
+                            rateStart.length > 0 &&
+                            rateEnd.length > 0 &&
+                            rateEnd <= rateStart
+                          ) {
+                            setError('End rate must be greater than start rate')
+                          } else {
+                            setFilters('', '', rateStart, rateEnd)
+                          }
+                        }}
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    <div className={styles.workers__filter__scroll__checks}>
+                      <h3>Employment Type</h3>
+                      <label
+                        className={
+                          styles.workers__filter__scroll__checks__check
                         }
-                        onClick={() => setFilters('Full Time', '', '', '')}
-                      />
-                      Full Time
-                    </label>
-                    <label
-                      className={styles.workers__filter__scroll__checks__check}
-                    >
-                      <input
-                        type='checkbox'
-                        checked={
-                          employmentTypes.length > 0 &&
-                          employmentTypes.includes('Part Time')
+                      >
+                        <input
+                          type='checkbox'
+                          checked={
+                            employmentTypes.length > 0 &&
+                            employmentTypes.includes('Full Time')
+                          }
+                          onClick={() => setFilters('Full Time', '', '', '')}
+                        />
+                        Full Time
+                      </label>
+                      <label
+                        className={
+                          styles.workers__filter__scroll__checks__check
                         }
-                        onClick={() => setFilters('Part Time', '', '', '')}
-                      />
-                      Part Time
-                    </label>
-                    <label
-                      className={styles.workers__filter__scroll__checks__check}
-                    >
-                      <input
-                        type='checkbox'
-                        checked={
-                          employmentTypes.length > 0 &&
-                          employmentTypes.includes('Contract')
+                      >
+                        <input
+                          type='checkbox'
+                          checked={
+                            employmentTypes.length > 0 &&
+                            employmentTypes.includes('Part Time')
+                          }
+                          onClick={() => setFilters('Part Time', '', '', '')}
+                        />
+                        Part Time
+                      </label>
+                      <label
+                        className={
+                          styles.workers__filter__scroll__checks__check
                         }
-                        onClick={() => setFilters('Contract', '', '', '')}
-                      />
-                      Contract
-                    </label>
-                  </div>
-                  <div className={styles.workers__filter__scroll__checks}>
-                    <h3>Worker Type</h3>
-                    <label
-                      className={styles.workers__filter__scroll__checks__check}
-                    >
-                      <input
-                        type='checkbox'
-                        checked={
-                          workerTypes.length > 0 &&
-                          workerTypes.includes('Worker')
+                      >
+                        <input
+                          type='checkbox'
+                          checked={
+                            employmentTypes.length > 0 &&
+                            employmentTypes.includes('Contract')
+                          }
+                          onClick={() => setFilters('Contract', '', '', '')}
+                        />
+                        Contract
+                      </label>
+                    </div>
+                    <div className={styles.workers__filter__scroll__checks}>
+                      <h3>Worker Type</h3>
+                      <label
+                        className={
+                          styles.workers__filter__scroll__checks__check
                         }
-                        onClick={() => setFilters('', 'Worker', '', '')}
-                      />
-                      Worker
-                    </label>
-                    <label
-                      className={styles.workers__filter__scroll__checks__check}
-                    >
-                      <input
-                        type='checkbox'
-                        checked={
-                          workerTypes.length > 0 &&
-                          workerTypes.includes('Crew Driver')
+                      >
+                        <input
+                          type='checkbox'
+                          checked={
+                            workerTypes.length > 0 &&
+                            workerTypes.includes('Worker')
+                          }
+                          onClick={() => setFilters('', 'Worker', '', '')}
+                        />
+                        Worker
+                      </label>
+                      <label
+                        className={
+                          styles.workers__filter__scroll__checks__check
                         }
-                        onClick={() => setFilters('', 'Crew Driver', '', '')}
-                      />
-                      Crew Driver
-                    </label>
-                    <label
-                      className={styles.workers__filter__scroll__checks__check}
-                    >
-                      <input
-                        type='checkbox'
-                        checked={
-                          workerTypes.length > 0 && workerTypes.includes('Both')
+                      >
+                        <input
+                          type='checkbox'
+                          checked={
+                            workerTypes.length > 0 &&
+                            workerTypes.includes('Crew Driver')
+                          }
+                          onClick={() => setFilters('', 'Crew Driver', '', '')}
+                        />
+                        Crew Driver
+                      </label>
+                      <label
+                        className={
+                          styles.workers__filter__scroll__checks__check
                         }
-                        onClick={() => setFilters('', 'Both', '', '')}
-                      />
-                      Both
-                    </label>
+                      >
+                        <input
+                          type='checkbox'
+                          checked={
+                            workerTypes.length > 0 &&
+                            workerTypes.includes('Both')
+                          }
+                          onClick={() => setFilters('', 'Both', '', '')}
+                        />
+                        Both
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={styles.workers__listings}>
-                <input
-                  type='text'
-                  className={styles.workers__listings__search}
-                  placeholder='Search by job title, trade, or company'
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  onKeyPress={(e) =>
-                    e.key === 'Enter' && setFilters('', '', '', '')
-                  }
-                />
-                <p className={styles.workers__listings__notice}>
-                  All verified workers have been screened by the site
-                  administrator
-                </p>
-                {isPhone && (
-                  <div className={styles.workers__listings__filter}>
-                    <img src='/images/post/filter.png' alt='Filter' />
-                    <h3>Filter Search</h3>
-                  </div>
-                )}
-                {loading ? (
-                  <p className={styles.workers__listings__loading}>
-                    Loading Workers...
+              )}
+              {!openFilter && (
+                <div className={styles.workers__listings}>
+                  <input
+                    type='text'
+                    className={styles.workers__listings__search}
+                    placeholder='Search by job title, trade, or company'
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    onKeyPress={(e) =>
+                      e.key === 'Enter' && setFilters('', '', '', '')
+                    }
+                  />
+                  <p className={styles.workers__listings__notice}>
+                    All verified workers have been screened by the site
+                    administrator
                   </p>
-                ) : displayListings &&
-                  displayListings.featuredEmployers &&
-                  displayListings.featuredEmployers.length == 0 &&
-                  displayListings.standardEmployers &&
-                  displayListings.standardEmployers.length == 0 ? (
-                  <p className={styles.workers__listings__loading}>
-                    No Results
-                  </p>
-                ) : (
-                  <div className={styles.workers__listings__display}>
-                    {displayListings &&
-                      displayListings.featuredEmployers &&
-                      displayListings.featuredEmployers.map((employer) => (
-                        <>
-                          {employer.approved && (
-                            <FeaturedEmployerListingBlock
-                              key={employer.listingInfo[0]}
-                              job={employer.listingInfo[0]}
-                              number={employer.employerNumber}
-                              company={employer.listingInfo[1]}
-                              city={employer.listingInfo[7]}
-                              type={employer.listingInfo[3]}
-                              employmentType={employer.listingInfo[6]}
-                              description={employer.listingInfo[10]}
-                              logo={employer.logo}
-                              showFullListing={showFullListing}
-                              verified={employer.verified}
-                            />
-                          )}
-                        </>
-                      ))}
-                    {displayListings &&
-                      displayListings.standardEmployers &&
-                      displayListings.standardEmployers.map((employer) => (
-                        <>
-                          {employer.approved && (
-                            <EmployerListingBlock
-                              key={employer.listingInfo[0]}
-                              job={employer.listingInfo[0]}
-                              number={employer.employerNumber}
-                              company={employer.listingInfo[1]}
-                              city={employer.listingInfo[7]}
-                              type={employer.listingInfo[3]}
-                              employmentType={employer.listingInfo[6]}
-                              description={employer.listingInfo[10]}
-                              logo={employer.logo}
-                              showFullListing={showFullListing}
-                              verified={employer.verified}
-                            />
-                          )}
-                        </>
-                      ))}
-                  </div>
-                )}
-              </div>
+                  {isPhoneState && (
+                    <div
+                      className={styles.workers__listings__filter}
+                      onClick={() => {
+                        setOpenFilter(true)
+                      }}
+                    >
+                      <img src='/images/post/filter.png' alt='Filter' />
+                      <h3>Filter Search</h3>
+                    </div>
+                  )}
+                  {loading ? (
+                    <p className={styles.workers__listings__loading}>
+                      Loading Workers...
+                    </p>
+                  ) : displayListings &&
+                    displayListings.featuredEmployers &&
+                    displayListings.featuredEmployers.length == 0 &&
+                    displayListings.standardEmployers &&
+                    displayListings.standardEmployers.length == 0 ? (
+                    <p className={styles.workers__listings__loading}>
+                      No Results
+                    </p>
+                  ) : (
+                    <div className={styles.workers__listings__display}>
+                      {displayListings &&
+                        displayListings.featuredEmployers &&
+                        displayListings.featuredEmployers.map((employer) => (
+                          <>
+                            {employer.approved && (
+                              <FeaturedEmployerListingBlock
+                                key={employer.listingInfo[0]}
+                                job={employer.listingInfo[0]}
+                                number={employer.employerNumber}
+                                company={employer.listingInfo[1]}
+                                city={employer.listingInfo[7]}
+                                type={employer.listingInfo[3]}
+                                employmentType={employer.listingInfo[6]}
+                                description={employer.listingInfo[10]}
+                                logo={employer.logo}
+                                showFullListing={showFullListing}
+                                verified={employer.verified}
+                              />
+                            )}
+                          </>
+                        ))}
+                      {displayListings &&
+                        displayListings.standardEmployers &&
+                        displayListings.standardEmployers.map((employer) => (
+                          <>
+                            {employer.approved && (
+                              <EmployerListingBlock
+                                key={employer.listingInfo[0]}
+                                job={employer.listingInfo[0]}
+                                number={employer.employerNumber}
+                                company={employer.listingInfo[1]}
+                                city={employer.listingInfo[7]}
+                                type={employer.listingInfo[3]}
+                                employmentType={employer.listingInfo[6]}
+                                description={employer.listingInfo[10]}
+                                logo={employer.logo}
+                                showFullListing={showFullListing}
+                                verified={employer.verified}
+                              />
+                            )}
+                          </>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
 

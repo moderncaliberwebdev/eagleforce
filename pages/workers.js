@@ -368,7 +368,7 @@ export default function Workers({}) {
             <>
               {(!isPhoneState || openFilter) && (
                 <div className={styles.workers__filter}>
-                  {isPhone && (
+                  {isPhoneState && (
                     <img
                       className={styles.workers__filter__arrow}
                       src='/images/layout/arrow.png'

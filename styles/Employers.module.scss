@@ -29,6 +29,12 @@
       font-size: $font-text;
       font-weight: 500;
     }
+    &__arrow {
+      transform: rotate(90deg);
+      width: 3rem;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
 
     &__top {
       display: flex;
@@ -72,6 +78,7 @@
           border-radius: 5px;
           border: 1px solid #6a6a6a;
           padding: 0 1rem;
+          color: #000;
         }
 
         button {
@@ -83,6 +90,7 @@
           border-style: none;
           border-radius: 10px;
           cursor: pointer;
+          color: #000;
         }
       }
       &__hourly {
@@ -120,7 +128,7 @@
           width: 100%;
           padding: 0.5rem;
           margin: 1rem 0;
-
+          color: #000;
           background: $red;
           border-style: none;
           border-radius: 10px;
