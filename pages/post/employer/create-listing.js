@@ -221,7 +221,7 @@ function CreateEmployerListing({}) {
                 </select>
               </div>
               <div className={styles.create__inputs__input}>
-                <label>City **</label>
+                <label>City (City of work location)**</label>
                 <input
                   type='text'
                   placeholder='Lancaster'

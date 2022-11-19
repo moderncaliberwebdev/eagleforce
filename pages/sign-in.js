@@ -104,7 +104,12 @@ function SignIn() {
               <h1>Sign In</h1>
               <p>
                 Don&apos;t have an account yet?
-                <Link href='/sign-up' passHref>
+                <Link
+                  href={
+                    query.error ? `/sign-up?error=${query.error}` : '/sign-up'
+                  }
+                  passHref
+                >
                   <a className={styles.blue_text}>Sign Up!</a>
                 </Link>
               </p>

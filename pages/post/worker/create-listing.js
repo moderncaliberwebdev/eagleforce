@@ -310,7 +310,7 @@ function CreateListing({}) {
                 </select>
               </div>
               <div className={styles.create__inputs__input}>
-                <label>City **</label>
+                <label>City (City where you live)**</label>
                 <input
                   type='text'
                   placeholder='Lancaster'

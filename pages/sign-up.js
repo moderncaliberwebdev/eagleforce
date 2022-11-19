@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth'
+import { useRouter } from 'next/router'
 import validator from 'validator'
 import app from '../firebase/clientApp'
 import Head from 'next/head'
@@ -20,6 +21,8 @@ function SignUp() {
   // User Authentication
   //   const [user, loading, error] = useAuthState(firebase.auth())
   const auth = getAuth(app)
+
+  const { query } = useRouter()
 
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -83,7 +86,13 @@ function SignUp() {
           setUserType('')
           setChecked(false)
           setErrorMsg('')
-          window.location.href = '/'
+
+          if (query.error) {
+            if (query.error == 'post-no-user') {
+              window.location.href = '/post/worker'
+            } else if (query.error == 'post-no-user-employer')
+              window.location.href = '/post/employer'
+          } else window.location.href = '/'
         })
         .catch((error) => {
           const errorMessage = error.message.replace('Firebase: ', '')
@@ -146,7 +155,12 @@ function SignUp() {
               <h1>Sign Up</h1>
               <p>
                 Already have an account?
-                <Link href='/sign-in' passHref>
+                <Link
+                  href={
+                    query.error ? `/sign-in?error=${query.error}` : '/sign-in'
+                  }
+                  passHref
+                >
                   <a>Sign In!</a>
                 </Link>
               </p>
