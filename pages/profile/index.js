@@ -54,7 +54,7 @@ function Profile() {
         const data = await axios.put(
           `/api/user/fullName`,
           {
-            email: currentUser.email,
+            email: currentUser.email.toLowerCase(),
             name: newName,
           },
           config

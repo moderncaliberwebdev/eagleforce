@@ -71,7 +71,7 @@ function SignUp() {
           await axios.post('/api/create-user', {
             name: `${userType} - ${name}`,
             phone,
-            email,
+            email: email.toLowerCase(),
             userType,
             savedListings: [],
             previousListings: [],

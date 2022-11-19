@@ -17,7 +17,10 @@ const handler = nc()
       const employers = db.collection('employers')
       const users = db.collection('users')
 
-      const user = await users.findOne({ email: req.query.email })
+      const user = await users.findOne({
+        email: req.query.email,
+      })
+      console.log(req.query.email)
       const previousListings = user.previousListings
 
       await workers

@@ -247,7 +247,7 @@ function PreviewEmployerListing() {
                       {
                         listingInfo,
                         verified: false,
-                        user: auth.currentUser.email,
+                        user: auth.currentUser.email.toLowerCase(),
                         listingType: planType.type,
                         userType: planType.user,
                         date: new Date().getTime(),
