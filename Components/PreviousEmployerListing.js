@@ -58,7 +58,7 @@ function PreviousListing({ listing, currentUser, admin }) {
 
     //return listing to database
     const config = {
-      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+      headers: { Authorization: `Bearer ${authUser.accessToken}` },
     }
     const data = await axios.post(
       '/api/user/renew-listing',
@@ -123,7 +123,7 @@ function PreviousListing({ listing, currentUser, admin }) {
 
     //delete listing from database
     const config = {
-      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+      headers: { Authorization: `Bearer ${authUser.accessToken}` },
     }
     const data = await axios.put(
       '/api/user/admin-close-employer-listing',
@@ -174,7 +174,7 @@ function PreviousListing({ listing, currentUser, admin }) {
 
     //change trial to false in database
     const config = {
-      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+      headers: { Authorization: `Bearer ${authUser.accessToken}` },
     }
     const data = await axios.put(
       '/api/user/admin-upgrade-employer-listing',
