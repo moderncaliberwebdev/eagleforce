@@ -203,7 +203,7 @@ function PreviousListing({ listing, currentUser, admin }) {
       {
         email: listing.user,
         number: listing.workerNumber,
-        admin: listing.admin,
+        admin: admin,
       },
       config
     )
@@ -254,7 +254,7 @@ function PreviousListing({ listing, currentUser, admin }) {
       {
         email: listing.user,
         number: listing.workerNumber,
-        admin: listing.admin,
+        admin: admin,
       },
       config
     )
