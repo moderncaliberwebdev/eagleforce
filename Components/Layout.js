@@ -124,7 +124,7 @@ function Layout({ children }) {
               (currentUser ? (
                 <li>
                   <Link href='/profile' passHref>
-                    <a>Profile</a>
+                    <a>Your Profile</a>
                   </Link>
                   <div>
                     <a onClick={firebaseSignOut}>Sign Out</a>
@@ -149,7 +149,7 @@ function Layout({ children }) {
             <>
               <Link href='/profile'>
                 <figure>
-                  <a>Profile</a>
+                  <a>Your Profile</a>
                 </figure>
               </Link>
               <p>

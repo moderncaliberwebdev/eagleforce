@@ -3,18 +3,37 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Layout from '../Components/Layout'
 import styles from '../styles/Home.module.scss'
+import { useRouter } from 'next/router'
 
-import { getAuth } from 'firebase/auth'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import app from '../firebase/clientApp'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Popup from '../Components/Popup'
 
 export default function Home({}) {
   const auth = getAuth(app)
-  const user = auth.currentUser
+
+  const { query } = useRouter()
 
   const [search, setSearch] = useState('')
   const [searchType, setSearchType] = useState('')
   const [error, setError] = useState('')
+  const [openPopup, setOpenPopup] = useState(false)
+  const [currentUser, setCurrentUser] = useState()
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUser(user.displayName.split(' - ')[0])
+      }
+    })
+  }, [auth])
+
+  useEffect(() => {
+    if (query && query.signup && query.signup == 'new' && currentUser) {
+      setOpenPopup(true)
+    }
+  }, [query, currentUser])
 
   const submit = () => {
     if (searchType == 'Employer') {
@@ -22,6 +41,16 @@ export default function Home({}) {
     } else if (searchType == 'Worker') {
       window.location.href = `/workers?search=${search}&skillLevel=&employmentType=&workerType=&location=&prox=`
     } else setError('Please fill in all fields before submitting')
+  }
+
+  const cancelCongrats = () => {
+    setOpenPopup(false)
+  }
+
+  const nextCongrats = () => {
+    window.location.href = `/post/${
+      currentUser == 'Workers' ? 'employer' : 'worker'
+    }`
   }
 
   return (
@@ -49,6 +78,19 @@ export default function Home({}) {
       </Head>
       <Layout>
         <main className={styles.main}>
+          <Popup
+            question='Congragulations on creating an account!'
+            desc='What would you like to do next?'
+            answer={`Create ${
+              currentUser == 'Workers' ? ' an Employer' : ' a Worker'
+            } Listing`}
+            no='Go to Home'
+            cancel={cancelCongrats}
+            next={nextCongrats}
+            openPopup={openPopup}
+            color={currentUser == 'Workers' ? 'red' : 'blue'}
+            renew={true}
+          />
           <section className={styles.hero}>
             <div className={styles.hero__left}>
               <h2>

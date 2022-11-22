@@ -196,7 +196,7 @@ function PreviewEmployerListing() {
                 type='file'
                 name='file'
                 id='fileUpload'
-                accept='image/x-png,image/gif,image/jpeg'
+                accept='image/png,image/gif,image/jpeg'
                 onChange={uploadToClient}
               />
               Upload Logo

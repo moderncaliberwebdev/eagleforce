@@ -37,7 +37,7 @@ function Popup({
           {renew ? (
             <>
               <button
-                onClick={() => (!input ? next : next(inputText))}
+                onClick={() => (!input ? next() : next(inputText))}
                 style={{
                   backgroundColor: color == 'red' ? '#c9a596' : '#96a4c9',
                 }}

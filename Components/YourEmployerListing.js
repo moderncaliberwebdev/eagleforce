@@ -160,6 +160,7 @@ function YourEmployerListing({ listing, currentUser, index }) {
       if (i.size < 1600000) {
         setCreateObjectURL(URL.createObjectURL(i))
         setImageSuccess('Update Listing to see logo change')
+        setOpen(true)
         setImageError('')
       } else {
         setImageError('File must be less than 16MB')
@@ -241,7 +242,7 @@ function YourEmployerListing({ listing, currentUser, index }) {
               type='file'
               name='file'
               id='fileUpload'
-              accept='image/x-png,image/gif,image/jpeg'
+              accept='image/png,image/gif,image/jpeg'
               onChange={uploadToClient}
             />
             Upload Logo
