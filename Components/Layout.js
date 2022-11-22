@@ -135,6 +135,11 @@ function Layout({ children }) {
                   <Link href='/sign-in' passHref>
                     <a>Sign In</a>
                   </Link>
+                  <div>
+                    <Link href='/sign-up' passHref>
+                      <a>Sign Up</a>
+                    </Link>
+                  </div>
                 </li>
               ))}
           </ul>
@@ -152,11 +157,16 @@ function Layout({ children }) {
               </p>
             </>
           ) : (
-            <Link href='/sign-in'>
-              <figure>
-                <a>Sign In</a>
-              </figure>
-            </Link>
+            <>
+              <Link href='/sign-up'>
+                <a className={styles.layout__nav__signin__signup}>Sign Up</a>
+              </Link>
+              <Link href='/sign-in'>
+                <figure>
+                  <a>Sign In</a>
+                </figure>
+              </Link>
+            </>
           )}
         </div>
         <div

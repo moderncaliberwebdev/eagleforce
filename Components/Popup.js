@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../styles/Popup.module.scss'
 
 function Popup({
@@ -11,7 +11,10 @@ function Popup({
   openPopup,
   renew,
   color,
+  input,
 }) {
+  const [inputText, setInputText] = useState('')
+
   return (
     <div
       className={styles.popup}
@@ -20,6 +23,13 @@ function Popup({
       <div className={styles.popup__message}>
         <h2>{question}</h2>
         <p>{desc}</p>
+        {input && (
+          <input
+            type='text'
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+          />
+        )}
         <div
           className={styles.popup__message__buttons}
           style={{ flexDirection: renew ? 'row-reverse' : 'row' }}
@@ -27,7 +37,7 @@ function Popup({
           {renew ? (
             <>
               <button
-                onClick={next}
+                onClick={() => (!input ? next : next(inputText))}
                 style={{
                   backgroundColor: color == 'red' ? '#c9a596' : '#96a4c9',
                 }}

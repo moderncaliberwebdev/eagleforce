@@ -30,6 +30,14 @@
       margin: 2rem 0;
     }
 
+    input {
+      width: 100%;
+      margin: 0 0 2rem 0;
+      border: 1px #000 solid;
+      border-radius: 5px;
+      padding: 0.5rem 0 0.5rem 1rem;
+    }
+
     &__buttons {
       display: flex;
       flex-direction: row;

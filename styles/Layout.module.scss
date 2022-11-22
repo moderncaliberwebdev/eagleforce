@@ -74,7 +74,7 @@
 
         li {
           margin-right: 2rem;
-          font-size: $font-text;
+          font-size: $font-small;
           height: 5rem;
           vertical-align: middle;
           line-height: 5rem;
@@ -100,8 +100,8 @@
           }
 
           img {
-            height: 2.5rem;
-            width: 2.5rem;
+            height: 2rem;
+            width: 2rem;
             margin-left: 0.5rem;
 
             @include respond(tab) {
@@ -158,6 +158,14 @@
       @include respond(tab) {
         display: none;
       }
+      display: flex;
+      flex-direction: row;
+
+      &__signup {
+        margin: 1.5rem 1rem 0 0;
+        font-size: $font-small;
+        color: #000;
+      }
 
       &:hover {
         p {
@@ -171,13 +179,13 @@
 
         a {
           text-decoration: none;
-          color: #000;
-          font-size: $font-text;
-          line-height: 5rem;
-          padding: 1rem 2rem;
           background-color: #fff;
           border-radius: 10px;
           border: 2px solid #000;
+          color: #000;
+          font-size: $font-small;
+          line-height: 5rem;
+          padding: 1rem 2rem;
 
           &:after {
             content: '';

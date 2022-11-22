@@ -147,6 +147,12 @@
           display: none;
         }
 
+        &__reset {
+          text-decoration: underline;
+          cursor: pointer;
+          font-size: $font-small !important;
+        }
+
         &__check {
           font-size: $font-text;
           color: $red-dark;

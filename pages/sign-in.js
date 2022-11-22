@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  getAuth,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from 'firebase/auth'
 import app from '../firebase/clientApp'
 import validator from 'validator'
 import Head from 'next/head'
 import Layout from '../Components/Layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import Popup from '../Components/Popup'
 
 import styles from '../styles/SignUp.module.scss'
+
+const auth = getAuth()
 
 function SignIn() {
   const { query } = useRouter()
@@ -20,6 +27,7 @@ function SignIn() {
   const [password, setPassword] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
+  const [openPopup, setOpenPopup] = useState(false)
 
   useEffect(() => {
     if (
@@ -30,6 +38,26 @@ function SignIn() {
       setErrorMsg('You must be signed in to create a listing')
     }
   }, [query])
+
+  const cancelReset = () => {
+    setOpenPopup(false)
+  }
+
+  const resetPassword = (inputText) => {
+    sendPasswordResetEmail(auth, inputText)
+      .then(() => {
+        setOpenPopup(false)
+        setSuccessMsg('Password reset email sent. Check your spam box as well')
+        setErrorMsg('')
+      })
+      .catch((error) => {
+        const errorMessage = error.message.replace('Firebase: ', '')
+        setErrorMsg("User not found. Can't reset password")
+        setSuccessMsg('')
+        setOpenPopup(false)
+        // ..
+      })
+  }
 
   const signUp = () => {
     //front end validation
@@ -91,6 +119,18 @@ function SignIn() {
       </Head>
       <Layout>
         <main>
+          <Popup
+            question='Forgot Your Password?'
+            desc='Enter your email and click Reset Password. You will be sent a password reset email. Check your spam box as well.'
+            input={true}
+            answer='Reset Password'
+            no='Cancel'
+            cancel={cancelReset}
+            next={resetPassword}
+            openPopup={openPopup}
+            color='blue'
+            renew={true}
+          />
           <section className={styles.signup}>
             <div className={styles.signup__graphic}>
               <Image
@@ -134,6 +174,12 @@ function SignIn() {
                   className={styles.blue_border_thin}
                 />
               </div>
+              <p
+                className={styles.signup__form__reset}
+                onClick={() => setOpenPopup(true)}
+              >
+                Reset Password
+              </p>
 
               <button
                 className={`${styles.signup__form__submit} ${styles.blue_background}`}
