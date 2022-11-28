@@ -92,7 +92,7 @@ function SignUp() {
               window.location.href = '/post/worker'
             } else if (query.error == 'post-no-user-employer')
               window.location.href = '/post/employer'
-          } else window.location.href = '/'
+          } else window.location.href = '/?signup=new'
         })
         .catch((error) => {
           const errorMessage = error.message.replace('Firebase: ', '')
