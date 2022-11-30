@@ -98,7 +98,7 @@ function PreviewEmployerListing() {
   }, [])
 
   useEffect(() => {
-    discount == process.env.NEXT_PUBLIC_DISCOUNT
+    discount.replace(/\s+/g, '') == process.env.NEXT_PUBLIC_DISCOUNT
       ? setUseDiscount(true)
       : setUseDiscount(false)
   }, [discount])
