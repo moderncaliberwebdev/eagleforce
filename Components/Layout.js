@@ -236,7 +236,7 @@ function Layout({ children }) {
             <ul>
               <ul>
                 <li>
-                  <Link href='/about' passHref>
+                  <Link href='/about-us' passHref>
                     <a>About</a>
                   </Link>
                 </li>

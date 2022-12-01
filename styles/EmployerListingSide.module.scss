@@ -78,10 +78,15 @@
         &__location {
           font-size: $font-small;
           color: #6a6a6a;
+          margin-bottom: 1rem;
         }
         a {
-          color: $red;
+          color: #000;
+          padding: 1rem;
+          background: $red;
+          border-radius: 5px;
           font-size: $font-small;
+          text-decoration: none;
         }
       }
 

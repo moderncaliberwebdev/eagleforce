@@ -177,7 +177,10 @@ function EmployerListingSide({
                   {city}, PA
                 </p>
                 {website.length > 0 && (
-                  <a href={`https://${website.replace(/(^\w+:|^)\/\//, '')}`}>
+                  <a
+                    href={`https://${website.replace(/(^\w+:|^)\/\//, '')}`}
+                    target='_blank'
+                  >
                     Visit our Website
                   </a>
                 )}

@@ -67,6 +67,10 @@ export default function Home({}) {
           <p className={styles.contact__p}>
             Any questions or remarks? Just write us a message!
           </p>
+          <p className={styles.contact__p}>
+            Or give us a call at
+            <a href='tel:717-826-3754'>717-826-3754</a>
+          </p>
           <form className={styles.contact__form}>
             <div className={styles.contact__form__input_short}>
               <p>First Name</p>

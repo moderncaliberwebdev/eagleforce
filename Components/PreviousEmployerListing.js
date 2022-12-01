@@ -8,6 +8,7 @@ import Popup from './Popup'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import app from '../firebase/clientApp'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const auth = getAuth()
 
@@ -290,6 +291,9 @@ function PreviousListing({ listing, currentUser, admin }) {
                 <>
                   <span>{listing.phone}</span>
                   <span>{listing.user}</span>
+                  <Link passHref href={listing.listingInfo[2]}>
+                    <a target='_blank'>{listing.listingInfo[2]}</a>
+                  </Link>
                 </>
               )}
             </p>
