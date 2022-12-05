@@ -592,7 +592,7 @@ export default function Employers({}) {
                   )}
                   {loading ? (
                     <p className={styles.workers__listings__loading}>
-                      Loading Workers...
+                      Loading Employers...
                     </p>
                   ) : displayListings &&
                     displayListings.featuredEmployers &&
