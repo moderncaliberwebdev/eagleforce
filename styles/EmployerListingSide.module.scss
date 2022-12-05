@@ -2,7 +2,7 @@
 @import 'variables';
 
 .side {
-  width: 25rem;
+  width: 35rem;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -28,7 +28,7 @@
   }
 
   &__title {
-    width: 21rem;
+    width: 31rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -188,7 +188,7 @@
       font-weight: 300;
       border-radius: 10px;
       border-style: none;
-      width: 20rem;
+      width: 100%;
       margin-top: 1rem;
       cursor: pointer;
 

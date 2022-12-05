@@ -21,7 +21,6 @@
 
   @include respond(tab-land) {
     width: 100%;
-    height: auto;
   }
 
   &__tags {
@@ -82,6 +81,7 @@
       font-weight: 500;
       margin-left: 1rem;
       width: 40rem;
+      word-break: break-word;
 
       @include respond(tab-land) {
         width: auto;
@@ -105,6 +105,6 @@
 
   &__description {
     font-size: $font-small;
-    overflow: scroll;
+    overflow: hidden;
   }
 }

@@ -200,11 +200,11 @@
     }
 
     &__display {
-      width: 74rem;
+      width: auto;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: space-evenly;
       overflow: scroll;
       padding-bottom: 3rem;
 
