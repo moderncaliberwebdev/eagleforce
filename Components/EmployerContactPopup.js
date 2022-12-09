@@ -40,7 +40,7 @@ function Popup({ cancel, openPopup, email }) {
         </p>
         <div className={styles.popup__message__form}>
           <div className={styles.popup__message__form__input}>
-            <label>Email</label>
+            <label>Your Email</label>
             <input
               type='text'
               placeholder='johndoe@gmail.com'
