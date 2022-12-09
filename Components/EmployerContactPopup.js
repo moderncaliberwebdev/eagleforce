@@ -17,8 +17,6 @@ function Popup({ cancel, openPopup, email }) {
     console.log(data)
     if (data.data.formResponse && data.data.formResponse.length > 0) {
       setError(data.data.formResponse)
-      setYourEmail('')
-      setMessage('')
       setSuccess('')
     } else {
       setYourEmail('')

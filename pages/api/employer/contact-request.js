@@ -24,7 +24,7 @@ const mailTo = (email, yourEmail, message, callback) => {
             `
     const mailOptions = {
       from: yourEmail,
-      to: email,
+      to: 'cmartin@moderncaliber.com',
       subject: 'Eagle Force Employer Contact Request',
       html: output,
     }
