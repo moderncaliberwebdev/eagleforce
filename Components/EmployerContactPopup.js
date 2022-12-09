@@ -14,14 +14,17 @@ function Popup({ cancel, openPopup, email }) {
       yourEmail,
       message,
     })
-    data.data.formResponse && setError(data.data.formResponse)
-    if (data.data.yourEmail) {
+    console.log(data)
+    if (data.data.formResponse && data.data.formResponse.length > 0) {
+      setError(data.data.formResponse)
+      setYourEmail('')
+      setMessage('')
+      setSuccess('')
+    } else {
       setYourEmail('')
       setMessage('')
       setError('')
-      setSuccess(
-        'Message Sent. We will work on getting you in touch with this worker as soon as possible'
-      )
+      setSuccess('Message Sent to Employer')
     }
   }
 

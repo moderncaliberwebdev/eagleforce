@@ -19,13 +19,13 @@ const mailTo = (email, yourEmail, message, callback) => {
     return callback('Provide a valid email', undefined)
   } else {
     const output = `
-                <h3>Email of Worker: </h3> ${yourEmail}
+                <h3>My Email: </h3> ${yourEmail}
                 <h3>Message: </h3> ${message}
             `
     const mailOptions = {
       from: yourEmail,
       to: email,
-      subject: 'Eagle Force Worker Contact Request',
+      subject: 'Eagle Force Employer Contact Request',
       html: output,
     }
     transporter.sendMail(mailOptions, (err, data) => {
