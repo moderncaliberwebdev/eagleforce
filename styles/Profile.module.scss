@@ -100,6 +100,15 @@
           font-size: $font-text;
         }
       }
+      &__success {
+        font-size: $font-text;
+        color: $blue;
+        margin-top: 1rem;
+
+        @include respond(tab-small) {
+          font-size: $font-text;
+        }
+      }
     }
   }
 }

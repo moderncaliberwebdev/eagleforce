@@ -2,6 +2,7 @@ import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import Layout from '../../Components/Layout'
 import styles from '../../styles/Profile.module.scss'
+import { useRouter } from 'next/router'
 
 import {
   getAuth,
@@ -19,12 +20,15 @@ import ProfileBreadcrumbs from '../../Components/ProfileBreadcrumbs'
 const auth = getAuth()
 
 function Profile() {
+  const { query } = useRouter()
+
   const [currentUser, setCurrentUser] = useState()
   const [email, setEmail] = useState('')
   const [fullName, setFullName] = useState('')
   const [password, setPassword] = useState('')
   const [requirePassword, setRequirePassword] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
   const [passwordResetClicked, setPasswordResetClicked] = useState(false)
 
   useEffect(() => {
@@ -40,6 +44,12 @@ function Profile() {
       }
     })
   }, [auth])
+
+  useEffect(() => {
+    if (query && query.state && query.state == 'new-email') {
+      setSuccessMsg('Email Has Been Changed')
+    }
+  }, [query])
 
   const updateFullName = () => {
     const newName = `${currentUser.name.split(' - ')[0]} - ${fullName}`
@@ -78,7 +88,7 @@ function Profile() {
       },
       config
     )
-    data && window.location.reload()
+    if (data) window.location.href = '/profile?state=new-email'
   }
 
   const updateEmailFunction = () => {
@@ -186,6 +196,9 @@ function Profile() {
                   Update Email
                 </button>
               </div>
+            )}
+            {successMsg && (
+              <p className={styles.settings__success}>{successMsg}</p>
             )}
             {errorMsg && <p className={styles.settings__error}>{errorMsg}</p>}
             <div className={styles.settings__password}>
