@@ -18,7 +18,7 @@ const mailTo = (callback) => {
                 Congratulations, someone posted a new listing! Go check out their listing here eagleforceemploymentservices.com/profile
             `
   const mailOptions = {
-    from: 'no-reply@eagleforceemploymentservices.com',
+    from: 'noreply@eagleforceemploymentservices.com',
     to: 'harold@eagleforceemploymentservices.com',
     subject: 'New Eagle Force Listing',
     html: output,

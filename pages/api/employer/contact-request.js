@@ -19,11 +19,11 @@ const mailTo = (email, yourEmail, message, callback) => {
     return callback('Provide a valid email', undefined)
   } else {
     const output = `
-                <h3>My Email: </h3> ${yourEmail}
+                <h3>Sender's Email: </h3> ${yourEmail}
                 <h3>Message: </h3> ${message}
             `
     const mailOptions = {
-      from: yourEmail,
+      from: 'contact@eagleforceemploymentservices.com',
       to: email,
       subject: 'Eagle Force Employer Contact Request',
       html: output,

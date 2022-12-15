@@ -18,7 +18,7 @@ const mailTo = (number, callback) => {
     Worker ${number} just updated their listing. Check it out and approve it at eagleforcemploymentservices.com/profile/workers
             `
   const mailOptions = {
-    from: 'no-reply@eagleforceemploymentservices.com',
+    from: 'noreply@eagleforceemploymentservices.com',
     to: 'harold@eagleforceemploymentservices.com',
     subject: 'Updated User Listings',
     html: output,
