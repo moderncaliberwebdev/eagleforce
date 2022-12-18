@@ -94,9 +94,9 @@ function VerifyWorkerListing() {
           <h1>Verify Worker Listing</h1>
           <WorkerBreadcrumbs />
           <p>
-            Your listing has been posted to the board. The next step is
-            verification. Contact the site administrator using the form below to
-            get your listing verified
+            Your listing is being approved. It will be posted to the board upon
+            approval. The next step is verification. Contact the site
+            administrator using the form below to get your listing verified
           </p>
           <div className={styles.verify__form}>
             <div className={styles.verify__form__input}>
