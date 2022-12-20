@@ -25,6 +25,7 @@ const mailTo = (email, yourEmail, message, callback) => {
     const mailOptions = {
       from: 'contact@eagleforceemploymentservices.com',
       to: email,
+      // to: 'cmartin@moderncaliber.com',
       subject: 'Eagle Force Employer Contact Request',
       html: output,
       replyTo: yourEmail,

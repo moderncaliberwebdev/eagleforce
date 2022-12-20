@@ -11,7 +11,7 @@ function Popup({ cancel, openPopup, email }) {
   const sendContactRequest = async () => {
     const data = await axios.post('/api/employer/contact-request', {
       email,
-      yourEmail,
+      yourEmail: yourEmail.replace(/\s+/g, ''),
       message,
     })
     console.log(data)

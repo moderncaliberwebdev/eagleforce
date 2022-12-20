@@ -35,7 +35,7 @@ const mailTo = (
     const mailOptions = {
       from: yourEmail,
       to: 'contact@eagleforceemploymentservices.com',
-      //   to: 'cmartin@moderncaliber.com',
+      // to: 'cmartin@moderncaliber.com',
       subject: 'Eagle Force Contact Request',
       html: output,
     }
