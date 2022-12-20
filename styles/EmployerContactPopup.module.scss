@@ -88,7 +88,7 @@
     &__buttons {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: space-evenly;
       margin: 0 auto;
       width: 30rem;
 
@@ -98,9 +98,6 @@
         padding: 1rem 4rem;
         cursor: pointer;
         color: #000;
-
-        &:first-of-type {
-        }
 
         &:last-of-type {
           background: $red;
