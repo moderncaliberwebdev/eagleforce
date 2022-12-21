@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import styles from '../styles/EmployerContactPopup.module.scss'
+import emailjs from '@emailjs/browser'
+import validator from 'validator'
 
 function Popup({ cancel, openPopup, email }) {
   const [yourEmail, setYourEmail] = useState('')
@@ -8,21 +10,57 @@ function Popup({ cancel, openPopup, email }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
+  // const sendContactRequest = async () => {
+  //   const data = await axios.post('/api/employer/contact-request', {
+  //     email,
+  //     yourEmail: yourEmail.replace(/\s+/g, ''),
+  //     message,
+  //   })
+  //   console.log(data)
+  //   if (data.data.formResponse && data.data.formResponse.length > 0) {
+  //     setError(data.data.formResponse)
+  //     setSuccess('')
+  //   } else {
+  //     setYourEmail('')
+  //     setMessage('')
+  //     setError('')
+  //     setSuccess(true)
+  //   }
+  // }
+
   const sendContactRequest = async () => {
-    const data = await axios.post('/api/employer/contact-request', {
-      email,
-      yourEmail: yourEmail.replace(/\s+/g, ''),
-      message,
-    })
-    console.log(data)
-    if (data.data.formResponse && data.data.formResponse.length > 0) {
-      setError(data.data.formResponse)
+    if (yourEmail.length == 0 || !validator.isEmail(yourEmail)) {
+      setError('Provide a valid email')
+      setSuccess('')
+    } else if (message.length == 0) {
+      setError('Provide a message')
       setSuccess('')
     } else {
-      setYourEmail('')
-      setMessage('')
-      setError('')
-      setSuccess(true)
+      emailjs
+        .send(
+          'service_gj3bk8b',
+          'template_iwjam53',
+          {
+            from_email: yourEmail.replace(/\s+/g, ''),
+            message: message,
+            to_email: email,
+          },
+          'vz9G-fr8jrIP_6acx'
+        )
+        .then(
+          (response) => {
+            console.log('SUCCESS!', response.status, response.text)
+            setYourEmail('')
+            setMessage('')
+            setError('')
+            setSuccess(true)
+          },
+          (err) => {
+            console.log('FAILED...', err)
+            setError('Server Error. Try again later')
+            setSuccess('')
+          }
+        )
     }
   }
 
