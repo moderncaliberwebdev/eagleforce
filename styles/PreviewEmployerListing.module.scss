@@ -93,7 +93,7 @@
       flex-direction: row;
       justify-content: flex-end;
       align-items: center;
-      margin: 2rem 0 0 2rem;
+      margin: 2rem 0 3rem 2rem;
 
       p {
         font-size: $font-small;
@@ -124,7 +124,7 @@
       margin: 2rem 0;
       text-align: left;
       font-size: $font-text;
-      padding: 2rem;
+      padding: 1rem 2rem;
       border-radius: 10px;
       border-left: 10px solid $red-dark;
     }

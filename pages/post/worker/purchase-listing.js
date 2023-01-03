@@ -75,6 +75,7 @@ function PreviewWorkerListing({ isConnected }) {
         setWorkerNumber(number)
 
         const workerPlanType = JSON.parse(localStorage.getItem('planType'))
+
         setPlanType(workerPlanType)
 
         let allFilled = true
@@ -131,68 +132,98 @@ function PreviewWorkerListing({ isConnected }) {
       </Head>
       <Layout>
         <main className={styles.preview}>
-          <h1>Preview Worker Listing</h1>
+          <h1>Purchase Worker Listing</h1>
           <WorkerBreadcrumbs />
 
           <p className={styles.preview__notice}>
-            Below is a preview of your employer listing. Switch back to Edit
-            Listing if you need to make changes. Click the Continue to Purchase
-            button to go to checkout and submit your listing
+            Click Pay with PayPal to purchase your listing and get it submitted
           </p>
-          <div className={styles.preview__listing}>
-            <div>
-              {planType.type == 'Standard' ? (
-                <WorkerListingBlock
-                  jobs={listingInfo && listingInfo[0]}
-                  number={workerNumber && workerNumber}
-                  type={listingInfo && listingInfo[2]}
-                  city={listingInfo && listingInfo[6]}
-                  employmentType={listingInfo && listingInfo[5]}
-                  skill={listingInfo && listingInfo[1]}
-                  summary={listingInfo && listingInfo[9]}
-                />
-              ) : (
-                planType.type == 'Featured' && (
-                  <FeaturedWorkerListingBlock
-                    jobs={listingInfo && listingInfo[0]}
-                    number={workerNumber && workerNumber}
-                    type={listingInfo && listingInfo[2]}
-                    city={listingInfo && listingInfo[6]}
-                    employmentType={listingInfo && listingInfo[5]}
-                    skill={listingInfo && listingInfo[1]}
-                    summary={listingInfo && listingInfo[9]}
-                  />
-                )
-              )}
-            </div>
-            <div>
-              <WorkerListingSide
-                jobs={listingInfo && listingInfo[0]}
-                number={workerNumber && workerNumber}
-                type={listingInfo && listingInfo[2]}
-                city={listingInfo && listingInfo[6]}
-                employmentType={listingInfo && listingInfo[5]}
-                skill={listingInfo && listingInfo[1]}
-                summary={listingInfo && listingInfo[9]}
-                rateStart={listingInfo && listingInfo[3]}
-                rateEnd={listingInfo && listingInfo[4]}
-                experience={listingInfo && listingInfo[10]}
-                highlights={listingInfo && listingInfo[11]}
-                preview={true}
-              />
-            </div>
-          </div>
-          {/* <p className={styles.preview__paypal}>
+
+          <p className={styles.preview__paypal}>
             We use PayPal Checkout for purchases, but you do not need a PayPal
             account to use this service
-          </p> */}
+          </p>
           <div className={styles.preview__buttons}>
-            <Link href='/post/worker/create-listing' passHref>
-              <a>Edit Listing</a>
+            <Link href='/post/worker/preview-listing' passHref>
+              <a>Go Back to Preview</a>
             </Link>
-            <Link href='/post/worker/purchase-listing' passHref>
-              <a>Continue to Purchase</a>
-            </Link>
+
+            {planType.type && (
+              <PayPalButton
+                key={useDiscount}
+                options={{
+                  vault: true,
+                  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT,
+                  intent: 'subscription',
+                }}
+                createSubscription={(data, actions) => {
+                  return actions.subscription.create({
+                    plan_id: useDiscount
+                      ? planType.type == 'Featured'
+                        ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN_FREE
+                        : planType.type == 'Standard' &&
+                          process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN_FREE
+                      : planType.type == 'Featured'
+                      ? process.env.NEXT_PUBLIC_PAYPAL_FEATURED_PLAN
+                      : planType.type == 'Standard' &&
+                        process.env.NEXT_PUBLIC_PAYPAL_STANDARD_PLAN,
+                  })
+                }}
+                style={{
+                  layout: 'horizontal',
+                  color: 'blue',
+                  label: 'pay',
+                }}
+                onApprove={(data, actions) => {
+                  // Capture the funds from the transaction
+                  return actions.subscription
+                    .get()
+                    .then(async function (details) {
+                      const getGeocode = await getCoords()
+
+                      const config = {
+                        headers: {
+                          Authorization: `Bearer ${auth.currentUser.accessToken}`,
+                        },
+                      }
+                      // OPTIONAL: Call your server to save the subscription
+                      const post = await axios.post(
+                        '/api/worker/create-listing',
+                        {
+                          listingInfo,
+                          verified: false,
+                          user: auth.currentUser.email.toLowerCase(),
+                          listingType: planType.type,
+                          userType: planType.user,
+                          date: new Date().getTime(),
+                          workerNumber,
+                          orderID: data.orderID,
+                          orderDetails: details,
+                          geocode: getGeocode,
+                          approved: false,
+                          trial: useDiscount,
+                          phone,
+                        },
+                        config
+                      )
+
+                      if (post) {
+                        await axios.post('/api/new-user-email')
+                        window.location.href = '/post/worker/verify-listing'
+                        localStorage.clear()
+                      }
+                    })
+                }}
+              />
+            )}
+          </div>
+          <div className={styles.preview__discount}>
+            <p>Discount Code</p>
+            <input
+              type='text'
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+            />
           </div>
         </main>
       </Layout>

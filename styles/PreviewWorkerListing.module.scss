@@ -32,6 +32,10 @@
       align-items: center;
       margin-top: 2rem;
 
+      @include respond(tab) {
+        justify-content: center;
+      }
+
       @include respond(tab-small) {
         flex-direction: column;
         width: 100%;
@@ -56,12 +60,14 @@
           margin: 0;
         }
 
-        // &:first-of-type {
-        // }
+        &:last-of-type {
+          background: $blue;
+          width: auto;
+        }
 
-        // &:last-of-type {
-        //   background: $blue;
-        // }
+        &:first-of-type {
+          background: #fff;
+        }
       }
     }
 
@@ -71,6 +77,10 @@
       justify-content: flex-end;
       align-items: center;
       margin: 2rem 0 0 2rem;
+
+      @include respond(tab) {
+        justify-content: center;
+      }
 
       p {
         font-size: $font-small;

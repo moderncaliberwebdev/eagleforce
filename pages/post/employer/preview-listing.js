@@ -182,6 +182,11 @@ function PreviewEmployerListing() {
         <main className={styles.preview}>
           <h1>Preview Employer Listing</h1>
           <EmployerBreadcrumbs />
+          <p className={styles.preview__notice}>
+            Below is a preview of your employer listing. Switch back to Edit
+            Listing if you need to make changes. Click the Continue to Purchase
+            button to go to checkout and submit your listing
+          </p>
           <p className={styles.preview__paypal}>
             We use PayPal Checkout for purchases, but you do not need a PayPal
             account to use this service
@@ -284,10 +289,10 @@ function PreviewEmployerListing() {
               onChange={(e) => setDiscount(e.target.value)}
             />
           </div>
-          <p className={styles.preview__notice}>
+          {/* <p className={styles.preview__notice}>
             This is a preview of your employer listing. Switch back to Edit
             Listing if you need to make changes
-          </p>
+          </p> */}
           <div className={styles.preview__listing}>
             <div>
               {planType.type == 'Standard' ? (

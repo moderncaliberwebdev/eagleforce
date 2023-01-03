@@ -423,7 +423,7 @@ function CreateListing({}) {
                 className={styles.create__inputs__preview}
                 onClick={sendForm}
               >
-                Preview Listing
+                Preview Listing & Continue
               </button>
               <p className={styles.create__inputs__error}>
                 {errorMsg && errorMsg.length > 0 && errorMsg}
