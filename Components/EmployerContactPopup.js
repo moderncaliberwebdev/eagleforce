@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { useState } from 'react'
 import styles from '../styles/EmployerContactPopup.module.scss'
 import emailjs from '@emailjs/browser'

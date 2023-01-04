@@ -2,11 +2,13 @@ import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import Layout from '../../../Components/Layout'
 import WorkerBreadcrumbs from '../../../Components/WorkerBreadcrumbs'
+
 import styles from '../../../styles/VerifyWorkerListing.module.scss'
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import app from '../../../firebase/clientApp'
 import axios from 'axios'
+import WorkerVerifyPopup from '../../../Components/WorkerVerifyPopup'
 
 const auth = getAuth()
 
@@ -66,6 +68,11 @@ function VerifyWorkerListing() {
     }
   }
 
+  const cancel = () => {
+    setSuccess('')
+    setError('')
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -91,12 +98,14 @@ function VerifyWorkerListing() {
       </Head>
       <Layout>
         <main className={styles.verify}>
+          <WorkerVerifyPopup cancel={cancel} success={success} error={error} />
           <h1>Verify Worker Listing</h1>
           <WorkerBreadcrumbs />
           <p>
             Your listing is being approved. It will be posted to the board upon
-            approval. The next step is verification. Contact the site
-            administrator using the form below to get your listing verified
+            approval from the site admin. This may take a few days. The next
+            step is verification. Contact the site administrator using the form
+            below to get your listing verified
           </p>
           <div className={styles.verify__form}>
             <div className={styles.verify__form__input}>
@@ -127,8 +136,6 @@ function VerifyWorkerListing() {
             <button className={styles.verify__form__submit} onClick={verify}>
               Send Verification Message
             </button>
-            <p className={styles.verify__form__error}>{error && error}</p>
-            <p className={styles.verify__form__success}>{success && success}</p>
           </div>
         </main>
       </Layout>
