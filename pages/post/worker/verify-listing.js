@@ -40,10 +40,11 @@ function VerifyWorkerListing() {
   }, [auth])
 
   const verify = async () => {
-    let isVerified = false
+    let isVerified = true
+
     if (listings.length > 0) {
       listings.forEach((listing) => {
-        if (listing.verified) isVerified = true
+        if (!listing.verified) isVerified = false
       })
     } else setError('You do not have any listings')
 
