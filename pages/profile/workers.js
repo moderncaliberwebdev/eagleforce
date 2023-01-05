@@ -25,9 +25,7 @@ function ProfileWorkers() {
         const config = {
           headers: { Authorization: `Bearer ${user.accessToken}` },
         }
-        const data = await axios.get(
-          `${process.env.NEXT_PUBLIC_URL}/api/worker/get-workers`
-        )
+        const data = await axios.get(`/api/worker/get-workers`)
 
         data && setLoading(false)
         setListings(JSON.parse(JSON.stringify(data.data)))

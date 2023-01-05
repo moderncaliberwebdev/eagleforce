@@ -55,9 +55,7 @@ export default function Employers({}) {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const data = await axios.get(
-          `${process.env.NEXT_PUBLIC_URL}/api/employer/get-employers`
-        )
+        const data = await axios.get(`/api/employer/get-employers`)
         data && setLoading(false)
         setListings(JSON.parse(JSON.stringify(data.data)))
       } catch (e) {

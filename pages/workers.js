@@ -55,9 +55,7 @@ export default function Workers({}) {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const data = await axios.get(
-          `${process.env.NEXT_PUBLIC_URL}/api/worker/get-workers`
-        )
+        const data = await axios.get(`/api/worker/get-workers`)
         data && setLoading(false)
         setListings(JSON.parse(JSON.stringify(data.data)))
       } catch (e) {
