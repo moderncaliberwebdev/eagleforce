@@ -296,9 +296,9 @@ function Layout({ children }) {
           <div className={styles.layout__footer__bottom__right}>
             <p>
               Website by
-              <Link href='https://moderncaliber.com/' passHref>
-                <a>Modern Caliber Web Development</a>
-              </Link>
+              <a target='_blank' href='https://moderncaliber.com/' passHref>
+                Modern Caliber Web Development
+              </a>
             </p>
             <p>
               Icons from
