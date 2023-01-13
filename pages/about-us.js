@@ -39,7 +39,7 @@ function About() {
           <section>
             <div className={styles.left}>
               <Image
-                src='/images/about/about-graphic.png'
+                src='/images/about/about-graphic-2.png'
                 width={549}
                 height={596}
                 objectFit='cover'
