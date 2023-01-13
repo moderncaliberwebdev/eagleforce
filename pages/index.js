@@ -209,7 +209,7 @@ export default function Home({}) {
                   <img src='/images/home/triangle-blue.png' />
                 </div>
                 <div className={styles.bestfit__workers__desc__graphic}>
-                  <img src='/images/home/mobile-blue.png' />
+                  <img src='/images/home/mobile-blue-2.png' />
                 </div>
                 <h3>
                   Find qualified workers that meet your standards and exceed
@@ -226,7 +226,7 @@ export default function Home({}) {
               </div>
               <div className={styles.bestfit__workers__graphic}>
                 <Image
-                  src='/images/home/blue-graphic-2.png'
+                  src='/images/home/blue-graphic-3.png'
                   width={1000}
                   height={800}
                   objectFit='fixed'
@@ -236,7 +236,7 @@ export default function Home({}) {
             <div className={styles.bestfit__workers}>
               <div className={styles.bestfit__workers__graphic_red}>
                 <Image
-                  src='/images/home/red-graphic-2.png'
+                  src='/images/home/red-graphic-3.png'
                   width={1000}
                   height={800}
                   objectFit='fixed'
@@ -247,7 +247,7 @@ export default function Home({}) {
                   <img src='/images/home/triangle-red.png' />
                 </div>
                 <div className={styles.bestfit__workers__desc_red__graphic}>
-                  <img src='/images/home/mobile-red.png' />
+                  <img src='/images/home/mobile-red-2.png' />
                 </div>
                 <div className={styles.bestfit__workers__desc_red__container}>
                   <h3>

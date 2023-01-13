@@ -145,7 +145,7 @@ function SignUp() {
           <section className={styles.signup}>
             <div className={styles.signup__graphic}>
               <Image
-                src='/images/signin/signup-graphic.png'
+                src='/images/signin/signup-graphic-2.png'
                 width={549}
                 height={790}
                 objectFit='cover'
