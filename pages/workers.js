@@ -382,7 +382,7 @@ export default function Workers({}) {
                     <div className={styles.workers__filter__scroll__location}>
                       <h3>Location</h3>
                       <p>
-                        Use the city and state to make sure you're getting the
+                        Use the city and state to make sure you are getting the
                         correct city, ex: Lancaster, PA
                       </p>
                       <input
