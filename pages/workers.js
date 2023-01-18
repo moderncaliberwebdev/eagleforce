@@ -17,7 +17,7 @@ export default function Workers({}) {
   const { query } = useRouter()
   const router = useRouter()
 
-  const [error, setError] = useState({})
+  const [error, setError] = useState()
   const [selectedWorker, setSelectedWorker] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -381,6 +381,10 @@ export default function Workers({}) {
                   <div className={styles.workers__filter__scroll}>
                     <div className={styles.workers__filter__scroll__location}>
                       <h3>Location</h3>
+                      <p>
+                        Use the city and state to make sure you're getting the
+                        correct city, ex: Lancaster, PA
+                      </p>
                       <input
                         type='text'
                         placeholder='Lancaster, PA'
@@ -428,6 +432,7 @@ export default function Workers({}) {
                       >
                         Apply
                       </button>
+                      <p>{error}</p>
                     </div>
                     <div className={styles.workers__filter__scroll__checks}>
                       <h3>Skill Level</h3>

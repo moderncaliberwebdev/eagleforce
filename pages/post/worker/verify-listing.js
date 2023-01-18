@@ -104,9 +104,9 @@ function VerifyWorkerListing() {
           <WorkerBreadcrumbs />
           <p>
             Your listing is being approved. It will be posted to the board upon
-            approval from the site admin. This may take a few days. The next
-            step is verification. Contact the site administrator using the form
-            below to get your listing verified
+            approval from the site admin. Please be patient. The next step is
+            verification. Contact the site administrator using the form below to
+            get your listing verified
           </p>
           <div className={styles.verify__form}>
             <div className={styles.verify__form__input}>

@@ -135,7 +135,7 @@ function PreviewWorkerListing({ isConnected }) {
           <WorkerBreadcrumbs />
 
           <p className={styles.preview__notice}>
-            Below is a preview of your employer listing. Switch back to Edit
+            Below is a preview of your worker listing. Switch back to Edit
             Listing if you need to make changes. Click the Continue to Purchase
             button to go to checkout and submit your listing
           </p>

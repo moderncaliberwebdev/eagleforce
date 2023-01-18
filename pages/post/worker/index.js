@@ -38,10 +38,9 @@ function PostWorker() {
             and we will notify you and give you their contact information. If
             you wish we will contact them for you up to 3 times to get the
             information that you request, such as job position and or more about
-            pay etc. We will not give the employer your contact information such
-            as name, phone number, etc. That will be up to you to do yourself at
-            anytime. Your privacy is our first priority and is important to us
-            as well.
+            pay etc. We will avoid giving your contact information such as name,
+            phone number, etc. That will be up to you to do yourself at anytime.
+            Your privacy is our first priority and is important to us as well.
           </p>
           <p className={styles.description}>
             <span>Choose a plan tailored to your needs</span>

@@ -69,8 +69,12 @@
         color: #000;
         text-decoration: none;
         border-radius: 10px;
-        width: 25rem;
+        width: 35rem;
         background: #fff;
+
+        &:nth-of-type(2) {
+          background: $red;
+        }
 
         @include respond(tab-small) {
           width: 100%;
@@ -81,7 +85,7 @@
     &__imageerror {
       color: red;
       font-size: $font-small;
-      margin-left: 15rem;
+      text-align: center;
 
       @include respond(tab-small) {
         font-size: $font-text;

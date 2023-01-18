@@ -250,6 +250,7 @@ function CreateListing({}) {
                     Pick Skill Type
                   </option>
                   <option value='Beginner'>Beginner</option>
+                  <option value='Experienced'>Experienced</option>
                   <option value='Advanced'>Advanced</option>
                   <option value='Expert Foreman Grade'>
                     Expert Foreman Grade

@@ -93,6 +93,14 @@
           border-radius: 10px;
           cursor: pointer;
         }
+        p {
+          font-size: $font-small;
+          color: red;
+
+          &:first-of-type {
+            color: #000;
+          }
+        }
       }
 
       &__checks {
