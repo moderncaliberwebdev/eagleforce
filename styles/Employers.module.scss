@@ -92,6 +92,11 @@
           cursor: pointer;
           color: #000;
         }
+
+        p {
+          font-size: $font-small;
+          color: red;
+        }
       }
       &__hourly {
         margin: 2rem 0 0 0;
@@ -133,6 +138,10 @@
           border-style: none;
           border-radius: 10px;
           cursor: pointer;
+        }
+        &__error {
+          font-size: $font-small;
+          color: red;
         }
       }
 

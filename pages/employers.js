@@ -16,7 +16,8 @@ export default function Employers({}) {
   const { query } = useRouter()
   const router = useRouter()
 
-  const [error, setError] = useState({})
+  const [locationError, setLocationError] = useState()
+  const [hourlyError, setHourlyError] = useState()
   const [selectedEmployer, setSelectedEmployer] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -33,8 +34,8 @@ export default function Employers({}) {
 
   const [employmentTypes, setEmploymentTypes] = useState([])
   const [workerTypes, setWorkerTypes] = useState([])
-  const [rateStart, setRateStart] = useState('')
-  const [rateEnd, setRateEnd] = useState('')
+  const [rateStart, setRateStart] = useState()
+  const [rateEnd, setRateEnd] = useState()
   const [proximityInput, setProximityInput] = useState('')
   const [proximityDistance, setProximityDistance] = useState('')
   const [isSmallScreenState, setIsSmallScreenState] = useState(false)
@@ -187,10 +188,10 @@ export default function Employers({}) {
         }
       }
       if (query.rateStart || query.rateEnd) {
-        const searchRateStart = query.rateStart || ''
-        const searchRateEnd = query.rateEnd || ''
-        setRateStart(searchRateStart)
-        setRateEnd(searchRateEnd)
+        const searchRateStart = Number(query.rateStart) || ''
+        const searchRateEnd = Number(query.rateEnd) || ''
+        setRateStart(Number(searchRateStart))
+        setRateEnd(Number(searchRateEnd))
 
         const listingsForFunction = [
           editedListings.featuredEmployers,
@@ -251,8 +252,8 @@ export default function Employers({}) {
   const resetFilters = () => {
     setEmploymentTypes([])
     setWorkerTypes([])
-    setRateStart('')
-    setRateEnd('')
+    setRateStart()
+    setRateEnd()
     setProximityInput('')
     setProximityDistance('')
     router.push(
@@ -317,7 +318,7 @@ export default function Employers({}) {
         isProximityUsed ? proximityInput : ''
       }&prox=${
         isProximityUsed ? proximityDistance : ''
-      }&rateStart=${rateStart}&rateEnd=${rateEnd}`,
+      }&rateStart=${rateStartInput}&rateEnd=${rateEndInput}`,
       undefined,
       { scroll: false }
     )
@@ -404,14 +405,16 @@ export default function Employers({}) {
                             proximityDistance.length > 0
                           ) {
                             setFilters('', '', '', '')
+                            setLocationError('')
                           } else
-                            setError(
+                            setLocationError(
                               'Fill in a location and a proximity before clicking Apply'
                             )
                         }}
                       >
                         Apply
                       </button>
+                      <p>{locationError}</p>
                     </div>
                     <div className={styles.workers__filter__scroll__hourly}>
                       <h3>Hourly Pay</h3>
@@ -429,7 +432,9 @@ export default function Employers({}) {
                           <input
                             type='text'
                             value={rateStart}
-                            onChange={(e) => setRateStart(e.target.value)}
+                            onChange={(e) =>
+                              setRateStart(Number(e.target.value) || '')
+                            }
                           />
                         </div>
                         <p>to</p>
@@ -442,25 +447,38 @@ export default function Employers({}) {
                           <input
                             type='text'
                             value={rateEnd}
-                            onChange={(e) => setRateEnd(e.target.value)}
+                            onChange={(e) =>
+                              setRateEnd(Number(e.target.value) || '')
+                            }
                           />
                         </div>
                       </div>
                       <button
                         onClick={() => {
+                          console.log(rateStart.length > 0)
                           if (
-                            rateStart.length > 0 &&
-                            rateEnd.length > 0 &&
+                            rateStart > -1 &&
+                            rateEnd > -1 &&
                             rateEnd <= rateStart
                           ) {
-                            setError('End rate must be greater than start rate')
+                            setHourlyError(
+                              'End rate must be greater than start rate'
+                            )
                           } else {
                             setFilters('', '', rateStart, rateEnd)
+                            setHourlyError('')
                           }
                         }}
                       >
                         Apply
                       </button>
+                      <p
+                        className={
+                          styles.workers__filter__scroll__hourly__error
+                        }
+                      >
+                        {hourlyError}
+                      </p>
                     </div>
                     <div className={styles.workers__filter__scroll__checks}>
                       <h3>Employment Type</h3>
