@@ -28,6 +28,7 @@ function SignIn() {
   const [errorMsg, setErrorMsg] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
   const [openPopup, setOpenPopup] = useState(false)
+  const [showPass, setShowPass] = useState(false)
 
   useEffect(() => {
     if (
@@ -91,6 +92,17 @@ function SignIn() {
           const errorMessage = error.message.replace('Firebase: ', '')
           setErrorMsg(errorMessage)
         })
+    }
+  }
+
+  const showPassword = () => {
+    const x = document.getElementById('myInput')
+    if (x.type === 'password') {
+      x.type = 'text'
+      setShowPass(true)
+    } else {
+      x.type = 'password'
+      setShowPass(false)
     }
   }
 
@@ -171,8 +183,12 @@ function SignIn() {
                 <input
                   type='password'
                   onChange={(e) => setPassword(e.target.value)}
+                  id='myInput'
                   className={styles.blue_border_thin}
                 />
+                <p onClick={showPassword}>
+                  {showPass ? 'Hide Password' : 'Show Password'}
+                </p>
               </div>
               <p
                 className={styles.signup__form__reset}
