@@ -318,7 +318,7 @@ export default function Employers({}) {
         isProximityUsed ? proximityInput : ''
       }&prox=${
         isProximityUsed ? proximityDistance : ''
-      }&rateStart=${rateStartInput}&rateEnd=${rateEndInput}`,
+      }&rateStart=${rateStart}&rateEnd=${rateEnd}`,
       undefined,
       { scroll: false }
     )
