@@ -195,7 +195,9 @@ function SignUp() {
                 </label>
                 <input
                   type='text'
-                  placeholder='John Doe'
+                  placeholder={
+                    userType == 'Workers' ? "Martin's Construction" : 'John Doe'
+                  }
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
