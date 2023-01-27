@@ -11,6 +11,11 @@
       width: 60rem;
       margin: 0 auto;
 
+      &__instruct {
+        font-size: $font-small;
+        font-weight: 300;
+      }
+
       @include respond(tab) {
         width: 100%;
       }

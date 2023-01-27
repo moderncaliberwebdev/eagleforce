@@ -154,8 +154,18 @@ function Profile() {
 
           <ProfileBreadcrumbs admin={currentUser && currentUser.admin} />
           <div className={styles.settings}>
+            <p className={styles.settings__instruct}>
+              If you want to change your name or email, edit your current
+              information in the text boxes below and click the corresponding
+              update button. To edit your password, click the Reset Button
+              password.
+            </p>
             <div className={styles.settings__input}>
-              <label>Full Name</label>
+              <label>
+                {currentUser && currentUser.name.split(' - ')[0] == 'Workers'
+                  ? 'Company Name'
+                  : 'Full Name'}
+              </label>
               <input
                 type='text'
                 defaultValue={currentUser && currentUser.name.split(' - ')[1]}
@@ -202,8 +212,8 @@ function Profile() {
             )}
             {errorMsg && <p className={styles.settings__error}>{errorMsg}</p>}
             <div className={styles.settings__password}>
-              <label>You will be sent an email with instructions</label>
               <button onClick={passwordReset}>Reset Password</button>
+              <label>You will be sent an email with instructions</label>
               {passwordResetClicked && (
                 <p>Email has been sent. Make sure to check your spam folder</p>
               )}
