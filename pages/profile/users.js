@@ -70,7 +70,16 @@ function ProfileUsers() {
             {users &&
               users.length > 0 &&
               users.map((user) => (
-                <div className={styles.blocks__block} key={user._id}>
+                <div
+                  className={styles.blocks__block}
+                  key={user._id}
+                  style={{
+                    backgroundColor:
+                      user.name.split(' - ')[0] == 'Workers'
+                        ? '#c9a596'
+                        : '#96a4c9',
+                  }}
+                >
                   <div className={styles.blocks__block__info}>
                     <h3>
                       {user.name.split(' - ')[1]} - <span>{user.email}</span>
