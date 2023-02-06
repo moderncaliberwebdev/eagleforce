@@ -92,6 +92,9 @@ function YourEmployerListing({ listing, currentUser, index }) {
       await axios.post('/api/employer/update-listing-email', {
         number: listingInfo[1],
       })
+      await axios.post('/api/employer/update-listing-email-user', {
+        user: currentUser.email,
+      })
 
       if (data)
         window.location.href = `/profile/listings?employerupdated=${listingInfo[1]}`

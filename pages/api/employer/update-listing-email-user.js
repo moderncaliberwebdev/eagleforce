@@ -11,16 +11,16 @@ const auth = {
 
 const transporter = nodemailer.createTransport(mailGun(auth))
 
-const mailTo = (number, callback) => {
+const mailTo = (user, callback) => {
   //validation
   const output = `
     <h3>Updated User!</h3> 
-    Employer ${number} just updated their listing. Check it out and approve it at eagleforceemploymentservices.com/profile/employers
+    A listing from your account was just updated. If you did not request this, please contact Eagle Force Support. support@eagleforceemploymentservices.com
             `
   const mailOptions = {
     from: 'noreply@eagleforceemploymentservices.com',
-    to: 'harold@eagleforceemploymentservices.com',
-    subject: 'Updated User Listings',
+    to: user,
+    subject: 'Updated User Listing',
     html: output,
   }
   transporter.sendMail(mailOptions, (err, data) => {
@@ -33,10 +33,10 @@ const mailTo = (number, callback) => {
 }
 
 export default function mail(req, res) {
-  const { number } = req.body
-  mailTo(number, (err, data) => {
+  const { user } = req.body
+  mailTo(user, (err, data) => {
     res.send({
-      number,
+      user,
       formResponse: err,
     })
   })

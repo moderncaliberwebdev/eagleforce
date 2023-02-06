@@ -26,7 +26,8 @@ const mailTo = (firstname, lastname, email, phone, message, callback) => {
                 <h3>Message: </h3> ${message}
             `
     const mailOptions = {
-      from: email,
+      // from: email,
+      from: 'support@mg.eagleforceemploymentservices.com',
       to: 'support@eagleforceemploymentservices.com',
       subject: 'Eagle Force Support Team',
       html: output,
