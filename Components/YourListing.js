@@ -190,6 +190,9 @@ function YourListing({ listing, currentUser }) {
       await axios.post('/api/worker/update-listing-email', {
         number: listing.workerNumber,
       })
+      await axios.post('/api/worker/update-listing-email-user', {
+        user: currentUser.email,
+      })
 
       if (data)
         window.location.href = `/profile/listings?updated=${listing.workerNumber}`
