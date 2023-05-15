@@ -241,7 +241,7 @@ function SignUp() {
                 />
                 I agree to the
                 <Link href='/terms-and-conditions' passHref>
-                  <a>terms and conditions</a>
+                  <a target='_blank'>terms and conditions</a>
                 </Link>
               </label>
               <button

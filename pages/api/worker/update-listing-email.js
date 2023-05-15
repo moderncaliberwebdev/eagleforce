@@ -15,7 +15,7 @@ const mailTo = (number, callback) => {
   //validation
   const output = `
     <h3>Updated User!</h3> 
-    Worker ${number} just updated their listing. Check it out and approve it at eagleforcemploymentservices.com/profile/workers
+    Worker ${number} just updated their listing. Check it out and approve it at eagleforceemploymentservices.com/profile/workers
             `
   const mailOptions = {
     from: 'noreply@eagleforceemploymentservices.com',
