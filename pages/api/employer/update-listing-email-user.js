@@ -1,15 +1,7 @@
-import nodemailer from 'nodemailer'
-import mailGun from 'nodemailer-mailgun-transport'
+import sgMail from '@sendgrid/mail'
 import validator from 'validator'
 
-const auth = {
-  auth: {
-    api_key: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_API_DOMAIN,
-  },
-}
-
-const transporter = nodemailer.createTransport(mailGun(auth))
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const mailTo = (user, callback) => {
   //validation
@@ -17,19 +9,30 @@ const mailTo = (user, callback) => {
     <h3>Updated User!</h3> 
     A listing from your account was just updated. If you did not request this, please contact Eagle Force Support. support@eagleforceemploymentservices.com
             `
-  const mailOptions = {
-    from: 'noreply@eagleforceemploymentservices.com',
+  const msg = {
     to: user,
+    from: {
+      name: 'Eagle Force Employer Contact',
+      email: 'support@eagleforceemploymentservices.com',
+    },
     subject: 'Updated User Listing',
     html: output,
   }
-  transporter.sendMail(mailOptions, (err, data) => {
-    if (err) {
-      callback('Internal Error', undefined)
-    } else {
-      callback(undefined, data)
+  //ES8
+  const sendSGMail = async () => {
+    try {
+      await sgMail.send(msg)
+
+      callback(undefined, { sent: true })
+    } catch (error) {
+      console.error(error)
+
+      if (error.response) {
+        console.error(error.response.body)
+      }
     }
-  })
+  }
+  sendSGMail()
 }
 
 export default function mail(req, res) {

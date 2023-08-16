@@ -1,15 +1,7 @@
-import nodemailer from 'nodemailer'
-import mailGun from 'nodemailer-mailgun-transport'
+import sgMail from '@sendgrid/mail'
 import validator from 'validator'
 
-const auth = {
-  auth: {
-    api_key: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_API_DOMAIN,
-  },
-}
-
-const transporter = nodemailer.createTransport(mailGun(auth))
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const mailTo = (number, callback) => {
   //validation
@@ -17,19 +9,29 @@ const mailTo = (number, callback) => {
     <h3>Updated User!</h3> 
     Worker ${number} just updated their listing. Check it out and approve it at eagleforceemploymentservices.com/profile/workers
             `
-  const mailOptions = {
-    from: 'noreply@eagleforceemploymentservices.com',
+  const msg = {
+    from: {
+      name: 'Eagle Force Worker Contact',
+      email: 'support@eagleforceemploymentservices.com',
+    },
     to: 'harold@eagleforceemploymentservices.com',
     subject: 'Updated User Listings',
     html: output,
   }
-  transporter.sendMail(mailOptions, (err, data) => {
-    if (err) {
-      callback('Internal Error', undefined)
-    } else {
-      callback(undefined, data)
+  const sendSGMail = async () => {
+    try {
+      await sgMail.send(msg)
+
+      callback(undefined, { sent: true })
+    } catch (error) {
+      console.error(error)
+
+      if (error.response) {
+        console.error(error.response.body)
+      }
     }
-  })
+  }
+  sendSGMail()
 }
 
 export default function mail(req, res) {

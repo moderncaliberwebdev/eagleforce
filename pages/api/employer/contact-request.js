@@ -1,15 +1,7 @@
-import nodemailer from 'nodemailer'
-import mailGun from 'nodemailer-mailgun-transport'
+import sgMail from '@sendgrid/mail'
 import validator from 'validator'
 
-const auth = {
-  auth: {
-    api_key: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_API_DOMAIN,
-  },
-}
-
-const transporter = nodemailer.createTransport(mailGun(auth))
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const mailTo = (email, yourEmail, message, callback) => {
   //validation
@@ -22,21 +14,47 @@ const mailTo = (email, yourEmail, message, callback) => {
                 <h3>Sender's Email: </h3> ${yourEmail}
                 <h3>Message: </h3> ${message}
             `
-    const mailOptions = {
-      from: 'contact@eagleforceemploymentservices.com',
-      to: email,
-      // to: 'cmartin@moderncaliber.com',
+
+    const msg = {
+      to: email, // replace with -> to: email
+      from: {
+        name: 'Eagle Force Employer Contact',
+        email: 'support@eagleforceemploymentservices.com',
+      },
+      replyTo: yourEmail,
       subject: 'Eagle Force Employer Contact Request',
       html: output,
-      replyTo: yourEmail,
     }
-    transporter.sendMail(mailOptions, (err, data) => {
-      if (err) {
-        callback('Internal Error', undefined)
-      } else {
-        callback(undefined, data)
+    //ES8
+    const sendSGMail = async () => {
+      try {
+        await sgMail.send(msg)
+
+        callback(undefined, { sent: true })
+      } catch (error) {
+        console.error(error)
+
+        if (error.response) {
+          console.error(error.response.body)
+        }
       }
-    })
+    }
+    sendSGMail()
+    // const mailOptions = {
+    //   from: 'contact@eagleforceemploymentservices.com',
+    //   to: email,
+    //   // to: 'cmartin@moderncaliber.com',
+    //   subject: 'Eagle Force Employer Contact Request',
+    //   html: output,
+    //   replyTo: yourEmail,
+    // }
+    // transporter.sendMail(mailOptions, (err, data) => {
+    //   if (err) {
+    //     callback('Internal Error', undefined)
+    //   } else {
+    //     callback(undefined, data)
+    //   }
+    // })
   }
 }
 
