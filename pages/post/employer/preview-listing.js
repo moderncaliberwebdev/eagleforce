@@ -107,6 +107,7 @@ function PreviewEmployerListing() {
     const data = await axios.get(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${listingInfo[7]},${listingInfo[8]}&key=${process.env.NEXT_PUBLIC_GEOCODE_API_KEY}`
     )
+    console.log(data)
 
     return data.data.results[0].geometry.location
   }
@@ -184,8 +185,9 @@ function PreviewEmployerListing() {
           <EmployerBreadcrumbs />
           <p className={styles.preview__notice}>
             Below is a preview of your employer listing. Switch back to Edit
-            Listing if you need to make changes. Click the Continue to Purchase
-            button to go to checkout and submit your listing
+            Listing if you need to make changes. Click the{' '}
+            <button onClick={() => getCoords()}>PayPal button</button> to go to
+            checkout and submit your listing
           </p>
           <p className={styles.preview__paypal}>
             We use PayPal Checkout for purchases, but you do not need a PayPal
@@ -236,6 +238,7 @@ function PreviewEmployerListing() {
               }}
               onApprove={(data, actions) => {
                 // Capture the funds from the transaction
+                console.log('data >> ', data, actions)
                 return actions.subscription
                   .get()
                   .then(async function (details) {
